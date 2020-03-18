@@ -127,10 +127,13 @@ class LogicNormal(object):
                 else:
                     #Movie
                     logger.debug('cml - movie')
-                    daum_movie_info = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                    if daum_movie_info:
-                        LogicNormal.set_movie(item, daum_moive_info)
-                        LogicNormal.move_movie(item, daum_movie_info, movie_target_path)
+                    if 'year' in item['guessit']:
+                        daum_movie_info = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                        if daum_movie_info:
+                            LogicNormal.set_movie(item, daum_moive_info)
+                            LogicNormal.move_movie(item, daum_movie_info, movie_target_path)
+                        else:
+                            LogicNormal.move_except(item, error_target_path)
                     else:
                         LogicNormal.move_except(item, error_target_path)
 
