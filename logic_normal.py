@@ -109,11 +109,14 @@ class LogicNormal(object):
             for item in list:
                 if 'episode' in item['guessit']:
                     #TV
+                    logger.debug('cml - drama')
                     daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['search_name'])
                     if daum_tv_info:
+                        logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                         for country in daum_tv_info['countries']:
                             item['country'] = daum_tv_info.countries.add(country.strip())
 
+                        logger.debug('cml - item[country]: %s', item['country'])
                         if 'country' in item['country'] == u'한국':
                             LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                         else:
@@ -123,6 +126,7 @@ class LogicNormal(object):
 
                 else:
                     #Movie
+                    logger.debug('cml - movie')
                     daum_movie_info = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if daum_movie_info:
                         LogicNormal.set_movie(item, daum_moive_info)
@@ -181,6 +185,7 @@ class LogicNormal(object):
     @staticmethod
     def move_movie(data, info, base_path):
         try:
+            logger.debug('mm - info[more][country]: %s', info['more']['country'])
             if info['more']['country'] == u'한국':
                 set_country = u'한국'
             elif info['more']['country'] == u'중국':
