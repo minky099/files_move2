@@ -115,7 +115,7 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def check_move_list(list, ktv_base_path, movie_base_path, error_path):
+    def check_move_list(list, ktv_target_path, movie_target_path, error_target_path):
         try:
             for item in list:
                 if 'episode' in item['guessit']:
@@ -126,20 +126,20 @@ class LogicNormal(object):
                             item['country'] = daum_tv_info.countries.add(country.strip())
 
                         if 'country' in item['country'] == u'한국':
-                            LogicNormal.move_ktv(item, daum_tv_info, ktv_base_path)
+                            LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                         else:
-                            LogicNormal.move_except(item, error_path)
+                            LogicNormal.move_except(item, error_target_path)
                     else:
-                        LogicNormal.move_execpt(item, error_path)
+                        LogicNormal.move_execpt(item, error_target_path)
 
                 else:
                     #Movie
                     daum_movie_info = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if daum_movie_info:
                         LogicNormal.set_movie(item, daum_moive_info)
-                        LogicNormal.move_movie(item, daum_movie_info, movie_base_path)
+                        LogicNormal.move_movie(item, daum_movie_info, movie_target_path)
                     else:
-                        LogicNormal.move_except(item, error_path)
+                        LogicNormal.move_except(item, error_target_path)
 
         except Exception:
             e = None
