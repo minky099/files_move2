@@ -168,7 +168,7 @@ class LogicNormal(object):
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(info, dest_folder_path)
+            LogicNormal.db_save(data, dest_folder_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -181,7 +181,7 @@ class LogicNormal(object):
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(info, dest_folder_path)
+            LogicNormal.db_save(data, dest_folder_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -233,7 +233,7 @@ class LogicNormal(object):
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(info, dest_folder_path)
+            LogicNormal.db_save(data, dest_folder_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)
