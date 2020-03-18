@@ -42,7 +42,6 @@ class Logic(object):
             for key, value in Logic.db_default.items():
                 if db.session.query(ModelSetting).filter_by(key=key).count() == 0:
                     db.session.add(ModelSetting(key, value))
-                    continue
             db.session.commit()
 
         except Exception as e:

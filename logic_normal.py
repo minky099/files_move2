@@ -93,8 +93,6 @@ class LogicNormal(object):
                         item['fullPath'] = os.path.join(path, f)
                         if os.path.isfile(item['fullPath']):
                             pass
-                        item['is_file'] = False
-                        item['is_folder'] = not item['is_file']
                         item['guessit'] = guessit(f)
                         item['ext'] = os.path.splitext(f)[1].lower()
                         item['search_name'] = None
@@ -102,13 +100,10 @@ class LogicNormal(object):
                         if match:
                             item['search_name'] = match.group('name').replace('.', ' ').strip()
                             item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                        fileList.append(item)
-                    continue
-                    except Exception:
-                        e = None
+                            fileList.append(item)
+                    except Exception as e:
                         logger.error('Exxception:%s', e)
                         logger.error(traceback.format_exc())
-                        continue
 
             return fileList
         except Exception as e:
