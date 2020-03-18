@@ -109,7 +109,7 @@ class Logic(object):
             if None == '':
                 return None
             #Test
-            #LogicNormal.scheduler_function()
+            LogicNormal.scheduler_function()
             from framework import app
             if app.config['config']['use_celery']:
                 result = LogicNormal.scheduler_function.apply_async()
