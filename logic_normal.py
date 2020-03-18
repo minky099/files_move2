@@ -133,7 +133,7 @@ class LogicNormal(object):
                     logger.debug('cml - movie')
                     if 'year' in item['guessit']:
                         logger.debug('cml - movie')
-                        daum_movie_info = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                        (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                         if daum_movie_info and daum_movie_info[0]['score'] == 100:
                             #item['movie'] = movie[0]
                             LogicNormal.set_movie(item, daum_movie_info[0])
