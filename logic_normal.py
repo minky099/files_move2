@@ -178,7 +178,7 @@ class LogicNormal(object):
     @staticmethod
     def move_except(data, base_path):
         try:
-            dest_folder_path = os.path.join(base_path, data['search_name'])
+            dest_folder_path = os.path.join(base_path)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
