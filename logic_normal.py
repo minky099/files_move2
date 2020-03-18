@@ -42,6 +42,8 @@ class LogicNormal(object):
             ktv_base_path = ModelSetting.get_setting_value('ktv_base_path')
             movie_base_path = ModelSetting.get_setting_value('movie_base_path')
             error_path = ModelSetting.get_setting_value('error_path')
+            interval = ModelSetting.get('interval')
+
             source_base_path = [ x.strip() for x in source_base_path.split(',') ]
             if not source_base_path:
                 return None

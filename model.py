@@ -51,9 +51,19 @@ class ModelSetting(db.Model):
             logger.error(traceback.format_exc())
 
     @staticmethod
+    def get(key):
+        try:
+            return db.session.query(ModelSetting).filter_by(key=key).first().value.strip()
+
+        except Exception as e:
+            logger.error('Exception:%s %s', e, key)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
     def get_bool(key):
         try:
             return (ModelSetting.get(key) == 'True')
+
         except Exception as e:
             logger.error('Exception:%s %s', e, key)
             logger.error(traceback.format_exc())
@@ -67,6 +77,7 @@ class ModelSetting(db.Model):
                 db.session.commit()
             else:
                 db.session.add(ModelSetting(key, value.strip()))
+
         except Exception as e:
             logger.error('Exception:%s %s', e, key)
             logger.error(traceback.format_exc())
@@ -75,6 +86,7 @@ class ModelSetting(db.Model):
     def to_dict():
         try:
             return Util.db_list_to_dict(db.session.query(ModelSetting).all())
+
         except Exception as e:
             logger.error('Exception:%s %s', e, key)
             logger.error(traceback.format_exc())
@@ -90,6 +102,7 @@ class ModelSetting(db.Model):
                 entity.value = value
             db.session.commit()
             return True
+
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
