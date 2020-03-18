@@ -191,13 +191,16 @@ class ModelMediaItem(db.Model):
             Session.configure(bind=engine)
 
             sess = Session()
-            query = sess.execute("SELECT * FROM musicProc_item")
-            if "searchKey" not in query.keys():
+            query = sess.execute("SELECT * FROM filesMove_item")
+            if "ktv_base_path" not in query.keys():
                 logger.debug( "migration !!")
-                sess.execute('ALTER TABLE musicProc_item ADD COLUMN searchKey VARCHAR')
-            if "statusCd" not in query.keys():
+                sess.execute('ALTER TABLE filesMove_item ADD COLUMN ktv_base_path VARCHAR')
+            if "movie_base_path" not in query.keys():
                 logger.debug( "migration !!")
-                sess.execute('ALTER TABLE musicProc_item ADD COLUMN statusCd VARCHAR')
+                sess.execute('ALTER TABLE filesMove_item ADD COLUMN movie_base_path VARCHAR')
+            if "error_path" not in query.keys():
+                logger.debug( "migration !!")
+                sess.execute('ALTER TABLE filesMove_item ADD COLUMN error_path VARCHAR')
 
         except Exception, e:
             logger.error('Exception:%s', e)
