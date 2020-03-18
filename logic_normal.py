@@ -103,7 +103,7 @@ class LogicNormal(object):
                             item['search_name'] = match.group('name').replace('.', ' ').strip()
                             item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
                         fileList.append(item)
-
+                    continue
                     except Exception:
                         e = None
                         logger.error('Exxception:%s', e)
