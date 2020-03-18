@@ -121,6 +121,14 @@ class Logic(object):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def get_setting_value(key):
+        try:
+            return db.session.query(ModelSetting).filter_by(key = key).first().value
+
+        except Exception as e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
 
     @staticmethod
     def reset_db():
