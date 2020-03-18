@@ -97,7 +97,6 @@ class LogicNormal(object):
                         #else:
                             #item['search_name'] = item['title']
                             #logger.debug('ml - search_name: %s', item['search_name'])
-                        continue
                         fileList.append(item)
                     except Exception as e:
                         logger.error('Exxception:%s', e)
@@ -135,7 +134,7 @@ class LogicNormal(object):
                     if 'year' in item['guessit']:
                         logger.debug('cml - movie')
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                        if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                        if daum_movie_info and daum_movie_info[0]['score'] >= 90:
                             #item['movie'] = movie[0]
                             LogicNormal.set_movie(item, daum_movie_info[0])
                             LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
