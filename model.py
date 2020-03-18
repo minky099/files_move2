@@ -146,7 +146,7 @@ class ModelMediaItem(db.Model):
             db.session.commit()
 
         except Exception as e:
-            logger.error(d)
+            logger.debug(item)
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 

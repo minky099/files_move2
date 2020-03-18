@@ -93,8 +93,10 @@ class LogicNormal(object):
                         if match:
                             item['search_name'] = match.group('name').replace('.', ' ').strip()
                             item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
+                            logger.debug('ml - search_name: %s', item['search_name'])
                         else:
                             item['search_name'] = item['guessit']['title']
+                            logger.debug('ml - search_name: %s', item['search_name'])
                         fileList.append(item)
                     except Exception as e:
                         logger.error('Exxception:%s', e)
