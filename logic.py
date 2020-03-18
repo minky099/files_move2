@@ -26,10 +26,10 @@ from .logic_normal import LogicNormal
 class Logic(object):
     db_default = {
         'db_version' : '1',
-		'source_base_path' : os.path.join(path_data, package_name),
-		'ktv_base_path' : os.path.join(path_data, package_name),
-		'movie_base_path' : os.path.join(path_data, package_name),
-		'error_path' : os.path.join(path_data, package_name),
+		'source_base_path' : '',
+		'ktv_base_path' : '',
+		'movie_base_path' : '',
+		'error_path' : '',
         'schedulerInterval' : '60',
         'interval' : '3',
         'auto_start' : 'False',
@@ -99,6 +99,15 @@ class Logic(object):
     @staticmethod
     def scheduler_function():
         try:
+            source_base_path = Logic.get_setting_value('source_base_path')
+            ktv_base_path = Logic.get_setting_value('ktv_base_path')
+            movie_base_path = Logic.get_setting_value('movie_base_path')
+            error_path = Logic.get_setting_value('error_path')
+            source_base_path = [ x.strip() for x in source_base_path.split(',') ]
+            if not source_base_path:
+                return None
+            if None == '':
+                return None
             #Test
             #LogicNormal.scheduler_function()
             from framework import app

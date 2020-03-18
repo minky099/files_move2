@@ -109,8 +109,7 @@ class LogicNormal(object):
                         continue
 
             return fileList
-        except Exception:
-            e = None
+        except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -141,8 +140,7 @@ class LogicNormal(object):
                     else:
                         LogicNormal.move_except(item, error_target_path)
 
-        except Exception:
-            e = None
+        except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -159,8 +157,7 @@ class LogicNormal(object):
                 tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
                 tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
                 data['dest_folder_name'] = tmp
-        except Exception:
-            e = None
+        except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -174,8 +171,7 @@ class LogicNormal(object):
             shutil.move(data['fullPath'], dest_folder_path)
             LogicNormal.db_save(info, dest_folder_path)
 
-        except Exception:
-            e = None
+        except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -188,8 +184,7 @@ class LogicNormal(object):
             shutil.move(data['fullPath'], dest_folder_path)
             LogicNormal.db_save(info, dest_folder_path)
 
-        except Exception:
-            e = None
+        except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -240,8 +235,7 @@ class LogicNormal(object):
             shutil.move(data['fullPath'], dest_folder_path)
             LogicNormal.db_save(info, dest_folder_path)
 
-        except Exception:
-            e = None
+        except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -255,8 +249,7 @@ class LogicNormal(object):
                 entity['targetPath'] = dest
                 ModelMediaItem.save_as_dict(entity)
 
-            except Exception:
-                e = None
+            except Exception as e:
                 logger.error('Exxception:%s', e)
                 logger.error(traceback.format_exc())
 
