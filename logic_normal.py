@@ -47,32 +47,21 @@ class LogicNormal(object):
             if None == '':
                 return None
 
-            dirList = []
+            try:
+                fileList = LogicNormal.make_list(source_base_path)
+                LogicNormal.check_move_list(fileList, ktv_base_path, movie_base_path, error_path)
+                time.sleep(int(interval))
 
-            for dir_path, dir_names, file_names in os.walk(source_base_path):
-                rootPath = os.path.join(os.path.abspath(source_base_path), dir_path)
-
-                if os.path.isdir(dir_path):
-                    dirList.append(dir_path)
-
-                for file in file_names:
-                    try:
-                        filePath = os.path.join(rootPath, file)
-                        fileList = LogicNormal.make_list(source_base_path)
-                        LogicNormal.check_move_list(fileList, ktv_base_path, movie_base_path, error_path)
-                        time.sleep(int(interval))
-
-                    except Exception as e:
-                        logger.error('Exception:%s', e)
-                        logger.error(traceback.format_exc())
+            except Exception as e:
+                logger.error('Exception:%s', e)
+                logger.error(traceback.format_exc())
 
             if ModelSetting.get_bool('emptyFolderDelete'):
-                dirList.reverse()
-
-                for dir_path in dirList:
-                    logger.debug( "dir_path : " + dir_path)
-                    if source_base_path != dir_path and len(os.listdir(dir_path)) == 0:
-                        os.rmdir(unicode(dir_path))
+                fileList.reverse()
+                for item in fileList:
+                    logger.debug( "dir_path : " + item['fullPath'])
+                    if source_base_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                        os.rmdir(unicode(item['fullPath']))
 
         except Exception as e:
             logger.error('Exception:%s', e)
