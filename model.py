@@ -122,6 +122,8 @@ class ModelMediaItem(db.Model):
     fileName = db.Column(db.String)
     dirName = db.Column(db.String)
     targetPath = db.Column(db.String)
+    interval = db.Column(db.Integer)
+    emptyFolderDelete = db.Column(db.Boolean)
 
     def __init__(self):
         self.created_time = datetime.now()
@@ -132,13 +134,13 @@ class ModelMediaItem(db.Model):
         return ret
 
     @staticmethod
-    def save_as_dict(d):
+    def save_as_dict(item):
         try:
             entity = ModelMediaItem()
-            entity.name = unicode(d['search_name'])
-            entity.fileName = unicode(d['name'])
-            entity.dirName = unicode(d['fullPath'])
-            entity.targetPath = unicode(d['targetPath'])
+            entity.name = item['name']
+            entity.fileName = item['fileName']
+            entity.dirName = item['dirName']
+            entity.targetPath = item['targetPath']
 
             db.session.add(entity)
             db.session.commit()
