@@ -72,7 +72,7 @@ def home():
 @login_required
 def first_menu(sub):
     arg = ModelSetting.to_dict()
-    arg['package_name']  = package_name
+    arg['package_name'] = package_name
     if sub == 'setting':
         arg['scheduler'] = str(scheduler.is_include(package_name))
         arg['is_running'] = str(scheduler.is_running(package_name))
@@ -104,21 +104,18 @@ def ajax(sub):
             else:
                 Logic.scheduler_stop()
             return jsonify(go)
+        elif sub == 'filelist':
+            ret = Logic.fileList(request)
+            return jsonify(ret)
         elif sub == 'one_execute':
             ret = Logic.one_execute()
             return jsonify(ret)
         elif sub == 'reset_db':
             ret = Logic.reset_db()
             return jsonify(ret)
-        # list
-        elif sub == 'select':
-            ret = ModelItem.select(request)
-            return jsonify(ret)
-        elif sub == 'list_remove':
-            ret = ModelItem.delete(request)
-            return jsonify(ret)
 
     except Exception as e:
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
         return jsonify('fail')
+

@@ -37,13 +37,15 @@ class LogicNormal(object):
     def scheduler_function():
         try:
             logger.debug("파일정리 시작!")
-
-            source_base_path = ModelSetting.get('source_base_path')
-            ktv_base_path = ModelSetting.get('ktv_base_path')
-            movie_base_path = ModelSetting.get('movie_base_path')
-            error_path = ModelSetting.get('error_path')
-            interval = ModelSetting.get('interval')
-            emptyFolderDelete = ModelSetting.get('emptyFolderDelete')
+            source_base_path = ModelSetting.get_setting_value('source_base_path')
+            ktv_base_path = ModelSetting.get_setting_value('ktv_base_path')
+            movie_base_path = ModelSetting.get_setting_value('movie_base_path')
+            error_path = ModelSetting.get_setting_value('error_path')
+            source_base_path = [ x.strip() for x in source_base_path.split(',') ]
+            if not source_base_path:
+                return None
+            if None == '':
+                return None
 
             dirList = []
 
@@ -239,17 +241,17 @@ class LogicNormal(object):
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
-        @staticmethod
-        def db_save(data, dest):
-            try:
-                entity = {}
-                entity['name'] = data['search_name']
-                entity['fileName'] = data['name']
-                entity['dirName'] = data['fullPath']
-                entity['targetPath'] = dest
-                ModelMediaItem.save_as_dict(entity)
+    @staticmethod
+    def db_save(data, dest):
+        try:
+            entity = {}
+            entity['name'] = data['search_name']
+            entity['fileName'] = data['name']
+            entity['dirName'] = data['fullPath']
+            entity['targetPath'] = dest
+            ModelMediaItem.save_as_dict(entity)
 
-            except Exception as e:
-                logger.error('Exxception:%s', e)
-                logger.error(traceback.format_exc())
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
 

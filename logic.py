@@ -42,9 +42,8 @@ class Logic(object):
             for key, value in Logic.db_default.items():
                 if db.session.query(ModelSetting).filter_by(key=key).count() == 0:
                     db.session.add(ModelSetting(key, value))
+                    continue
             db.session.commit()
-
-            Logic.migration()
 
         except Exception as e:
             logger.error('Exception:%s', e)
@@ -78,7 +77,8 @@ class Logic(object):
     def scheduler_start():
         try:
             logger.debug('%s scheduler_start' % package_name)
-            job = Job(package_name, package_name, ModelSetting.get('schedulerInterval'), Logic.scheduler_function, u"파일정리", False)
+            schedulerInterval = ModelSetting.query.filter_by(key = 'schedulerInterval').first().value
+            job = Job(package_name, package_name, schedulerInterval, Logic.scheduler_function, u"파일정리", False)
             scheduler.add_job_instance(job)
 
         except Exception as e:
@@ -99,32 +99,14 @@ class Logic(object):
     @staticmethod
     def scheduler_function():
         try:
-            source_base_path = Logic.get_setting_value('source_base_path')
-            ktv_base_path = Logic.get_setting_value('ktv_base_path')
-            movie_base_path = Logic.get_setting_value('movie_base_path')
-            error_path = Logic.get_setting_value('error_path')
-            source_base_path = [ x.strip() for x in source_base_path.split(',') ]
-            if not source_base_path:
-                return None
-            if None == '':
-                return None
             #Test
-            LogicNormal.scheduler_function()
+            #LogicNormal.scheduler_function()
             from framework import app
             if app.config['config']['use_celery']:
                 result = LogicNormal.scheduler_function.apply_async()
                 result.get()
             else:
                 LogicNormal.scheduler_function()
-
-        except Exception as e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
-
-    @staticmethod
-    def get_setting_value(key):
-        try:
-            return db.session.query(ModelSetting).filter_by(key = key).first().value
 
         except Exception as e:
             logger.error('Exception:%s', e)
@@ -141,7 +123,6 @@ class Logic(object):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
             return False
-
 
     @staticmethod
     def one_execute():
@@ -166,19 +147,38 @@ class Logic(object):
         return ret
 
     @staticmethod
-    def process_telegram_data(data):
+    def fileList(req):
+
         try:
-            logger.debug(data)
+            ret = { }
+            page = 1
+            page_size = int(db.session.query(ModelSetting).filter_by(key = 'web_page_size').first().value)
+            job_id = ''
+            search = ''
+            if 'page' in req.form:
+               page = int(req.form['page'])
+            if 'search_word' in req.form:
+               search = req.form['search_word']
+            query = db.session.query(ModelMediaItem)
+            if search != '':
+                query = query.filter(ModelMediaItem.filename.like('%' + search + '%'))
+            option = req.form['option']
+            if option == 'all':
+                pass
+            order = 'desc'
+            if order == 'desc':
+               query = query.order_by(desc(ModelMediaItem.id))
+            else:
+               query = query.order_by(ModelMediaItem.id)
+            count = query.count()
+            query = query.limit(page_size).offset((page - 1) * page_size)
+            logger.debug('ModelFileprocessMovieItem count:%s', count)
+            lists = query.all()
+            ret['list'] = [ item.as_dict() for item in lists ]
+            ret['paging'] = Util.get_paging_info(count, page, page_size)
+            return ret
 
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
-    @staticmethod
-    def migration():
-        try:
-            ModelMediaItem.migration()
-
-        except Exception as e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())

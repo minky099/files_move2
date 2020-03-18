@@ -42,19 +42,12 @@ class ModelSetting(db.Model):
         return {x.name: getattr(self, x.name) for x in self.__table__.columns}
 
     @staticmethod
-    def get(key):
+    def get_setting_value(key):
         try:
-            return db.session.query(ModelSetting).filter_by(key=key).first().value.strip()
-        except Exception as e:
-            logger.error('Exception:%s %s', e, key)
-            logger.error(traceback.format_exc())
+            return db.session.query(ModelSetting).filter_by(key = key).first().value
 
-    @staticmethod
-    def get_int(key):
-        try:
-            return int(ModelSetting.get(key))
         except Exception as e:
-            logger.error('Exception:%s %s', e, key)
+            logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
@@ -142,77 +135,3 @@ class ModelMediaItem(db.Model):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
-    @staticmethod
-    def select(req):
-        try:
-            class_is = ModelItem
-            ret = {}
-            page = 1
-            page_size = 30
-            job_id = ''
-            search = ''
-            option = req.form['option']
-            if 'page' in req.form:
-                page = int(req.form['page'])
-            if 'search_word' in req.form:
-                search = req.form['search_word']
-            query = db.session.query(class_is)
-            if search != '':
-                query = query.filter(class_is.title.like('%'+search+'%'))
-            if option != 'all':
-                query = query.filter(class_is.statusCd.like('%'+option+'%'))
-            query = query.order_by(desc(class_is.id))
-            count = query.count()
-            query = query.limit(page_size).offset((page-1)*page_size)
-            lists = query.all()
-            ret['list'] = [item.as_dict() for item in lists]
-            ret['paging'] = Util.get_paging_info(count, page, page_size)
-            return ret
-
-        except Exception, e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
-
-    @staticmethod
-    def get(id):
-        try:
-            entity = db.session.query(ModelItem).filter_by(id=id).with_for_update().first()
-            return entity
-        except Exception, e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
-
-    @staticmethod
-    def migration():
-        try:
-            from sqlalchemy.orm import sessionmaker
-            Session = sessionmaker()
-            engine = create_engine(app.config['SQLALCHEMY_BINDS'][package_name])
-            Session.configure(bind=engine)
-
-            sess = Session()
-            query = sess.execute("SELECT * FROM filesMove_item")
-            if "ktv_base_path" not in query.keys():
-                logger.debug( "migration !!")
-                sess.execute('ALTER TABLE filesMove_item ADD COLUMN ktv_base_path VARCHAR')
-            if "movie_base_path" not in query.keys():
-                logger.debug( "migration !!")
-                sess.execute('ALTER TABLE filesMove_item ADD COLUMN movie_base_path VARCHAR')
-            if "error_path" not in query.keys():
-                logger.debug( "migration !!")
-                sess.execute('ALTER TABLE filesMove_item ADD COLUMN error_path VARCHAR')
-
-        except Exception, e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
-
-    @staticmethod
-    def delete(id):
-        try:
-            logger.debug( "delete")
-            db.session.query(ModelItem).filter_by(id=id).delete()
-            db.session.commit()
-
-        except Exception, e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
