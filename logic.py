@@ -11,7 +11,7 @@ import subprocess
 # third-party
 
 # sjva 공용
-from framework import db, scheduler, path_app_root, celery
+from framework import db, scheduler, pata_data, path_app_root, celery
 from framework.job import Job
 from framework.util import Util
 from sqlalchemy import desc, or_, and_, func, not_
@@ -26,10 +26,10 @@ from .logic_normal import LogicNormal
 class Logic(object):
     db_default = {
         'db_version' : '1',
-		'source_base_path' : os.path.join(path_data, package_name),
-		'ktv_base_path' : os.path.join(path_data, package_name),
-		'movie_base_path' : os.path.join(path_data, package_name),
-		'error_path' : os.path.join(path_data, package_name),
+		'source_base_path' : os.path.join(pata_data, package_name),
+		'ktv_base_path' : os.path.join(pata_data, package_name),
+		'movie_base_path' : os.path.join(pata_data, package_name),
+		'error_path' : os.path.join(pata_data, package_name),
         'schedulerInterval' : '60',
         'interval' : '3',
         'auto_start' : 'False',
