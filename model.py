@@ -44,7 +44,7 @@ class ModelSetting(db.Model):
     @staticmethod
     def get_setting_value(key):
         try:
-            return db.session.query(ModelSetting).filter_by(key = key).first().value
+            return db.session.query(ModelSetting).filter_by(key=key).first().value
 
         except Exception as e:
             logger.error('Exception:%s', e)

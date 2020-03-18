@@ -14,6 +14,7 @@
     <div id="toggle_advanced_div" class="collapse">
       {{ macros.setting_input_text('folder_rule', '폴더명 규칙', value=arg['folder_rule'], desc=['%TITLE% - 영화제목', '%YEAR% - 년도', '%ENG_TITLE% - 영문제목', '%COUNTRY% - 국가', '%GENRE% - 장르', '%DATE% - 개봉일', '%RATE% - 등급', '%DURING% - 런닝타임', '', '예) %TITLE% [%ENG_TITLE%] (%YEAR%) [%COUNTRY%-%RATE%-%DURING%]', '미스 슬로운 [Miss Sloane] (2016) [미국-15세이상관람가-132분]']) }}
       {{ macros.setting_input_text('interval', '건당처리지연시간', value=arg['interval'], desc=['기준단위 : 초','멜론의 경우 너무 빠른 반복조회시 오류가 발행합니다.']) }}
+      {{ macros.setting_checkbox('emptyFolderDelete', '빈폴더 삭제', value=arg['emptyFolderDelete'], desc='On : 작업후 빈폴더 삭제') }}
     </div>
   {{ macros.setting_button([['global_setting_save_btn', '저장']]) }}
   </form>

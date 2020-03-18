@@ -32,6 +32,7 @@ class Logic(object):
 		'error_path' : '',
         'schedulerInterval' : '60',
         'interval' : '3',
+        'emptyFolderDelete' : 'False',
         'auto_start' : 'False',
         'folder_rule': '%TITLE%'
     }

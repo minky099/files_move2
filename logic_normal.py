@@ -43,6 +43,7 @@ class LogicNormal(object):
             movie_base_path = ModelSetting.get_setting_value('movie_base_path')
             error_path = ModelSetting.get_setting_value('error_path')
             interval = ModelSetting.get('interval')
+            emptyFolderDelete = ModelSetting.get('emptyFolderDelete')
 
             source_base_path = [ x.strip() for x in source_base_path.split(',') ]
             if not source_base_path:
