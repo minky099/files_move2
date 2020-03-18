@@ -132,6 +132,7 @@ class LogicNormal(object):
                     #Movie
                     logger.debug('cml - movie')
                     if 'year' in item['guessit']:
+                        logger.debug('cml - movie')
                         daum_movie_info = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                         if daum_movie_info and daum_movie_info[0]['score'] == 100:
                             #item['movie'] = movie[0]
@@ -167,7 +168,7 @@ class LogicNormal(object):
     def move_ktv(data, info, base_path):
         try:
             logger.debug('=== title %s', info.title)
-            dest_folder_path = os.path.join(base_path, u'드라마', u'한국', unicode(info.title))
+            dest_folder_path = os.path.join(base_path, u'드라마', u'한국',info.title)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
@@ -181,10 +182,11 @@ class LogicNormal(object):
     def move_except(data, base_path):
         try:
             dest_folder_path = os.path.join(base_path)
-            if not os.path.isdir(dest_folder_path):
-                os.makedirs(dest_folder_path)
-            shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(data, dest_folder_path)
+            logger.debug('me - move exception %s' , data['search_name'])
+            #if not os.path.isdir(dest_folder_path):
+            #    os.makedirs(dest_folder_path)
+            #shutil.move(data['fullPath'], dest_folder_path)
+            #LogicNormal.db_save(data, dest_folder_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)

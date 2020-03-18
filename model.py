@@ -122,8 +122,8 @@ class ModelMediaItem(db.Model):
     fileName = db.Column(db.String)
     dirName = db.Column(db.String)
     targetPath = db.Column(db.String)
-    interval = db.Column(db.Integer)
-    emptyFolderDelete = db.Column(db.Boolean)
+    #interval = db.Column(db.Integer)
+    #emptyFolderDelete = db.Column(db.Boolean)
 
     def __init__(self):
         self.created_time = datetime.now()
