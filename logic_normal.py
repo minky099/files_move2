@@ -113,8 +113,8 @@ class LogicNormal(object):
             for item in list:
                 if 'episode' in item['guessit']:
                     #TV
-                    logger.debug('cml - drama')
-                    daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['search_name'])
+                    logger.debug('cml - drama' + item['name'])
+                    daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
                     if daum_tv_info:
                         logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                         for country in daum_tv_info['countries']:
@@ -122,31 +122,31 @@ class LogicNormal(object):
 
                         logger.debug('cml - item[country]: %s', item['country'])
                         if 'country' in item['country'] == u'한국':
-                            logger.debug('cml - drama condition ok')
+                            logger.debug('cml - drama condition ok' + item['name'])
                             LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                         else:
-                            logger.debug('cml - drama condition not ok')
+                            logger.debug('cml - drama condition not ok' + item['name'])
                             LogicNormal.move_except(item, error_target_path)
                     else:
-                        logger.debug('cml - drama condition not not ok')
+                        logger.debug('cml - drama condition not not ok' + item['name'])
                         LogicNormal.move_execpt(item, error_target_path)
 
                 else:
                     #Movie
-                    logger.debug('cml - movie')
+                    logger.debug('cml - movie' + item['name'])
                     if 'year' in item['guessit']:
-                        logger.debug('cml - movie')
+                        logger.debug('cml - movie' + item['name'])
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                         if daum_movie_info and daum_movie_info[0]['score'] >= 90:
                             #item['movie'] = movie[0]
-                            logger.debug('cml - movie condition ok')
+                            logger.debug('cml - movie condition ok' + item['name'])
                             LogicNormal.set_movie(item, daum_movie_info[0])
                             LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                         else:
-                            logger.debug('cml - movie condition not ok')
+                            logger.debug('cml - movie condition not ok' + item['name'])
                             LogicNormal.move_except(item, error_target_path)
                     else:
-                        logger.debug('cml - movie condition not not ok')
+                        logger.debug('cml - movie condition not not ok' + item['name'])
                         LogicNormal.move_except(item, error_target_path)
 
         except Exception as e:
