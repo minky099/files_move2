@@ -99,7 +99,7 @@ class LogicNormal(object):
                         #else:
                             #item['search_name'] = item['title']
                             #logger.debug('ml - search_name: %s', item['search_name'])
-                        if str(LogicNormal.isHangul(item['name'])) is True
+                        if str(LogicNormal.isHangul(item['name'])) == True
                             item['search_name'] = f
                         fileList.append(item)
                     except Exception as e:
