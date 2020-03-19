@@ -79,21 +79,23 @@ class LogicNormal(object):
                 logger.debug('path:%s', path)
                 lists = os.listdir(path)
                 for f in lists:
+                    if os.path.isdir(path):
+                        continue
                     try:
                         item = {}
                         item['path'] = path
                         item['name'] = f
                         item['fullPath'] = os.path.join(path, f)
-                        if os.path.isfile(item['fullPath']):
-                            pass
                         item['guessit'] = guessit(f)
                         item['ext'] = os.path.splitext(f)[1].lower()
                         item['search_name'] = None
                         match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+                        logger.debug('ml - match: %s', match)
                         if match:
                             item['search_name'] = match.group('name').replace('.', ' ').strip()
+                            logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
                             item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                            logger.debug('ml - search_name: %s', item['search_name'])
+                            logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
                         #else:
                             #item['search_name'] = item['title']
                             #logger.debug('ml - search_name: %s', item['search_name'])
@@ -137,7 +139,7 @@ class LogicNormal(object):
                     if 'year' in item['guessit']:
                         logger.debug('cml - movie ' + item['name'])
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                        if daum_movie_info and daum_movie_info[0]['score'] >= 90:
+                        if daum_movie_info and daum_movie_info[0]['score'] == 100:
                             #item['movie'] = movie[0]
                             logger.debug('cml - movie condition ok ' + item['name'])
                             LogicNormal.set_movie(item, daum_movie_info[0])
