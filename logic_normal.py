@@ -52,18 +52,19 @@ class LogicNormal(object):
                 return None
 
             try:
+                files = []
                 dirList = []
+                files.append(source_base_path)
+                list_dirs = os.walk(source_base_path)
+                for root, dirs, files in list_dirs:
+                    for d in dirs:
+                        dirList = files.append(os.path.join(root. d))
 
-                for dir_path, dir_names, file_names in os.walk(source_base_path):
-                    if os.path.isdir(dir_path):
-                        dirList.append(dir_path)
-
-                    for file in file_names:
+                    for f in files:
                         try:
-                            logger.debug('dir_path: %s', dir_path)
-                            rootPath = os.path.join(os.path.abspath(source_base_path), dir_path)
-                            file_path = os.path.join(rootPath, file)
-                            file_list = LogicNormal.make_list(file_path, file)
+                            logger.debug('dir_path: %s', root)
+                            files.append(os.path.join(root, f))
+                            file_list = LogicNormal.make_list(files, f)
                             LogicNormal.check_move_list(file_list, ktv_base_path, movie_base_path, error_path)
                             time.sleep(int(interval))
 
