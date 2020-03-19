@@ -122,10 +122,13 @@ class LogicNormal(object):
 
                         logger.debug('cml - item[country]: %s', item['country'])
                         if 'country' in item['country'] == u'한국':
+                            logger.debug('cml - drama condition ok')
                             LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                         else:
+                            logger.debug('cml - drama condition not ok')
                             LogicNormal.move_except(item, error_target_path)
                     else:
+                        logger.debug('cml - drama condition not not ok')
                         LogicNormal.move_execpt(item, error_target_path)
 
                 else:
@@ -136,11 +139,14 @@ class LogicNormal(object):
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                         if daum_movie_info and daum_movie_info[0]['score'] >= 90:
                             #item['movie'] = movie[0]
+                            logger.debug('cml - movie condition ok')
                             LogicNormal.set_movie(item, daum_movie_info[0])
                             LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                         else:
+                            logger.debug('cml - movie condition not ok')
                             LogicNormal.move_except(item, error_target_path)
                     else:
+                        logger.debug('cml - movie condition not not ok')
                         LogicNormal.move_except(item, error_target_path)
 
         except Exception as e:
