@@ -53,7 +53,7 @@ class LogicNormal(object):
 
             try:
                 sub_folders, files = run_fast_scandir(source_base_path, [".*"])
-                for path in sub_folders
+                for path in sub_folders:
                     fileList = LogicNormal.make_list(path, files, ktv_base_path, movie_base_path, error_path)
                 #time.sleep(int(interval))
 
