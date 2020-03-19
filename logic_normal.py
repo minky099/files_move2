@@ -52,64 +52,61 @@ class LogicNormal(object):
                 return None
 
             try:
-                files = []
-                dirList = []
-                list_dirs = os.walk(unicode(source_base_path))
-                for root, dirs, files in list_dirs:
-                    for d in dirs:
-                        dirList.append(os.path.join(root. d))
-                    for f in files:
-                        try:
-                            logger.debug('dir_path: %s', root)
-                            files.append(os.path.join(root. f))
-                            file_list = LogicNormal.make_list(files, f)
-                            LogicNormal.check_move_list(file_list, ktv_base_path, movie_base_path, error_path)
-                            time.sleep(int(interval))
-
-                        except Exception as e:
-                            logger.error('Exception:%s', e)
-                            logger.error(traceback.format_exc())
+                fileList = LogicNormal.make_list(source_base_path)
+                LogicNormal.check_move_list(fileList, ktv_base_path, movie_base_path, error_path)
+                time.sleep(int(interval))
 
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
 
             if ModelSetting.get_bool('emptyFolderDelete'):
-                dirList.reverse()
-                for dir_path in dirList:
-                    logger.debug( "dir_path : " + dir_path)
-                    if source_base_path != dir_path and len(os.listdir(dir_path)) == 0:
-                        os.rmdir(unicode(dir_path))
+                fileList.reverse()
+                for item in fileList:
+                    logger.debug( "dir_path : " + item['fullPath'])
+                    if source_base_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                        os.rmdir(unicode(item['fullPath']))
 
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def make_list(filePath, fileName):
+    def make_list(source_base_path):
         try:
             fileList = []
-
-            item = {}
-            item['name'] = fileName
-            item['fullPath'] = filePath
-            item['guessit'] = guessit(f)
-            item['ext'] = os.path.splitext(fileName)[1].lower()
-            item['search_name'] = None
-            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
-            logger.debug('ml - match: %s', match)
-            if match:
-                item['search_name'] = match.group('name').replace('.', ' ').strip()
-                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
-                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
-            #else:
-                #item['search_name'] = item['title']
-                #logger.debug('ml - search_name: %s', item['search_name'])
-            fileList.append(item)
+            for path in source_base_path:
+                logger.debug('path:%s', path)
+                lists = os.listdir(path)
+                for f in lists:
+                    try:
+                        item = {}
+                        item['path'] = path
+                        item['name'] = f
+                        item['fullPath'] = os.path.join(path, f)
+                        if os.path.isfile(item['fullPath']):
+                            pass
+                        item['guessit'] = guessit(f)
+                        item['ext'] = os.path.splitext(f)[1].lower()
+                        item['search_name'] = None
+                        match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+                        logger.debug('ml - match: %s', match)
+                        if match:
+                            item['search_name'] = match.group('name').replace('.', ' ').strip()
+                            logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
+                            item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
+                            logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
+                        #else:
+                            #item['search_name'] = item['title']
+                            #logger.debug('ml - search_name: %s', item['search_name'])
+                        if isHangul(item['name']) > 0
+                            item['search_name'] = f
+                        fileList.append(item)
+                    except Exception as e:
+                        logger.error('Exxception:%s', e)
+                        logger.error(traceback.format_exc())
 
             return fileList
-
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -142,7 +139,7 @@ class LogicNormal(object):
                     #Movie
                     logger.debug('cml - movie ' + item['name'])
                     if 'year' in item['guessit']:
-                        logger.debug('cml - movie ' + item['name'])
+                        logger.debug('cml - movie ' + item['name'] + item['search_name'])
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                         if daum_movie_info and daum_movie_info[0]['score'] == 100:
                             #item['movie'] = movie[0]
@@ -270,4 +267,16 @@ class LogicNormal(object):
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def isHangul(text):
+
+        if type(text) is not unicode:
+            encText = text.decode('utf-8')
+        else:
+            encText = text
+
+        hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
+
+        return hanCount > 0
 
