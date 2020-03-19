@@ -52,17 +52,8 @@ class LogicNormal(object):
                 return None
 
             try:
-                sub_folders, files = LogicNormal.run_fast_scandir(source_base_path, [".*"])
-                for path in sub_folders:
-                    fileList = LogicNormal.make_list(path, files, ktv_base_path, movie_base_path, error_path)
-                #time.sleep(int(interval))
-
-                if ModelSetting.get_bool('emptyFolderDelete'):
-                    sub_folders.reverse()
-                    for dir_path in sub_folders:
-                        logger.debug( "dir_path : " + dir_path)
-                        if source_path != dir_path and len(os.listdir(dir_path)) == 0:
-                            os.rmdir(unicode(dir_path))
+                fileList = LogicNormal.make_list(source_base_path, ktv_base_path, movie_base_path, error_path)
+                time.sleep(int(interval))
 
             except Exception as e:
                 logger.error('Exception:%s', e)
@@ -73,103 +64,106 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def run_fast_scandir(dir, ext):    # dir: str, ext: list
-        subfolders, files = [], []
-
-        for f in os.scandir(dir):
-            if f.is_dir():
-                subfolders.append(f.path)
-            if f.is_file():
-                if os.path.splitext(f.name)[1].lower() in ext:
-                    files.append(f.path)
-
-        for dir in list(subfolders):
-            sf, f = run_fast_scandir(dir, ext)
-            subfolders.extend(sf)
-            files.extend(f)
-
-        logger.debug('sf:%s, files:%s', subfolders, files)
-        return subfolders, files
-
-    @staticmethod
-    def make_list(source_path, files, ktv_path, movie_path, err_path):
+    def make_list(source_path, ktv_path, movie_path, err_path):
         try:
-            item = {}
-            item['path'] = source_path
-            item['name'] = files
-            item['fullPath'] = os.path.join(source_path, files)
-            item['guessit'] = guessit(files)
-            item['ext'] = os.path.splitext(files)[1].lower()
-            item['search_name'] = None
-            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
-            logger.debug('ml - match: %s', match)
-            if match:
-                item['search_name'] = match.group('name').replace('.', ' ').strip()
-                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
-                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
-            #else:
-                #item['search_name'] = item['title']
-                #logger.debug('ml - search_name: %s', item['search_name'])
-            if LogicNormal.isHangul(item['name']) > 0:
-                item['search_name'] = files
+            fileList = []
+            for path in source_path:
+                logger.debug('path:%s', path)
+                lists = os.listdir(path)
+                for f in lists:
+                    try:
+                        if os.path.isfile(os.path.join(path, f)):
+                            item = {}
+                            item['path'] = path
+                            item['name'] = f
+                            item['fullPath'] = os.path.join(path, f)
+                            item['guessit'] = guessit(f)
+                            item['ext'] = os.path.splitext(f)[1].lower()
+                            item['search_name'] = None
+                            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+                            logger.debug('ml - match: %s', match)
+                            if match:
+                                item['search_name'] = match.group('name').replace('.', ' ').strip()
+                                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
+                                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
+                                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
+                            #else:
+                                #item['search_name'] = item['title']
+                                #logger.debug('ml - search_name: %s', item['search_name'])
+                            if LogicNormal.isHangul(item['name']) > 0:
+                                item['search_name'] = f
+                            fileList.append(item)
+                            LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
 
-            LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
+                            if ModelSetting.get_bool('emptyFolderDelete'):
+                                fileList.reverse()
+                                for item in fileList:
+                                    logger.debug( "dir_path : " + item['fullPath'])
+                                    if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                                        os.rmdir(unicode(item['fullPath']))
+
+                        elif os.path.isdir(os.path.join(path, f)):
+                            LogicNormal.make_list(os.path.join(path, f), ktv_path, movie_path, err_path)
+
+                    except Exception as e:
+                        logger.error('Exxception:%s', e)
+                        logger.error(traceback.format_exc())
 
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def check_move_list(item, ktv_target_path, movie_target_path, error_target_path):
+    def check_move_list(list, ktv_target_path, movie_target_path, error_target_path):
         try:
-            if 'episode' in item['guessit']:
-                #TV
-                logger.debug('cml - drama ' + item['name'])
-                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
-                if daum_tv_info:
-                    logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
-                    for country in daum_tv_info['countries']:
-                        item['country'] = daum_tv_info.countries.add(country.strip())
+            for item in list:
+                if 'episode' in item['guessit']:
+                    #TV
+                    logger.debug('cml - drama ' + item['name'])
+                    daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
+                    if daum_tv_info:
+                        logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
+                        for country in daum_tv_info['countries']:
+                            item['country'] = daum_tv_info.countries.add(country.strip())
 
-                    logger.debug('cml - item[country]: %s', item['country'])
-                    if 'country' in item['country'] == u'한국':
-                        logger.debug('cml - drama condition ok ' + item['name'])
-                        LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
-                    else:
-                        logger.debug('cml - drama condition not ok ' + item['name'])
-                        LogicNormal.move_except(item, error_target_path)
-                else:
-                    logger.debug('cml - drama condition not not ok ' + item['name'])
-                    LogicNormal.move_except(item, error_target_path)
-
-            else:
-                #Movie
-                logger.debug('cml - movie ' + item['name'])
-                if LogicNormal.isHangul(item['name']) is False:
-                    if 'year' in item['guessit']:
-                        year = item['guessit']['year']
-                        logger.debug('cml - movie year ' + year)
-                        (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                        logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                        if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                            #item['movie'] = movie[0]
-                            logger.debug('cml - movie condition ok ' + item['name'])
-                            LogicNormal.set_movie(item, daum_movie_info[0])
-                            LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                        logger.debug('cml - item[country]: %s', item['country'])
+                        if 'country' in item['country'] == u'한국':
+                            logger.debug('cml - drama condition ok ' + item['name'])
+                            LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                         else:
-                            logger.debug('cml - movie condition not ok ' + item['name'])
+                            logger.debug('cml - drama condition not ok ' + item['name'])
                             LogicNormal.move_except(item, error_target_path)
                     else:
-                        logger.debug('cml - movie condition not not ok ' + item['name'])
+                        logger.debug('cml - drama condition not not ok ' + item['name'])
                         LogicNormal.move_except(item, error_target_path)
+
                 else:
-                    logger.debug('cml - movie is hangul ' + item['name'])
-                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
-                    logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                    if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                        LogicNormal.set_movie(item, daum_movie_info[0])
-                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                    #Movie
+                    logger.debug('cml - movie ' + item['name'])
+                    if LogicNormal.isHangul(item['name']) is False:
+                        if 'year' in item['guessit']:
+                            year = item['guessit']['year']
+                            logger.debug('cml - movie year ' + year)
+                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                            logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                            if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                                #item['movie'] = movie[0]
+                                logger.debug('cml - movie condition ok ' + item['name'])
+                                LogicNormal.set_movie(item, daum_movie_info[0])
+                                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                            else:
+                                logger.debug('cml - movie condition not ok ' + item['name'])
+                                LogicNormal.move_except(item, error_target_path)
+                        else:
+                            logger.debug('cml - movie condition not not ok ' + item['name'])
+                            LogicNormal.move_except(item, error_target_path)
+                    else:
+                        logger.debug('cml - movie is hangul ' + item['name'])
+                        (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
+                        logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                        if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                            LogicNormal.set_movie(item, daum_movie_info[0])
+                            LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)
