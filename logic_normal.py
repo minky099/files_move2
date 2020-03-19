@@ -64,6 +64,36 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
+    def item_list(path, f):
+        try:
+            item = {}
+            item['path'] = path
+            item['name'] = f
+            item['fullPath'] = os.path.join(path, f)
+            item['guessit'] = guessit(f)
+            item['ext'] = os.path.splitext(f)[1].lower()
+            item['search_name'] = None
+            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+            logger.debug('ml - match: %s', match)
+            if match:
+                item['search_name'] = match.group('name').replace('.', ' ').strip()
+                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
+                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
+                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
+            #else:
+                #item['search_name'] = item['title']
+                #logger.debug('ml - search_name: %s', item['search_name'])
+            if LogicNormal.isHangul(item['name']) > 0:
+                item['search_name'] = f
+
+            return item
+
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+
+    @staticmethod
     def make_list(source_path, ktv_path, movie_path, err_path):
         try:
             fileList = []
@@ -72,26 +102,9 @@ class LogicNormal(object):
                 lists = os.listdir(path)
                 for f in lists:
                     try:
-                        if os.path.isfile(os.path.join(path, f)):
-                            item = {}
-                            item['path'] = path
-                            item['name'] = f
-                            item['fullPath'] = os.path.join(path, f)
-                            item['guessit'] = guessit(f)
-                            item['ext'] = os.path.splitext(f)[1].lower()
-                            item['search_name'] = None
-                            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
-                            logger.debug('ml - match: %s', match)
-                            if match:
-                                item['search_name'] = match.group('name').replace('.', ' ').strip()
-                                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
-                                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
-                            #else:
-                                #item['search_name'] = item['title']
-                                #logger.debug('ml - search_name: %s', item['search_name'])
-                            if LogicNormal.isHangul(item['name']) > 0:
-                                item['search_name'] = f
+                        p = os.path.join(path, f)
+                        if os.path.isfile(p):
+                            item = item_list(path, f)
                             fileList.append(item)
                             LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
 
@@ -102,8 +115,25 @@ class LogicNormal(object):
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
 
-                        elif os.path.isdir(os.path.join(path, f)):
-                            LogicNormal.make_list(os.path.join(path, f), ktv_path, movie_path, err_path)
+                        elif os.path.isdir(p):
+                            sub_lists = os.listdir(p)
+                            for fs in sub_lists:
+                                try:
+                                    if os.path.isfile(os.path.join(p, fs)):
+                                        item = item_list(p, fs)
+                                        fileList.append(item)
+                                        LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
+
+                                        if ModelSetting.get_bool('emptyFolderDelete'):
+                                            fileList.reverse()
+                                            for item in fileList:
+                                                logger.debug( "dir_path : " + item['fullPath'])
+                                                if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                                                    os.rmdir(unicode(item['fullPath']))
+
+                                except Exception as e:
+                                    logger.error('Exxception:%s', e)
+                                    logger.error(traceback.format_exc())
 
                     except Exception as e:
                         logger.error('Exxception:%s', e)
