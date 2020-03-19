@@ -138,6 +138,7 @@ class LogicNormal(object):
                 else:
                     #Movie
                     logger.debug('cml - movie ' + item['name'])
+                    logger.debug('cml - movie year ' + item['guessit']['year'])
                     if 'year' in item['guessit']:
                         logger.debug('cml - movie ' + item['name'] + item['search_name'])
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
