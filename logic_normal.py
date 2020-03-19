@@ -80,11 +80,12 @@ class LogicNormal(object):
                 lists = os.listdir(path)
                 for f in lists:
                     try:
-                        if os.path.isfile(item['fullPath']):
+                        filePath = os.path.join(path, f)
+                        if os.path.isfile(filePath):
                             item = {}
                             item['path'] = path
                             item['name'] = f
-                            item['fullPath'] = os.path.join(path, f)
+                            item['fullPath'] = filePath
                             item['guessit'] = guessit(f)
                             item['ext'] = os.path.splitext(f)[1].lower()
                             item['search_name'] = None
