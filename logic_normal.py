@@ -80,7 +80,7 @@ class LogicNormal(object):
                 lists = os.listdir(path)
                 for f in lists:
                     try:
-                        if os.path.isfile
+                        if os.path.isfile:
                             item = {}
                             item['path'] = path
                             item['name'] = f
