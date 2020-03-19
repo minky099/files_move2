@@ -54,14 +54,14 @@ class LogicNormal(object):
             try:
                 files = []
                 dirList = []
-                list_dirs = os.walk(str(unicode(source_base_path)))
+                list_dirs = os.walk(unicode(source_base_path))
                 for root, dirs, files in list_dirs:
                     for d in dirs:
-                        dirList.append(str(unicode(os.path.join(root. d))))
+                        dirList.append(os.path.join(root. d))
                     for f in files:
                         try:
                             logger.debug('dir_path: %s', root)
-                            files.append(str(unicode(os.path.join(root. f))))
+                            files.append(os.path.join(root. f))
                             file_list = LogicNormal.make_list(files, f)
                             LogicNormal.check_move_list(file_list, ktv_base_path, movie_base_path, error_path)
                             time.sleep(int(interval))
@@ -79,7 +79,7 @@ class LogicNormal(object):
                 for dir_path in dirList:
                     logger.debug( "dir_path : " + dir_path)
                     if source_base_path != dir_path and len(os.listdir(dir_path)) == 0:
-                        os.rmdir(str(unicode(dir_path)))
+                        os.rmdir(unicode(dir_path))
 
         except Exception as e:
             logger.error('Exception:%s', e)
