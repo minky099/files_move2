@@ -52,35 +52,27 @@ class LogicNormal(object):
                 return None
 
             try:
-                fileList = LogicNormal.make_list(source_base_path)
-                LogicNormal.check_move_list(fileList, ktv_base_path, movie_base_path, error_path)
+                fileList = LogicNormal.make_list(source_base_path, ktv_base_path, movie_base_path, error_path)
                 time.sleep(int(interval))
 
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
 
-            if ModelSetting.get_bool('emptyFolderDelete'):
-                fileList.reverse()
-                for item in fileList:
-                    logger.debug( "dir_path : " + item['fullPath'])
-                    if source_base_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
-                        os.rmdir(unicode(item['fullPath']))
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def make_list(source_base_path):
+    def make_list(source_path, ktv_path, movie_path, err_path):
         try:
             fileList = []
-            for path in source_base_path:
+            for path in source_path:
                 logger.debug('path:%s', path)
                 lists = os.listdir(path)
                 for f in lists:
                     try:
-                        if os.path.isfile:
+                        if os.path.isfile(os.path.join(path, f)):
                             item = {}
                             item['path'] = path
                             item['name'] = f
@@ -103,11 +95,22 @@ class LogicNormal(object):
                             if LogicNormal.isHangul(item['name']) > 0:
                                 item['search_name'] = f
                             fileList.append(item)
+                            LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
+
+                            if ModelSetting.get_bool('emptyFolderDelete'):
+                                fileList.reverse()
+                                for item in fileList:
+                                    logger.debug( "dir_path : " + item['fullPath'])
+                                    if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                                        os.rmdir(unicode(item['fullPath']))
+
+                        if os.path.isdir(os.path.join(path, f)):
+                            LogicNormal.make_list(os.path.join(path, f), ktv_path, movie_path, err_path)
+
                     except Exception as e:
                         logger.error('Exxception:%s', e)
                         logger.error(traceback.format_exc())
 
-            return fileList
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
