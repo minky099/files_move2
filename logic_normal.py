@@ -54,7 +54,7 @@ class LogicNormal(object):
             try:
                 files = []
                 dirList = []
-                list_dirs = os.walk(source_base_path)
+                list_dirs = os.walk(str(unicode(source_base_path)))
                 for root, dirs, files in list_dirs:
                     for d in dirs:
                         dirList = files.append(os.path.join(root. d))
