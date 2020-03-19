@@ -139,11 +139,11 @@ class LogicNormal(object):
                 else:
                     #Movie
                     logger.debug('cml - movie ' + item['name'])
-                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if LogicNormal.isHangul(item['name']) is False:
                         if 'year' in item['guessit']:
                             year = item['guessit']['year']
                             logger.debug('cml - movie year ' + year)
+                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                             logger.debug('cml - movie ' + item['name'] + item['search_name'])
                             if daum_movie_info and daum_movie_info[0]['score'] == 100:
                                 #item['movie'] = movie[0]
@@ -158,8 +158,11 @@ class LogicNormal(object):
                             LogicNormal.move_except(item, error_target_path)
                     else:
                         logger.debug('cml - movie is hangul ' + item['name'])
-                        LogicNormal.set_movie(item, daum_movie_info[0])
-                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                        (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
+                        logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                        if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                            LogicNormal.set_movie(item, daum_movie_info[0])
+                            LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)
