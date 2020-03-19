@@ -54,7 +54,6 @@ class LogicNormal(object):
             try:
                 files = []
                 dirList = []
-                files.append(source_base_path)
                 list_dirs = os.walk(source_base_path)
                 for root, dirs, files in list_dirs:
                     for d in dirs:
@@ -81,7 +80,7 @@ class LogicNormal(object):
                 for dir_path in dirList:
                     logger.debug( "dir_path : " + dir_path)
                     if source_base_path != dir_path and len(os.listdir(dir_path)) == 0:
-                        os.rmdir(unicode(dir_path))
+                        os.rmdir(dir_path)
 
         except Exception as e:
             logger.error('Exception:%s', e)
