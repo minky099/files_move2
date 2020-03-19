@@ -52,59 +52,66 @@ class LogicNormal(object):
                 return None
 
             try:
-                fileList = LogicNormal.make_list(source_base_path)
-                LogicNormal.check_move_list(fileList, ktv_base_path, movie_base_path, error_path)
-                time.sleep(int(interval))
+                dirList = []
+
+                for dir_path, dir_names, file_names in os.walk(source_base_path):
+                    logger.debug('dir_path: %s', dir_path)
+                    rootPath = os.path.join(os.path.abspath(source_base_path), dir_path)
+
+                    if os.path.isdir(dir_path):
+                        dirList.append(dir_path)
+
+                    for file in file_names:
+                        try:
+                            file_path = os.path.join(rootPath, file)
+                            fileList = LogicNormal.make_list(file_path, file)
+                            LogicNormal.check_move_list(fileList, ktv_base_path, movie_base_path, error_path)
+                            time.sleep(int(interval))
+
+                        except Exception as e:
+                            logger.error('Exception:%s', e)
+                            logger.error(traceback.format_exc())
 
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
 
             if ModelSetting.get_bool('emptyFolderDelete'):
-                fileList.reverse()
-                for item in fileList:
-                    logger.debug( "dir_path : " + item['fullPath'])
-                    if source_base_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
-                        os.rmdir(unicode(item['fullPath']))
+                dirList.reverse()
+                for dir_path in dirList:
+                    logger.debug( "dir_path : " + dir_path)
+                    if source_base_path != dir_path and len(os.listdir(dir_path)) == 0:
+                        os.rmdir(unicode(dir_path))
 
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def make_list(source_base_path):
+    def make_list(filePath, fileName):
         try:
             fileList = []
-            for path in source_base_path:
-                logger.debug('path:%s', path)
-                lists = os.listdir(path)
-                for f in lists:
-                    try:
-                        filePath = os.path.join(path, f)
-                        if os.path.isfile(filePath):
-                            item = {}
-                            item['path'] = path
-                            item['name'] = f
-                            item['fullPath'] = filePath
-                            item['guessit'] = guessit(f)
-                            item['ext'] = os.path.splitext(f)[1].lower()
-                            item['search_name'] = None
-                            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
-                            logger.debug('ml - match: %s', match)
-                            if match:
-                                item['search_name'] = match.group('name').replace('.', ' ').strip()
-                                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
-                                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
-                            #else:
-                                #item['search_name'] = item['title']
-                                #logger.debug('ml - search_name: %s', item['search_name'])
-                            fileList.append(item)
-                    except Exception as e:
-                        logger.error('Exxception:%s', e)
-                        logger.error(traceback.format_exc())
+
+            item = {}
+            item['name'] = fileName
+            item['fullPath'] = filePath
+            item['guessit'] = guessit(f)
+            item['ext'] = os.path.splitext(fileName)[1].lower()
+            item['search_name'] = None
+            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+            logger.debug('ml - match: %s', match)
+            if match:
+                item['search_name'] = match.group('name').replace('.', ' ').strip()
+                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
+                item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
+                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
+            #else:
+                #item['search_name'] = item['title']
+                #logger.debug('ml - search_name: %s', item['search_name'])
+            fileList.append(item)
 
             return fileList
+
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
