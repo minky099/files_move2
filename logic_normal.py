@@ -104,7 +104,7 @@ class LogicNormal(object):
                     try:
                         p = os.path.join(path, f)
                         if os.path.isfile(p):
-                            item = item_list(path, f)
+                            item = LogicNormal.item_list(path, f)
                             fileList.append(item)
                             LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
 
@@ -120,7 +120,7 @@ class LogicNormal(object):
                             for fs in sub_lists:
                                 try:
                                     if os.path.isfile(os.path.join(p, fs)):
-                                        item = item_list(p, fs)
+                                        item = LogicNormal.item_list(p, fs)
                                         fileList.append(item)
                                         LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
 
