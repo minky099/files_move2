@@ -103,7 +103,7 @@ class LogicNormal(object):
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
                             f = f.encode('utf-8')
-                            f = f.strip()
+                            #f = f.strip()
                         #f = LogicNormal.strip_all(f)
                         p = os.path.join(path, f)
                         logger.debug('p:%s', p)
@@ -125,7 +125,7 @@ class LogicNormal(object):
                                 try:
                                     if LogicNormal.isHangul(str(fs)) > 0:
                                         fs = fs.encode('utf-8')
-                                        fs = fs.strip()
+                                        #fs = fs.strip()
                                     #fs = LogicNormal.strip_all(fs)
                                     logger.debug('sub path:%s', os.path.join(p, fs))
                                     if os.path.isfile(os.path.join(p, fs)):
