@@ -103,6 +103,7 @@ class LogicNormal(object):
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
                             f = f.encode('utf-8')
+                        f = f.strip()
                         p = os.path.join(path, f)
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
@@ -123,6 +124,7 @@ class LogicNormal(object):
                                 try:
                                     if LogicNormal.isHangul(str(fs)) > 0:
                                         fs = fs.encode('utf-8')
+                                    fs = fs.strip()
                                     logger.debug('sub path:%s', os.path.join(p, fs))
                                     if os.path.isfile(os.path.join(p, fs)):
                                         item = LogicNormal.item_list(p, fs)
@@ -211,9 +213,7 @@ class LogicNormal(object):
             data['movie'] = movie
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', movie['title']).replace('  ', ' '))
             if 'more' in movie:
-                Logic = Logic
-                import logic
-                folder_rule = Logic.get_setting_value('folder_rule')
+                folder_rule = ModelSetting.get_setting_value('folder_rule')
                 tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
                 tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
                 data['dest_folder_name'] = tmp
