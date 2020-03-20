@@ -102,8 +102,9 @@ class LogicNormal(object):
                 for f in lists:
                     try:
                         p = os.path.join(path, f)
+                        logger.debug('p:%s', p)
                         if os.path.isfile(p):
-                            item = LogicNormal.item_list(path, f)
+                            item = LogicNormal.item_list(p, f)
                             lists.append(item)
                             LogicNormal.check_move_list(lists, ktv_path, movie_path, err_path)
 
@@ -118,6 +119,7 @@ class LogicNormal(object):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
+                                    logger.debug('sub path:%s', os.path.join(p, fs))
                                     if os.path.isfile(os.path.join(p, fs)):
                                         item = LogicNormal.item_list(p, fs)
                                         sub_lists.append(item)
@@ -146,7 +148,7 @@ class LogicNormal(object):
     def check_move_list(list, ktv_target_path, movie_target_path, error_target_path):
         try:
             for item in list:
-                if 'episode' in item['guessit']:
+                if 'episode' in item['guessit'] > 0:
                     #TV
                     logger.debug('cml - drama ' + item['name'])
                     daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
