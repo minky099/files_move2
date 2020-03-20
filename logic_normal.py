@@ -101,8 +101,8 @@ class LogicNormal(object):
                 lists = os.listdir(path)
                 for f in lists:
                     try:
-                        if LogicNormal.isHangul(str(f)) > 0:
-                            f = f.encode('utf-8')
+                        #if LogicNormal.isHangul(str(f)) > 0:
+                            #f = f.encode('utf-8')
                             #f = f.strip()
                         #f = LogicNormal.strip_all(f)
                         p = os.path.join(path, f)
@@ -123,8 +123,8 @@ class LogicNormal(object):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
-                                    if LogicNormal.isHangul(str(fs)) > 0:
-                                        fs = fs.encode('utf-8')
+                                    #if LogicNormal.isHangul(str(fs)) > 0:
+                                        #fs = fs.encode('utf-8')
                                         #fs = fs.strip()
                                     #fs = LogicNormal.strip_all(fs)
                                     logger.debug('sub path:%s', os.path.join(p, fs))
