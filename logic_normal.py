@@ -337,11 +337,11 @@ class LogicNormal(object):
       if isinstance(x, str): # if using python2 replace str with basestring to include unicode type
         x = x.strip()
       elif isinstance(x, list):
-        x = [strip_all(v) for v in x]
+        x = [LogicNormal.strip_all(v) for v in x]
       elif isinstance(x, dict):
         for k, v in x.iteritems():
           x.pop(k)  # also strip keys
-          x[ strip_all(k) ] = strip_all(v)
+          x[ LogicNormal.strip_all(k) ] = LogicNormal.strip_all(v)
 
       return x
 
