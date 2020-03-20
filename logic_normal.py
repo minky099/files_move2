@@ -250,8 +250,8 @@ class LogicNormal(object):
     @staticmethod
     def move_movie(data, info, base_path):
         try:
-            global set_country = 0
-            global set_year = 0
+            set_country = []
+            set_year = []
 
             logger.debug('mm - info[more][country]: %s', info['more']['country'])
             if info['more']['country'] == u'한 국':
