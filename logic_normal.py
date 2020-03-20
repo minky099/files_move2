@@ -101,6 +101,8 @@ class LogicNormal(object):
                 lists = os.listdir(path)
                 for f in lists:
                     try:
+                        if LogicNormal.isHangul(f) > 0:
+                            f = f.encode('utf-8')
                         p = os.path.join(path, f)
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
@@ -119,6 +121,8 @@ class LogicNormal(object):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
+                                    if LogicNormal.isHangul(fs) > 0:
+                                        fs = f.encode('utf-8')
                                     logger.debug('sub path:%s', os.path.join(p, fs))
                                     if os.path.isfile(os.path.join(p, fs)):
                                         item = LogicNormal.item_list(p, fs)
@@ -172,7 +176,7 @@ class LogicNormal(object):
                 #if LogicNormal.isHangul(item['name']) is False:
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
-                    logger.debug('cml - movie year ' + year)
+                    logger.debug('cml - movie year %s', year)
                     (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     logger.debug('cml - movie ' + item['name'] + item['search_name'])
                     if daum_movie_info and daum_movie_info[0]['score'] == 100:
