@@ -69,7 +69,7 @@ class LogicNormal(object):
             item = {}
             item['path'] = path
             item['name'] = f
-            item['fullPath'] = os.path.join(path, f)
+            item['fullPath'] = os.path.join(path.strip(), f.strip())
             item['guessit'] = guessit(f)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
@@ -103,7 +103,7 @@ class LogicNormal(object):
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
                             f = f.encode('utf-8')
-                        p = os.path.join(path.strip(), f)
+                        p = os.path.join(path.strip(), f.strip())
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(p, f)
@@ -123,8 +123,8 @@ class LogicNormal(object):
                                 try:
                                     if LogicNormal.isHangul(str(fs)) > 0:
                                         fs = fs.encode('utf-8')
-                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs))
-                                    if os.path.isfile(os.path.join(p.strip(), fs)):
+                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs.strip()))
+                                    if os.path.isfile(os.path.join(p.strip(), fs.strip())):
                                         item = LogicNormal.item_list(p, fs)
                                         sub_lists.append(item)
                                         LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
@@ -223,7 +223,7 @@ class LogicNormal(object):
     def move_ktv(data, info, base_path):
         try:
             logger.debug('=== title %s', info.title)
-            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국',info.title)
+            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국', info.title)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
