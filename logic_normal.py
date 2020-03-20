@@ -69,7 +69,7 @@ class LogicNormal(object):
             item = {}
             item['path'] = path
             item['name'] = f
-            item['fullPath'] = os.path.join(path.strip(), f)
+            item['fullPath'] = os.path.join(path, f)
             item['guessit'] = guessit(f)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
@@ -98,7 +98,7 @@ class LogicNormal(object):
         try:
             for path in source_path:
                 logger.debug('path:%s', path)
-                lists = os.listdir(path.strip())
+                lists = os.listdir(path)
                 for f in lists:
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
