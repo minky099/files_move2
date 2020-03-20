@@ -98,12 +98,10 @@ class LogicNormal(object):
         try:
             for path in source_path:
                 logger.debug('path:%s', path)
-                lists = os.listdir(path.strip())
+                lists = os.listdir(path)
                 for f in lists:
                     try:
-                        if LogicNormal.isHangul(str(f)) > 0:
-                            f = f.encode('utf-8')
-                        p = os.path.join(path.strip(), f)
+                        p = os.path.join(path, f)
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(p, f)
@@ -121,10 +119,8 @@ class LogicNormal(object):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
-                                    if LogicNormal.isHangul(str(fs)) > 0:
-                                        fs = fs.encode('utf-8')
-                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs))
-                                    if os.path.isfile(os.path.join(p.strip(), fs)):
+                                    logger.debug('sub path:%s', os.path.join(p, fs))
+                                    if os.path.isfile(os.path.join(p, fs)):
                                         item = LogicNormal.item_list(p, fs)
                                         sub_lists.append(item)
                                         LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
@@ -223,7 +219,7 @@ class LogicNormal(object):
     def move_ktv(data, info, base_path):
         try:
             logger.debug('=== title %s', info.title)
-            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국',info.title)
+            dest_folder_path = os.path.join(base_path, u'드라마', u'한국',info.title)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
@@ -236,7 +232,7 @@ class LogicNormal(object):
     @staticmethod
     def move_except(data, base_path):
         try:
-            dest_folder_path = os.path.join(base_path.strip())
+            dest_folder_path = os.path.join(base_path)
             logger.debug('me - move exception %s' , data['search_name'])
             #if not os.path.isdir(dest_folder_path):
             #    os.makedirs(dest_folder_path)
@@ -293,7 +289,7 @@ class LogicNormal(object):
                 set_year = u'2020'
 
             movie = u'영화'
-            dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
+            dest_folder_path = os.path.join(base_path, movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
