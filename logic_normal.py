@@ -122,7 +122,7 @@ class LogicNormal(object):
                             for fs in sub_lists:
                                 try:
                                     if LogicNormal.isHangul(fs) > 0:
-                                        fs = f.encode('utf-8')
+                                        fs = fs.encode('utf-8')
                                     logger.debug('sub path:%s', os.path.join(p, fs))
                                     if os.path.isfile(os.path.join(p, fs)):
                                         item = LogicNormal.item_list(p, fs)
