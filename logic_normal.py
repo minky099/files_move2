@@ -69,7 +69,7 @@ class LogicNormal(object):
             item = {}
             item['path'] = path
             item['name'] = f
-            item['fullPath'] = os.path.join(path.strip(), f.strip())
+            item['fullPath'] = os.path.join(path.strip(), f)
             item['guessit'] = guessit(f)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
@@ -103,7 +103,8 @@ class LogicNormal(object):
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
                             f = f.encode('utf-8')
-                        p = os.path.join(path.strip(), f.strip())
+                        f = LogicNormal.strip_all(f)
+                        p = os.path.join(path.strip(), f)
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(p, f)
@@ -123,8 +124,9 @@ class LogicNormal(object):
                                 try:
                                     if LogicNormal.isHangul(str(fs)) > 0:
                                         fs = fs.encode('utf-8')
-                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs.strip()))
-                                    if os.path.isfile(os.path.join(p.strip(), fs.strip())):
+                                    fs = LogicNormal.strip_all(fs)
+                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs))
+                                    if os.path.isfile(os.path.join(p.strip(), fs)):
                                         item = LogicNormal.item_list(p, fs)
                                         sub_lists.append(item)
                                         LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
@@ -328,4 +330,19 @@ class LogicNormal(object):
         hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
 
         return hanCount > 0
+
+    @staticmethod
+    def strip_all(x):
+
+      if isinstance(x, str): # if using python2 replace str with basestring to include unicode type
+        x = x.strip()
+      elif isinstance(x, list):
+        x = [strip_all(v) for v in x]
+      elif isinstance(x, dict):
+        for k, v in x.iteritems():
+          x.pop(k)  # also strip keys
+          x[ strip_all(k) ] = strip_all(v)
+
+      return x
+
 
