@@ -96,7 +96,6 @@ class LogicNormal(object):
     @staticmethod
     def make_list(source_path, ktv_path, movie_path, err_path):
         try:
-            fileList = []
             for path in source_path:
                 logger.debug('path:%s', path)
                 lists = os.listdir(path)
@@ -105,12 +104,12 @@ class LogicNormal(object):
                         p = os.path.join(path, f)
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
-                            fileList.append(item)
-                            LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
+                            lists.append(item)
+                            LogicNormal.check_move_list(lists, ktv_path, movie_path, err_path)
 
                             if ModelSetting.get_bool('emptyFolderDelete'):
-                                fileList.reverse()
-                                for item in fileList:
+                                lists.reverse()
+                                for item in lists:
                                     logger.debug( "dir_path : " + item['fullPath'])
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
@@ -121,12 +120,12 @@ class LogicNormal(object):
                                 try:
                                     if os.path.isfile(os.path.join(p, fs)):
                                         item = LogicNormal.item_list(p, fs)
-                                        fileList.append(item)
-                                        LogicNormal.check_move_list(fileList, ktv_path, movie_path, err_path)
+                                        sub_lists.append(item)
+                                        LogicNormal.check_move_list(sub_lists, ktv_path, movie_path, err_path)
 
                                         if ModelSetting.get_bool('emptyFolderDelete'):
-                                            fileList.reverse()
-                                            for item in fileList:
+                                            sub_lists.reverse()
+                                            for item in sub_lists:
                                                 logger.debug( "dir_path : " + item['fullPath'])
                                                 if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                                     os.rmdir(unicode(item['fullPath']))
@@ -170,23 +169,24 @@ class LogicNormal(object):
                 else:
                     #Movie
                     logger.debug('cml - movie ' + item['name'])
-                    if LogicNormal.isHangul(item['name']) is False:
-                        if 'year' in item['guessit']:
-                            year = item['guessit']['year']
-                            logger.debug('cml - movie year ' + year)
-                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                            logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                            if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                                #item['movie'] = movie[0]
-                                logger.debug('cml - movie condition ok ' + item['name'])
-                                LogicNormal.set_movie(item, daum_movie_info[0])
-                                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
-                            else:
-                                logger.debug('cml - movie condition not ok ' + item['name'])
-                                LogicNormal.move_except(item, error_target_path)
+                    #if LogicNormal.isHangul(item['name']) is False:
+                    if 'year' in item['guessit']:
+                        year = item['guessit']['year']
+                        logger.debug('cml - movie year ' + year)
+                        (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                        logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                        if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                            #item['movie'] = movie[0]
+                            logger.debug('cml - movie condition ok ' + item['name'])
+                            LogicNormal.set_movie(item, daum_movie_info[0])
+                            LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                         else:
-                            logger.debug('cml - movie condition not not ok ' + item['name'])
+                            logger.debug('cml - movie condition not ok ' + item['name'])
                             LogicNormal.move_except(item, error_target_path)
+                    else:
+                        logger.debug('cml - movie condition not not ok ' + item['name'])
+                        LogicNormal.move_except(item, error_target_path)
+                    '''
                     else:
                         logger.debug('cml - movie is hangul ' + item['name'])
                         (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
@@ -194,6 +194,7 @@ class LogicNormal(object):
                         if daum_movie_info and daum_movie_info[0]['score'] == 100:
                             LogicNormal.set_movie(item, daum_movie_info[0])
                             LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                    '''
 
         except Exception as e:
             logger.error('Exxception:%s', e)
