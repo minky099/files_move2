@@ -229,8 +229,10 @@ class LogicNormal(object):
     @staticmethod
     def move_ktv(data, info, base_path):
         try:
-            logger.debug('=== title %s', info.title)
-            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국', info.title)
+            logger.debug('=== title %s', data['name'])
+            set_cat = u'드라마'
+            set_country = u'한국'
+            dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), data['name'])
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
@@ -269,9 +271,9 @@ class LogicNormal(object):
                 condition = 0
 
             if condition == 1:
-                movie = u'애니메이션'
+                set_cat = u'애니메이션'
                 target = u'극장판'
-                dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
+                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
 
             else:
                 logger.debug('mm - info[more][country]: %s', info['more']['country'])
@@ -313,8 +315,8 @@ class LogicNormal(object):
                     set_year = u'2019'
                 else:
                     set_year = u'2020'
-                movie = u'영화'
-                dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
+                set_cat = u'영화'
+                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
 
             logger.debug('mm - dest_folder_path: %s', dest_folder_path)
             if not os.path.isdir(dest_folder_path):
