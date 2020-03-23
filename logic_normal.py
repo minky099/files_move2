@@ -346,12 +346,13 @@ class LogicNormal(object):
             logger.debug('mm - fullPath: %s', data['fullPath'])
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['name'])
-            if not os.path.isfile(fileCheck):
+            os.rename(data['fullPath'], dest_folder_path)
+            LogicNormal.db_save(data, dest_folder_path)
+
+            #fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['name'])
+            #if not os.path.isfile(fileCheck):
                 #shutil.move(data['fullPath'], dest_folder_path)
                 #dest_folder_path = os.path.join(dest_folder_path.strip(), '/')
-                shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path)
 
         except Exception as e:
             logger.error('Exxception:%s', e)
