@@ -106,7 +106,7 @@ class LogicNormal(object):
                         p = os.path.join(path, f)
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
-                            item = LogicNormal.item_list(p, f)
+                            item = LogicNormal.item_list(path, f)
                             lists.append(item)
                             LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
 
@@ -348,8 +348,8 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'].encode('utf-8'), data['name'])
             logger.debug('mm - fileCheck: %s', fileCheck)
-            #os.rename(data['fullPath'], fileCheck)
-            shutil.move(data['fullPath'], fileCheck)
+            os.rename(data['fullPath'], fileCheck)
+            #shutil.move(data['fullPath'], fileCheck)
             #if not os.path.isfile(fileCheck):
                 #os.rename(data['fullPath'], fileCheck)
                 #LogicNormal.db_save(data, dest_folder_path)
