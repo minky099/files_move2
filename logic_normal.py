@@ -98,10 +98,12 @@ class LogicNormal(object):
         try:
             for path in source_path:
                 logger.debug('path:%s', path)
-                lists = os.listdir(path)
+                lists = os.listdir(path.strip())
                 for f in lists:
                     try:
-                        p = os.path.join(path, f)
+                        if LogicNormal.isHangul(str(f)) > 0:
+                            f = f.encode('utf-8')
+                        p = os.path.join(path.strip(), f)
                         logger.debug('p:%s', p)
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(p, f)
@@ -119,8 +121,10 @@ class LogicNormal(object):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
-                                    logger.debug('sub path:%s', os.path.join(p, fs))
-                                    if os.path.isfile(os.path.join(p, fs)):
+                                    if LogicNormal.isHangul(str(fs)) > 0:
+                                        fs = fs.encode('utf-8')
+                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs))
+                                    if os.path.isfile(os.path.join(p.strip(), fs)):
                                         item = LogicNormal.item_list(p, fs)
                                         sub_lists.append(item)
                                         LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
@@ -169,32 +173,39 @@ class LogicNormal(object):
             #Movie
             else:
                 logger.debug('cml - movie ' + item['name'])
-                #if LogicNormal.isHangul(item['name']) is False:
-                if 'year' in item['guessit']:
-                    year = item['guessit']['year']
-                    logger.debug('cml - movie year %s', year)
-                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                    logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                    if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                        #item['movie'] = movie[0]
-                        logger.debug('cml - movie condition ok ' + item['name'])
-                        LogicNormal.set_movie(item, daum_movie_info[0])
-                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
-                    else:
-                        logger.debug('cml - movie condition not ok ' + item['name'])
+                rules = ['4K', '4k', 'UHD', '2160p', '2160P']
+                for keywords in rules.key():
+                    #gregx = re.compile(keywords, re.I)
+                    if (gregx.search(item['name'])) is not None:
+                        logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
                         LogicNormal.move_except(item, error_target_path)
-                else:
-                    logger.debug('cml - movie condition not not ok ' + item['name'])
-                    LogicNormal.move_except(item, error_target_path)
-                '''
-                else:
-                    logger.debug('cml - movie is hangul ' + item['name'])
-                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
-                    logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                    if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                        LogicNormal.set_movie(item, daum_movie_info[0])
-                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
-                '''
+                    else:
+                        logger.debug('cml - uhd condition not match %s : %s', keywords, item['name'])
+                        #if LogicNormal.isHangul(item['name']) is False:
+                        if 'year' in item['guessit']:
+                            year = item['guessit']['year']
+                            logger.debug('cml - movie year %s', year)
+                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                            logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                            if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                                #item['movie'] = movie[0]
+                                logger.debug('cml - movie condition ok ' + item['name'])
+                                LogicNormal.set_movie(item, daum_movie_info[0])
+                                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                            else:
+                                logger.debug('cml - movie condition not ok ' + item['name'])
+                                LogicNormal.move_except(item, error_target_path)
+                        else:
+                            logger.debug('cml - movie condition not not ok ' + item['name'])
+                            LogicNormal.move_except(item, error_target_path)
+                        '''
+                        else:
+                            logger.debug('cml - movie is hangul ' + item['name'])
+                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
+                            logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                            if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                                LogicNormal.set_movie(item, daum_movie_info[0])
+                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)                '''
 
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -219,7 +230,7 @@ class LogicNormal(object):
     def move_ktv(data, info, base_path):
         try:
             logger.debug('=== title %s', info.title)
-            dest_folder_path = os.path.join(base_path, u'드라마', u'한국',info.title)
+            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국',info.title)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
@@ -232,7 +243,7 @@ class LogicNormal(object):
     @staticmethod
     def move_except(data, base_path):
         try:
-            dest_folder_path = os.path.join(base_path)
+            dest_folder_path = os.path.join(base_path.strip())
             logger.debug('me - move exception %s' , data['search_name'])
             #if not os.path.isdir(dest_folder_path):
             #    os.makedirs(dest_folder_path)
@@ -263,6 +274,7 @@ class LogicNormal(object):
             else:
                 set_country = u'외국'
 
+            logger.debug('mm - info[year]: %s', info['year'])
             if info['year'] < 1990:
                 set_year = u'1900s'
             elif info['year'] >= 1990 and info['year'] < 2000:
@@ -289,7 +301,7 @@ class LogicNormal(object):
                 set_year = u'2020'
 
             movie = u'영화'
-            dest_folder_path = os.path.join(base_path, movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
+            dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
