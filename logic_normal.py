@@ -284,7 +284,7 @@ class LogicNormal(object):
             condition = 0
 
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
-            if LogicNormal.search(info['more']['info'], '애니메이션') is not None:
+            if u'애니메이션' in info['more']['info']
                 logger.debug('mm - ani condition match : %s', info['more']['info'])
                 condition = 1
             else:
@@ -369,6 +369,7 @@ class LogicNormal(object):
 
     @staticmethod
     def search(values, searchFor):
+        searchFor.encode('utf-8')
         for k in values:
             for v in values[k]:
                 if searchFor in v:
