@@ -283,14 +283,13 @@ class LogicNormal(object):
             set_year = []
             condition = 0
 
-            for keyword in info['more']['info'].split('|'):
-                gregx = re.compile(keyword, re.I)
-                if gregx.search('애니메이션') is not None:
-                    logger.debug('mm - ani condition match : %s', info['more']['info'])
-                    condition = 1
-                else:
-                    logger.debug('mm - ani condition match : %s', info['more']['info'])
-                    condition = 0
+            logger.debug('mm - info[more][info]: %s', info['more']['info'])
+            if LogicNormal.search(info['more']['info'], u'애니메이션') is not None:
+                logger.debug('mm - ani condition match : %s', info['more']['info'])
+                condition = 1
+            else:
+                logger.debug('mm - ani not condition match : %s', info['more']['info'])
+                condition = 0
 
             if condition == 1:
                 set_cat = u'애니메이션'
@@ -366,6 +365,15 @@ class LogicNormal(object):
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
+
+
+    @staticmethod
+    def search(values, searchFor):
+        for k in values:
+            for v in values[k]:
+                if searchFor in v:
+                    return k
+        return None
 
     @staticmethod
     def isHangul(text):
