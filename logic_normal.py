@@ -286,13 +286,12 @@ class LogicNormal(object):
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
             keywords = ''.join(info['more']['info'])
 
-            for word in keywords.split('|'):
-                gregx = re.compile(word. re.I)
-                if gregx.search('애니메이션') is not None:
-                    logger.debug('mm - ani condition match : %s', info['more']['info'])
+            for words in keywords.split('|'):
+                if u'에니메이션' in words:
+                    logger.debug('mm - ani condition match : %s', words)
                     condition = 1
                 else:
-                    logger.debug('mm - ani not condition match : %s', info['more']['info'])
+                    logger.debug('mm - ani not condition match : %s', words)
                     condition = 0
 
             if condition == 1:
