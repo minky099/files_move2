@@ -284,7 +284,7 @@ class LogicNormal(object):
             condition = 0
 
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
-            keywords = info['more']['info']
+            keywords = ''.join(info['more']['info'])
 
             for word in keywords.split('|'):
                 gregx = re.complie(word. re.I)
