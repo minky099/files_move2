@@ -340,19 +340,20 @@ class LogicNormal(object):
             else:
                 set_year = u'2020'
             set_cat = u'영화'
-            dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'].encode('utf-8'))
+            dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name']))
 
             logger.debug('mm - dest_folder_path: %s', dest_folder_path)
             logger.debug('mm - fullPath: %s', data['fullPath'])
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            fileCheck = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'].encode('utf-8'), data['name'])
+            fileCheck = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'], data['name'])
             logger.debug('mm - fileCheck: %s', fileCheck)
+            if not os.path.isfile(fileCheck):
             #os.rename(data['fullPath'], fileCheck)
-            shutil.move(data['fullPath'], fileCheck)
+                shutil.move(data['fullPath'], fileCheck)
             #if not os.path.isfile(fileCheck):
                 #os.rename(data['fullPath'], fileCheck)
-                #LogicNormal.db_save(data, dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path)
             #fileCheck = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['name'])
             #if not os.path.isfile(fileCheck):
                 #shutil.move(data['fullPath'], dest_folder_path)
