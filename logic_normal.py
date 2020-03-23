@@ -290,7 +290,7 @@ class LogicNormal(object):
             keywords = ''.join(info['more']['info'])
 
             for words in keywords.split('|'):
-                if u'에니메이션' in words:
+                if u'에니메이션 외' in words:
                     logger.debug('mm - ani condition match : %s', words)
                     condition += 1
                 else:
