@@ -288,12 +288,13 @@ class LogicNormal(object):
 
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
 
-            if u'에니메이션' in  info['more']['info']:
-                logger.debug('mm - ani condition match : %s', words)
-                condition += 1
-            else:
-                logger.debug('mm - ani not condition match : %s', words)
-                condition = 0
+            for words in info['more']['info']:
+                if u'에니메이션' in words:
+                    logger.debug('mm - ani condition match : %s', words)
+                    condition += 1
+                else:
+                    logger.debug('mm - ani not condition match : %s', words)
+                    condition = 0
 
             logger.debug('mm - info[more][country]: %s', info['more']['country'])
             if u'한국' in info['more']['country']:
