@@ -153,8 +153,8 @@ class LogicNormal(object):
         try:
             #TV
             if 'episode' in item['guessit'] > 0:
-                logger.debug('cml - drama ' + item['search_name'])
-                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['search_name'])
+                logger.debug('cml - drama ' + item['guessit']['title'])
+                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
                     logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                     for country in daum_tv_info['countries']:
@@ -263,13 +263,11 @@ class LogicNormal(object):
             condition = 0
 
             logger.debug('mm - info[more][gerne]: %s', info['more']['genre'])
-            for keywords in info['more']['genre']:
-                gregx = re.compile(keywords, re.I)
-                if (gregx.search(u'애 니 메 이 션')) is not None:
-                    logger.debug('mm - gerne condition match %s : %s', keywords, info['more']['genre'])
-                    condition = 1
-                else:
-                    condition = 0
+            if u'애니메이션' in info['more']['genre']:
+                logger.debug('mm - gerne condition match : %s', info['more']['genre'])
+                condition = 1
+            else:
+                condition = 0
 
             if condition == 1:
                 movie = u'애니메이션'
@@ -278,15 +276,15 @@ class LogicNormal(object):
 
             else:
                 logger.debug('mm - info[more][country]: %s', info['more']['country'])
-                if u'한 국' in info['more']['country']:
+                if u'한국' in info['more']['country']:
                     set_country = u'한국'
-                elif u'중 국' in info['more']['country']:
+                elif u'중국' in info['more']['country']:
                     set_country = u'증국'
-                elif u'홍 콩' in info['more']['country']:
+                elif u'홍콩' in info['more']['country']:
                     set_country = u'증국'
-                elif u'대 만' in info['more']['country']:
+                elif u'대만' in info['more']['country']:
                     set_country = u'증국'
-                elif u'일 본' in info['more']['country']:
+                elif u'일본' in info['more']['country']:
                     set_country = u'일본'
                 else:
                     set_country = u'외국'
