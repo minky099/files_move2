@@ -285,7 +285,7 @@ class LogicNormal(object):
             set_country = []
             set_year = []
             condition = 0
-            '''
+
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
             keywords = ''.join(info['more']['info'])
 
@@ -296,12 +296,6 @@ class LogicNormal(object):
                 else:
                     logger.debug('mm - ani not condition match : %s', words)
                     condition = 0
-
-            if condition == 1:
-                set_cat = u'애니메이션'
-                target = u'극장판'
-                dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
-            '''
 
             logger.debug('mm - info[more][country]: %s', info['more']['country'])
             if u'한국' in info['more']['country']:
@@ -346,6 +340,10 @@ class LogicNormal(object):
             set_cat = u'영화'
             if data['uhd'] > 0:
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), 'UHD', info['more']['eng_title'])
+            elif condition == 1:
+                set_cat = u'애니메이션'
+                target = u'극장판'
+                dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
             else:
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
 
