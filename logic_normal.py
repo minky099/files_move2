@@ -116,7 +116,7 @@ class LogicNormal(object):
                                     logger.debug( "dir_path : " + item['fullPath'])
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
-                        '''
+
                         elif os.path.isdir(p):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
@@ -139,7 +139,7 @@ class LogicNormal(object):
                                 except Exception as e:
                                     logger.error('Exxception:%s', e)
                                     logger.error(traceback.format_exc())
-                                '''
+
                     except Exception as e:
                         logger.error('Exxception:%s', e)
                         logger.error(traceback.format_exc())
@@ -162,6 +162,7 @@ class LogicNormal(object):
                     #logger.debug('cml - item[country]: %s', item['country'])
                     #if 'country' in item['country'] == u'한국':
                     logger.debug('cml - drama condition ok ' + item['guessit']['title'])
+                    LogicNormal.set_ktv(item, daum_tv_info)
                     LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                     #else:
                         #logger.debug('cml - drama condition not ok ' + item['name'])
@@ -211,6 +212,18 @@ class LogicNormal(object):
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def set_ktv(data, ktv):
+        try:
+            data['ktv'] = movie
+            data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv.title).replace('  ', ' '))
+            folder_rule = ModelSetting.get_setting_value('folder_rule')
+            tmp = folder_rule.replace('%TITLE%', ktv.title).replace('%GENRE%', ktv.genre))
+            tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
+            data['dest_folder_name'] = tmp
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
 
     @staticmethod
     def set_movie(data, movie):
@@ -229,10 +242,10 @@ class LogicNormal(object):
     @staticmethod
     def move_ktv(data, info, base_path):
         try:
-            logger.debug('=== title %s', info.title)
+            logger.debug('=== title %s', data['dest_folder_name'])
             set_cat = u'드라마'
             set_country = u'한국'
-            title = info.title
+            title = data['dest_folder_name']
             fullPath = data['fullPath']
             dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
             logger.debug('mk - dest_folder_path: %s', dest_folder_path)
