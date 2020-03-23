@@ -288,10 +288,10 @@ class LogicNormal(object):
 
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
 
-            for words in info['more']['info']
+            for words in info['more']['info']:
                 if u'에니메이션' in words:
                     logger.debug('mm - ani condition match : %s', words)
-                    condition = 1
+                    condition += 1
                 else:
                     logger.debug('mm - ani not condition match : %s', words)
                     condition = 0
@@ -339,7 +339,7 @@ class LogicNormal(object):
             set_cat = u'영화'
             if data['uhd'] > 0:
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), 'UHD', info['more']['eng_title'])
-            elif condition == 1:
+            elif condition >= 1:
                 set_cat = u'애니메이션'
                 target = u'극장판'
                 dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
