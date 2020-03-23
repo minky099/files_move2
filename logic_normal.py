@@ -156,19 +156,18 @@ class LogicNormal(object):
                 logger.debug('cml - drama ' + item['guessit']['title'])
                 daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
-                    logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
-                    for country in daum_tv_info['countries']:
-                        item['country'] = daum_tv_info.countries.add(country.strip())
-
-                    logger.debug('cml - item[country]: %s', item['country'])
-                    if 'country' in item['country'] == u'한국':
-                        logger.debug('cml - drama condition ok ' + item['name'])
-                        LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
-                    else:
-                        logger.debug('cml - drama condition not ok ' + item['name'])
-                        LogicNormal.move_except(item, error_target_path)
+                    #logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
+                    #for country in daum_tv_info['countries']:
+                        #item['country'] = daum_tv_info.countries.add(country.strip())
+                    #logger.debug('cml - item[country]: %s', item['country'])
+                    #if 'country' in item['country'] == u'한국':
+                    logger.debug('cml - drama condition ok ' + item['guessit']['title'])
+                    LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
+                    #else:
+                        #logger.debug('cml - drama condition not ok ' + item['name'])
+                        #LogicNormal.move_except(item, error_target_path)
                 else:
-                    logger.debug('cml - drama condition not not ok ' + item['name'])
+                    logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
@@ -231,7 +230,7 @@ class LogicNormal(object):
     def move_ktv(data, info, base_path):
         try:
             logger.debug('=== title %s', info.title)
-            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국',info.title)
+            dest_folder_path = os.path.join(base_path.strip(), u'드라마', u'한국', info.title)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
