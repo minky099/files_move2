@@ -284,7 +284,7 @@ class LogicNormal(object):
             condition = 0
 
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
-            if LogicNormal.search(info['more']['info'], u'애니메이션') is not None:
+            if LogicNormal.search(info['more']['info'], '애니메이션') is not None:
                 logger.debug('mm - ani condition match : %s', info['more']['info'])
                 condition = 1
             else:
