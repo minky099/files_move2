@@ -98,42 +98,43 @@ class LogicNormal(object):
         try:
             for path in source_path:
                 logger.debug('path:%s', path)
+                del_lists = []
                 lists = os.listdir(path.strip())
                 for f in lists:
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
                             f = f.encode('utf-8')
-                        f = str(f).strip()
+                        #f = str(f).strip()
                         p = os.path.join(path.strip(), f)
                         logger.debug('p:%s', p)
+
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
-                            lists.append(item)
+                            del_lists.append(item)
                             LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
-
                             if ModelSetting.get_bool('emptyFolderDelete'):
-                                lists.reverse()
-                                for item in lists:
+                                del_lists.reverse()
+                                for item in del_lists:
                                     logger.debug( "dir_path : " + item['fullPath'])
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
 
                         elif os.path.isdir(p):
+                            sub_del_lists = []
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
                                     if LogicNormal.isHangul(str(fs)) > 0:
                                         fs = fs.encode('utf-8')
-                                    fs = str(fs).strip()
+                                    #fs = str(fs).strip()
                                     logger.debug('sub path:%s', os.path.join(p.strip(), fs))
                                     if os.path.isfile(os.path.join(p.strip(), fs)):
                                         item = LogicNormal.item_list(p, fs)
-                                        sub_lists.append(item)
+                                        sub_del_lists.append(item)
                                         LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
-
                                         if ModelSetting.get_bool('emptyFolderDelete'):
-                                            sub_lists.reverse()
-                                            for item in sub_lists:
+                                            sub_del_lists.reverse()
+                                            for item in sub_del_lists:
                                                 logger.debug( "dir_path : " + item['fullPath'])
                                                 if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                                     os.rmdir(unicode(item['fullPath']))
