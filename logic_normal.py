@@ -288,7 +288,7 @@ class LogicNormal(object):
 
             for word in keywords.split('|'):
                 gregx = re.compile(word. re.I)
-                if gregx.search(u'애니메이션') is not None:
+                if gregx.search('애니메이션') is not None:
                     logger.debug('mm - ani condition match : %s', info['more']['info'])
                     condition = 1
                 else:
