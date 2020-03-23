@@ -353,13 +353,8 @@ class LogicNormal(object):
             logger.debug('mm - fileCheck: %s', fileCheck)
             if not os.path.isfile(fileCheck):
                 #os.rename(data['fullPath'], fileCheck)
-                ret = shutil.move(data['fullPath'], dest_folder_path)
-                if ret is None:
-                    ret = shutil.move(data['fullPath'], dest_folder_path)
-                if ret is None:
-                    ret = shutil.move(data['fullPath'], dest_folder_path)
-
-            #if not os.path.isfile(fileCheck):
+                shutil.move(data['fullPath'], dest_folder_path)
+                #if not os.path.isfile(fileCheck):
                 #os.rename(data['fullPath'], fileCheck)
                 LogicNormal.db_save(data, dest_folder_path)
             #fileCheck = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['name'])
