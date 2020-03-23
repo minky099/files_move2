@@ -154,7 +154,7 @@ class LogicNormal(object):
             #TV
             if 'episode' in item['guessit'] > 0:
                 logger.debug('cml - drama ' + item['name'])
-                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
+                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['search_name'])
                 if daum_tv_info.title is not None:
                     logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                     for country in daum_tv_info['countries']:
@@ -266,7 +266,7 @@ class LogicNormal(object):
             for keywords in info['more']['genre']:
                 gregx = re.compile(keywords, re.I)
                 if (gregx.search(u'애 니 메 이 션')) is not None:
-                    logger.debug('mm - gerne condition match %s : %s', keywords, item['name'])
+                    logger.debug('mm - gerne condition match %s : %s', keywords, info['name'])
                     condition = 1
                 else:
                     condition = 0
