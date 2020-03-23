@@ -278,15 +278,15 @@ class LogicNormal(object):
 
             else:
                 logger.debug('mm - info[more][country]: %s', info['more']['country'])
-                if info['more']['country'] == u'한 국':
+                if u'한 국' in info['more']['country']:
                     set_country = u'한국'
-                elif info['more']['country'] == u'중 국':
+                elif u'중 국' in info['more']['country']:
                     set_country = u'증국'
-                elif info['more']['country'] == u'홍 콩':
+                elif u'홍 콩' in info['more']['country']:
                     set_country = u'증국'
-                elif info['more']['country'] == u'대 만':
+                elif u'대 만' in info['more']['country']:
                     set_country = u'증국'
-                elif info['more']['country'] == u'일 본':
+                elif u'일 본' in info['more']['country']:
                     set_country = u'일본'
                 else:
                     set_country = u'외국'
