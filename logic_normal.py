@@ -300,11 +300,11 @@ class LogicNormal(object):
                 if u'한국' in info['more']['country']:
                     set_country = u'한국'
                 elif u'중국' in info['more']['country']:
-                    set_country = u'증국'
+                    set_country = u'중국'
                 elif u'홍콩' in info['more']['country']:
-                    set_country = u'증국'
+                    set_country = u'중국'
                 elif u'대만' in info['more']['country']:
-                    set_country = u'증국'
+                    set_country = u'중국'
                 elif u'일본' in info['more']['country']:
                     set_country = u'일본'
                 else:
