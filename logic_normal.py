@@ -116,7 +116,7 @@ class LogicNormal(object):
                                     logger.debug( "dir_path : " + item['fullPath'])
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
-
+                        '''
                         elif os.path.isdir(p):
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
@@ -139,7 +139,7 @@ class LogicNormal(object):
                                 except Exception as e:
                                     logger.error('Exxception:%s', e)
                                     logger.error(traceback.format_exc())
-
+                                '''
                     except Exception as e:
                         logger.error('Exxception:%s', e)
                         logger.error(traceback.format_exc())
@@ -233,10 +233,12 @@ class LogicNormal(object):
             set_cat = u'드라마'
             set_country = u'한국'
             title = info.title
+            fullPath = data['fullPath']
             dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
+            logger.debug('mk - dest_folder_path: %s', dest_folder_path)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            shutil.move(data['fullPath'], dest_folder_path)
+            shutil.move(fullPath.encode('utf-8'), dest_folder_path)
             LogicNormal.db_save(data, dest_folder_path)
 
         except Exception as e:
