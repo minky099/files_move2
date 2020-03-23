@@ -195,6 +195,7 @@ class LogicNormal(object):
                     logger.debug('cml - movie year %s', year)
                     (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     logger.debug('cml - movie ' + item['name'] + '' + item['search_name'])
+                    logger.debug('cml - movie scoore [%s]', daum_movie_info[0]['score'])
                     if daum_movie_info and daum_movie_info[0]['score'] == 100:
                         #item['movie'] = movie[0]
                         logger.debug('cml - movie condition ok ' + item['name'])
