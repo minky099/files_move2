@@ -284,7 +284,7 @@ class LogicNormal(object):
             condition = 0
 
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
-            if u'애니메이션' in info['more']['info']
+            if u'애니메이션' in info['more']['info']:
                 logger.debug('mm - ani condition match : %s', info['more']['info'])
                 condition = 1
             else:
