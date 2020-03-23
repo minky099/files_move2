@@ -287,7 +287,7 @@ class LogicNormal(object):
             keywords = ''.join(info['more']['info'])
 
             for word in keywords.split('|'):
-                gregx = re.complie(word. re.I)
+                gregx = re.compile(word. re.I)
                 if gregx.search(u'애니메이션') is not None:
                     logger.debug('mm - ani condition match : %s', info['more']['info'])
                     condition = 1
