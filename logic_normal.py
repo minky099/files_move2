@@ -154,6 +154,8 @@ class LogicNormal(object):
             #TV
             if 'episode' in item['guessit'] > 0:
                 logger.debug('cml - drama ' + item['guessit']['title'])
+                logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
+                LogicNormal.move_except(item, error_target_path)                '''
                 daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
                     #logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
@@ -170,6 +172,7 @@ class LogicNormal(object):
                 else:
                     logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
                     LogicNormal.move_except(item, error_target_path)
+                '''
             #Movie
             else:
                 logger.debug('cml - movie ' + item['name'])
