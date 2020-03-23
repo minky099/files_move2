@@ -174,7 +174,7 @@ class LogicNormal(object):
             else:
                 logger.debug('cml - movie ' + item['name'])
                 rules = ['4K', '4k', 'UHD', '2160p', '2160P']
-                for keywords in rules.key():
+                for keywords in rules:
                     #gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
                         logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
