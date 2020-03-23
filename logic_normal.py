@@ -283,9 +283,9 @@ class LogicNormal(object):
             set_year = []
             condition = 0
 
-            logger.debug('mm - info[more][gerne]: %s', info['more']['genre'])
-            if u'애니메이션' in info['more']['genre']:
-                logger.debug('mm - gerne condition match : %s', info['more']['genre'])
+            logger.debug('mm - info[more][info]: %s', info['more']['info'])
+            if u'애니메이션' in info['more']['info']:
+                logger.debug('mm - gerne condition match : %s', info['more']['info'])
                 condition = 1
             else:
                 condition = 0
