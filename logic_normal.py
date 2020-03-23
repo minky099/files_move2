@@ -155,7 +155,7 @@ class LogicNormal(object):
             if 'episode' in item['guessit'] > 0:
                 logger.debug('cml - drama ' + item['name'])
                 daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
-                if daum_tv_info is not None:
+                if daum_tv_info.title is not None:
                     logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                     for country in daum_tv_info['countries']:
                         item['country'] = daum_tv_info.countries.add(country.strip())
@@ -179,33 +179,34 @@ class LogicNormal(object):
                     if (gregx.search(item['name'])) is not None:
                         logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
                         LogicNormal.move_except(item, error_target_path)
+                        return
+
+                logger.debug('cml - uhd condition not match %s : %s', keywords, item['name'])
+                #if LogicNormal.isHangul(item['name']) is False:
+                if 'year' in item['guessit']:
+                    year = item['guessit']['year']
+                    logger.debug('cml - movie year %s', year)
+                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                    logger.debug('cml - movie ' + item['name'] + '' + item['search_name'])
+                    if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                        #item['movie'] = movie[0]
+                        logger.debug('cml - movie condition ok ' + item['name'])
+                        LogicNormal.set_movie(item, daum_movie_info[0])
+                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     else:
-                        logger.debug('cml - uhd condition not match %s : %s', keywords, item['name'])
-                        #if LogicNormal.isHangul(item['name']) is False:
-                        if 'year' in item['guessit']:
-                            year = item['guessit']['year']
-                            logger.debug('cml - movie year %s', year)
-                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                            logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                            if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                                #item['movie'] = movie[0]
-                                logger.debug('cml - movie condition ok ' + item['name'])
-                                LogicNormal.set_movie(item, daum_movie_info[0])
-                                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
-                            else:
-                                logger.debug('cml - movie condition not ok ' + item['name'])
-                                LogicNormal.move_except(item, error_target_path)
-                        else:
-                            logger.debug('cml - movie condition not not ok ' + item['name'])
-                            LogicNormal.move_except(item, error_target_path)
-                        '''
-                        else:
-                            logger.debug('cml - movie is hangul ' + item['name'])
-                            (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
-                            logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                            if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                                LogicNormal.set_movie(item, daum_movie_info[0])
-                        LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)                '''
+                        logger.debug('cml - movie condition not ok ' + item['name'])
+                        LogicNormal.move_except(item, error_target_path)
+                else:
+                    logger.debug('cml - movie condition not not ok ' + item['name'])
+                    LogicNormal.move_except(item, error_target_path)
+                '''
+                else:
+                    logger.debug('cml - movie is hangul ' + item['name'])
+                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
+                    logger.debug('cml - movie ' + item['name'] + item['search_name'])
+                    if daum_movie_info and daum_movie_info[0]['score'] == 100:
+                        LogicNormal.set_movie(item, daum_movie_info[0])
+                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)                '''
 
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -259,49 +260,65 @@ class LogicNormal(object):
         try:
             set_country = []
             set_year = []
+            condition = 0
 
-            logger.debug('mm - info[more][country]: %s', info['more']['country'])
-            if info['more']['country'] == u'한 국':
-                set_country = u'한국'
-            elif info['more']['country'] == u'중 국':
-                set_country = u'증국'
-            elif info['more']['country'] == u'홍 콩':
-                set_country = u'증국'
-            elif info['more']['country'] == u'대 만':
-                set_country = u'증국'
-            elif info['more']['country'] == u'일 본':
-                set_country = u'일본'
+            logger.debug('mm - info[more][gerne]: %s', info['more']['genre'])
+            for keywords in info['more']['genre']:
+                gregx = re.compile(keywords, re.I)
+                if (gregx.search(u'애 니 메 이 션')) is not None:
+                    logger.debug('mm - gerne condition match %s : %s', keywords, item['name'])
+                    condition = 1
+                else:
+                    condition = 0
+
+            if condition == 1:
+                movie = u'애니메이션'
+                target = u'극장판'
+                dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
+
             else:
-                set_country = u'외국'
+                logger.debug('mm - info[more][country]: %s', info['more']['country'])
+                if info['more']['country'] == u'한 국':
+                    set_country = u'한국'
+                elif info['more']['country'] == u'중 국':
+                    set_country = u'증국'
+                elif info['more']['country'] == u'홍 콩':
+                    set_country = u'증국'
+                elif info['more']['country'] == u'대 만':
+                    set_country = u'증국'
+                elif info['more']['country'] == u'일 본':
+                    set_country = u'일본'
+                else:
+                    set_country = u'외국'
 
-            logger.debug('mm - info[year]: %s', info['year'])
-            if int(info['year']) < 1990:
-                set_year = u'1900s'
-            elif int(info['year']) >= 1990 and int(info['year']) < 2000:
-                set_year = u'1990s'
-            elif int(info['year']) >= 2000 and int(info['year']) < 2010:
-                set_year = u'2000s'
-            elif int(info['year']) >= 2010 and int(info['year']) <= 2012:
-                set_year = u'~2012'
-            elif int(info['year']) == 2013:
-                set_year = u'2013'
-            elif int(info['year']) == 2014:
-                set_year = u'2014'
-            elif int(info['year']) == 2015:
-                set_year = u'2015'
-            elif int(info['year']) == 2016:
-                set_year = u'2016'
-            elif int(info['year']) == 2017:
-                set_year = u'2017'
-            elif int(info['year']) == 2018:
-                set_year = u'2018'
-            elif int(info['year']) == 2019:
-                set_year = u'2019'
-            else:
-                set_year = u'2020'
+                logger.debug('mm - info[year]: %s', info['year'])
+                if int(info['year']) < 1990:
+                    set_year = u'1900s'
+                elif int(info['year']) >= 1990 and int(info['year']) < 2000:
+                    set_year = u'1990s'
+                elif int(info['year']) >= 2000 and int(info['year']) < 2010:
+                    set_year = u'2000s'
+                elif int(info['year']) >= 2010 and int(info['year']) <= 2012:
+                    set_year = u'~2012'
+                elif int(info['year']) == 2013:
+                    set_year = u'2013'
+                elif int(info['year']) == 2014:
+                    set_year = u'2014'
+                elif int(info['year']) == 2015:
+                    set_year = u'2015'
+                elif int(info['year']) == 2016:
+                    set_year = u'2016'
+                elif int(info['year']) == 2017:
+                    set_year = u'2017'
+                elif int(info['year']) == 2018:
+                    set_year = u'2018'
+                elif int(info['year']) == 2019:
+                    set_year = u'2019'
+                else:
+                    set_year = u'2020'
+                movie = u'영화'
+                dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
 
-            movie = u'영화'
-            dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
             logger.debug('mm - dest_folder_path: %s', dest_folder_path)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
