@@ -229,10 +229,11 @@ class LogicNormal(object):
     @staticmethod
     def move_ktv(data, info, base_path):
         try:
-            logger.debug('=== title %s', data['name'])
+            logger.debug('=== title %s', info.title)
             set_cat = u'드라마'
             set_country = u'한국'
-            dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), data['name'])
+            title = info.title
+            dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
