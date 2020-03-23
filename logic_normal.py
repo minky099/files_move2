@@ -155,7 +155,7 @@ class LogicNormal(object):
             if 'episode' in item['guessit'] > 0:
                 logger.debug('cml - drama ' + item['name'])
                 daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
-                if daum_tv_info:
+                if daum_tv_info is not None:
                     logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                     for country in daum_tv_info['countries']:
                         item['country'] = daum_tv_info.countries.add(country.strip())
@@ -275,33 +275,34 @@ class LogicNormal(object):
                 set_country = u'외국'
 
             logger.debug('mm - info[year]: %s', info['year'])
-            if info['year'] < 1990:
+            if int(info['year']) < 1990:
                 set_year = u'1900s'
-            elif info['year'] >= 1990 and info['year'] < 2000:
+            elif int(info['year']) >= 1990 and int(info['year']) < 2000:
                 set_year = u'1990s'
-            elif info['year'] >= 2000 and info['year'] < 2010:
+            elif int(info['year']) >= 2000 and int(info['year']) < 2010:
                 set_year = u'2000s'
-            elif info['year'] >= 2010 and info['year'] <= 2012:
+            elif int(info['year']) >= 2010 and int(info['year']) <= 2012:
                 set_year = u'~2012'
-            elif info['year'] == 2013:
+            elif int(info['year']) == 2013:
                 set_year = u'2013'
-            elif info['year'] == 2014:
+            elif int(info['year']) == 2014:
                 set_year = u'2014'
-            elif info['year'] == 2015:
+            elif int(info['year']) == 2015:
                 set_year = u'2015'
-            elif info['year'] == 2016:
+            elif int(info['year']) == 2016:
                 set_year = u'2016'
-            elif info['year'] == 2017:
+            elif int(info['year']) == 2017:
                 set_year = u'2017'
-            elif info['year'] == 2018:
+            elif int(info['year']) == 2018:
                 set_year = u'2018'
-            elif info['year'] == 2019:
+            elif int(info['year']) == 2019:
                 set_year = u'2019'
             else:
                 set_year = u'2020'
 
             movie = u'영화'
             dest_folder_path = os.path.join(base_path.strip(), movie.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
+            logger.debug('mm - dest_folder_path: %s', dest_folder_path)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(data['fullPath'], dest_folder_path)
