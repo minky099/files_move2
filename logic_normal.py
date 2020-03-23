@@ -346,7 +346,7 @@ class LogicNormal(object):
             logger.debug('mm - fullPath: %s', data['fullPath'])
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['name'])
+            fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'], data['name'])
             logger.debug('mm - fileCheck: %s', fileCheck)
             if not os.path.isfile(fileCheck):
                 os.rename(data['fullPath'], fileCheck)
