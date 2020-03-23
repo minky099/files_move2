@@ -340,7 +340,7 @@ class LogicNormal(object):
             else:
                 set_year = u'2020'
             set_cat = u'영화'
-            dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name']))
+            dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
 
             logger.debug('mm - dest_folder_path: %s', dest_folder_path)
             logger.debug('mm - fullPath: %s', data['fullPath'])
