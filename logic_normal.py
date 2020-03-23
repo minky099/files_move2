@@ -73,7 +73,7 @@ class LogicNormal(object):
             item['guessit'] = guessit(f)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
-            item['uhd'] = False
+            item['uhd'] = 0
             match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
             logger.debug('ml - match: %s', match)
             if match:
@@ -186,7 +186,7 @@ class LogicNormal(object):
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
                         logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
-                        item['uhd'] = True
+                        item['uhd'] += 1
 
                 logger.debug('cml - uhd condition not match %s : %s', keywords, item['name'])
                 #if LogicNormal.isHangul(item['name']) is False:
@@ -344,7 +344,7 @@ class LogicNormal(object):
                 set_year = u'2020'
 
             set_cat = u'영화'
-            if data['uhd'] is True:
+            if data['uhd'] > 0:
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), 'UHD', info['more']['eng_title'])
             else:
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
