@@ -282,7 +282,7 @@ class LogicNormal(object):
             set_country = []
             set_year = []
             condition = 0
-
+            '''
             logger.debug('mm - info[more][info]: %s', info['more']['info'])
             keywords = ''.join(info['more']['info'])
 
@@ -298,49 +298,49 @@ class LogicNormal(object):
                 set_cat = u'애니메이션'
                 target = u'극장판'
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
+            '''
 
+            logger.debug('mm - info[more][country]: %s', info['more']['country'])
+            if u'한국' in info['more']['country']:
+                set_country = u'한국'
+            elif u'중국' in info['more']['country']:
+                set_country = u'중국'
+            elif u'홍콩' in info['more']['country']:
+                set_country = u'중국'
+            elif u'대만' in info['more']['country']:
+                set_country = u'중국'
+            elif u'일본' in info['more']['country']:
+                set_country = u'일본'
             else:
-                logger.debug('mm - info[more][country]: %s', info['more']['country'])
-                if u'한국' in info['more']['country']:
-                    set_country = u'한국'
-                elif u'중국' in info['more']['country']:
-                    set_country = u'중국'
-                elif u'홍콩' in info['more']['country']:
-                    set_country = u'중국'
-                elif u'대만' in info['more']['country']:
-                    set_country = u'중국'
-                elif u'일본' in info['more']['country']:
-                    set_country = u'일본'
-                else:
-                    set_country = u'외국'
+                set_country = u'외국'
 
-                logger.debug('mm - info[year]: %s', info['year'])
-                if int(info['year']) < 1990:
-                    set_year = u'1900s'
-                elif int(info['year']) >= 1990 and int(info['year']) < 2000:
-                    set_year = u'1990s'
-                elif int(info['year']) >= 2000 and int(info['year']) < 2010:
-                    set_year = u'2000s'
-                elif int(info['year']) >= 2010 and int(info['year']) <= 2012:
-                    set_year = u'~2012'
-                elif int(info['year']) == 2013:
-                    set_year = u'2013'
-                elif int(info['year']) == 2014:
-                    set_year = u'2014'
-                elif int(info['year']) == 2015:
-                    set_year = u'2015'
-                elif int(info['year']) == 2016:
-                    set_year = u'2016'
-                elif int(info['year']) == 2017:
-                    set_year = u'2017'
-                elif int(info['year']) == 2018:
-                    set_year = u'2018'
-                elif int(info['year']) == 2019:
-                    set_year = u'2019'
-                else:
-                    set_year = u'2020'
-                set_cat = u'영화'
-                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
+            logger.debug('mm - info[year]: %s', info['year'])
+            if int(info['year']) < 1990:
+                set_year = u'1900s'
+            elif int(info['year']) >= 1990 and int(info['year']) < 2000:
+                set_year = u'1990s'
+            elif int(info['year']) >= 2000 and int(info['year']) < 2010:
+                set_year = u'2000s'
+            elif int(info['year']) >= 2010 and int(info['year']) <= 2012:
+                set_year = u'~2012'
+            elif int(info['year']) == 2013:
+                set_year = u'2013'
+            elif int(info['year']) == 2014:
+                set_year = u'2014'
+            elif int(info['year']) == 2015:
+                set_year = u'2015'
+            elif int(info['year']) == 2016:
+                set_year = u'2016'
+            elif int(info['year']) == 2017:
+                set_year = u'2017'
+            elif int(info['year']) == 2018:
+                set_year = u'2018'
+            elif int(info['year']) == 2019:
+                set_year = u'2019'
+            else:
+                set_year = u'2020'
+            set_cat = u'영화'
+            dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
 
             logger.debug('mm - dest_folder_path: %s', dest_folder_path)
             logger.debug('mm - fullPath: %s', data['fullPath'])
