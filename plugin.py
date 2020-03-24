@@ -70,8 +70,8 @@ def home():
 def first_menu(sub):
     logger.debug('DETAIL %s %s', package_name, sub)
     if sub == 'setting':
-    	arg = ModelSetting.to_dict()
-	    arg['package_name'] = package_name
+        arg = ModelSetting.to_dict()
+        arg['package_name']  = package_name
         arg['scheduler'] = str(scheduler.is_include(package_name))
         arg['is_running'] = str(scheduler.is_running(package_name))
         return render_template('{package_name}_{sub}.html'.format(package_name=package_name, sub=sub), arg=arg)

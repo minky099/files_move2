@@ -126,7 +126,7 @@ class ModelItem(db.Model):
 
     def as_dict(self):
         ret = {x.name: getattr(self, x.name) for x in self.__table__.columns}
-        ret['created_time'] = self.created_time.strftime('%Y-%m-%d %H:%M:%S') 
+        ret['created_time'] = self.created_time.strftime('%Y-%m-%d %H:%M:%S')
 
         return ret
 
@@ -141,7 +141,6 @@ class ModelItem(db.Model):
 
             db.session.add(entity)
             db.session.commit()
-
         except Exception as e:
             logger.debug(item)
             logger.error('Exception:%s', e)
