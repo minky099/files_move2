@@ -30,6 +30,7 @@ from framework.logger import get_logger
 from .plugin import logger, package_name
 from .model import ModelSetting, ModelItem
 
+from frameworkd.common.daum import DaumTV
 
 #########################################################
 class LogicNormal(object):
@@ -153,7 +154,7 @@ class LogicNormal(object):
                 logger.debug('cml - drama ' + item['guessit']['title'] + ' : ' + item['name'])
                 #logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
                 #LogicNormal.move_except(item, error_target_path)
-                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
+                daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
                     #logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                     #for country in daum_tv_info['countries']:
@@ -204,7 +205,7 @@ class LogicNormal(object):
                     logger.debug('cml - movie ' + item['name'] + item['search_name'])
                     if daum_movie_info and daum_movie_info[0]['score'] == 100:
                         LogicNormal.set_movie(item, daum_movie_info[0])
-                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)                
+                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
 				'''
         except Exception as e:
             logger.error('Exxception:%s', e)
