@@ -40,10 +40,10 @@ class LogicNormal(object):
     def scheduler_function():
         try:
             logger.debug("파일정리 시작!")
-            source_base_path = ModelSetting.get_setting_value('source_base_path')
-            ktv_base_path = ModelSetting.get_setting_value('ktv_base_path')
-            movie_base_path = ModelSetting.get_setting_value('movie_base_path')
-            error_path = ModelSetting.get_setting_value('error_path')
+            source_base_path = ModelSetting.get_setting_value('source_base_path').encode('utf-8')
+            ktv_base_path = ModelSetting.get_setting_value('ktv_base_path').encode('utf-8')
+            movie_base_path = ModelSetting.get_setting_value('movie_base_path').encode('utf-8')
+            error_path = ModelSetting.get_setting_value('error_path').encode('utf-8')
             interval = ModelSetting.get('interval')
             emptyFolderDelete = ModelSetting.get('emptyFolderDelete')
 
@@ -89,8 +89,8 @@ class LogicNormal(object):
     def make_list(source_path, ktv_path, movie_path, err_path):
         try:
             for path in source_path:
+                logger.debug('path:%s', path)
                 del_lists = []
-                path = path.encode('utf-8')
                 lists = os.listdir(path.strip())
                 for f in lists:
                     try:
@@ -98,6 +98,8 @@ class LogicNormal(object):
                             f = f.encode('utf-8')
                         #f = str(f).strip()
                         p = os.path.join(path.strip(), f)
+                        logger.debug('p:%s', p)
+
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
                             del_lists.append(item)
@@ -109,7 +111,6 @@ class LogicNormal(object):
                                         os.rmdir(unicode(item['fullPath']))
                         elif os.path.isdir(p):
                             sub_del_lists = []
-                            p = p.encode('utf-8')
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
