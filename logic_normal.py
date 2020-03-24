@@ -157,24 +157,24 @@ class LogicNormal(object):
         try:
             #TV
             if 'episode' in item['guessit'] > 0:
-                logger.debug('cml - drama ' + item['guessit']['title'] + ' : ' + item['search_name'])
+                logger.debug('cml - drama ' + item['guessit']['title'] + ' : ' + item['name'])
                 #logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
                 #LogicNormal.move_except(item, error_target_path)
-                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['search_name'])
+                daum_tv_info = daum_tv.Logic.get_daum_tv_info(item['name'])
                 if daum_tv_info is not None:
                     #logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
                     #for country in daum_tv_info['countries']:
                         #item['country'] = daum_tv_info.countries.add(country.strip())
                     #logger.debug('cml - item[country]: %s', item['country'])
                     #if 'country' in item['country'] == u'한국':
-                    logger.debug('cml - drama condition ok ' + item['guessit']['title']  + ' : ' + item['search_name'])
+                    logger.debug('cml - drama condition ok ' + item['guessit']['title']  + ' : ' + item['name'])
                     LogicNormal.set_ktv(item, daum_tv_info)
                     LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                     #else:
                         #logger.debug('cml - drama condition not ok ' + item['name'])
                         #LogicNormal.move_except(item, error_target_path)
                 else:
-                    logger.debug('cml - drama condition not not ok ' + item['guessit']['title']  + ' : ' + item['search_name'])
+                    logger.debug('cml - drama condition not not ok ' + item['guessit']['title']  + ' : ' + item['name'])
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
