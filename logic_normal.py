@@ -30,7 +30,7 @@ from framework.logger import get_logger
 from .plugin import logger, package_name
 from .model import ModelSetting, ModelItem
 
-from frameworkd.common.daum import DaumTV
+from framework.common.daum import DaumTV
 
 #########################################################
 class LogicNormal(object):
