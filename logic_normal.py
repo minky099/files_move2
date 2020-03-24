@@ -12,7 +12,7 @@ import shutil
 import time
 import urllib
 import rclone
-import daum_tv
+#import daum_tv
 
 # third-party
 from sqlalchemy import desc
@@ -30,7 +30,7 @@ from framework.logger import get_logger
 from .plugin import logger, package_name
 from .model import ModelSetting, ModelItem
 
-from framework.common.daum import DaumTV
+#from framework.common.daum import DaumTV
 
 #########################################################
 class LogicNormal(object):
