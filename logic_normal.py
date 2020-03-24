@@ -46,15 +46,16 @@ class LogicNormal(object):
             error_path = ModelSetting.get('error_path')
             interval = ModelSetting.get('interval')
             emptyFolderDelete = ModelSetting.get('emptyFolderDelete')
-            '''
+
             source_base_path = [ x.strip() for x in source_base_path.split(',') ]
             if not source_base_path:
                 return None
             if None == '':
                 return None
-            '''
+            src_base_path = source_base_path.encode('utf-8')
+
             try:
-                fileList = LogicNormal.make_list(source_base_path, ktv_base_path, movie_base_path, error_path)
+                fileList = LogicNormal.make_list(src_base_path, ktv_base_path, movie_base_path, error_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
