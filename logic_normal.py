@@ -150,6 +150,14 @@ class LogicNormal(object):
     def check_move_list(item, ktv_target_path, movie_target_path, error_target_path):
         try:
             #TV
+            logger.debug('cml - drama ' + item['name'])
+            rules = ['4K', '4k', 'UHD', '2160p', '2160P']
+            for keywords in rules:
+                gregx = re.compile(keywords, re.I)
+                if (gregx.search(item['name'])) is not None:
+                    logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
+                    item['uhd'] += 1
+
             if 'episode' in item['guessit'] > 0:
                 logger.debug('cml - drama ' + item['guessit']['title'] + ' : ' + item['name'])
                 #logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
@@ -248,6 +256,10 @@ class LogicNormal(object):
             set_country = u'한국'
             title = data['dest_folder_name']
             fullPath = data['fullPath']
+
+            if data['uhd'] > 0:
+                set_country = u'한국-UHD(4k)'
+
             dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
             logger.debug('mk - dest_folder_path: %s', dest_folder_path)
             if not os.path.isdir(dest_folder_path):
