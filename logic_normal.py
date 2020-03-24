@@ -87,6 +87,7 @@ class LogicNormal(object):
 
     @staticmethod
     def make_list(source_path, ktv_path, movie_path, err_path):
+        interval = ModelSetting.get('interval')
         try:
             for path in source_path:
                 logger.debug('path:%s', path)
