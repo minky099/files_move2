@@ -161,6 +161,7 @@ class LogicNormal(object):
                         #item['country'] = daum_tv_info.countries.add(country.strip())
                     #logger.debug('cml - item[country]: %s', item['country'])
                     #if 'country' in item['country'] == u'한국':
+                    logger.debug('cml - drama %s', daum_tv_info['genre'])
                     if u'드라마' in daum_tv_info['genre']:
                         logger.debug('cml - drama condition ok ' + item['guessit']['title']  + ' : ' + item['name'])
                         LogicNormal.set_ktv(item, daum_tv_info)
