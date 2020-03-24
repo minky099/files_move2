@@ -45,7 +45,6 @@ class ModelSetting(db.Model):
     def get_setting_value(key):
         try:
             return db.session.query(ModelSetting).filter_by(key=key).first().value
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -54,7 +53,6 @@ class ModelSetting(db.Model):
     def get(key):
         try:
             return db.session.query(ModelSetting).filter_by(key=key).first().value.strip()
-
         except Exception as e:
             logger.error('Exception:%s %s', e, key)
             logger.error(traceback.format_exc())
