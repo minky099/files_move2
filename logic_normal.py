@@ -94,7 +94,8 @@ class LogicNormal(object):
 
                 p_th = ''
                 for words in path.split('/'):
-                   p_th = os.path.join(p_th, words)
+                    words.decode('utf-8').encode('utf-8')
+                    p_th = os.path.join(p_th, words)
 
                 lists = os.listdir(p_th.strip())
                 for f in lists:
