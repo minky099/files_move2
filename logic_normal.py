@@ -90,7 +90,7 @@ class LogicNormal(object):
         try:
             for path in source_path:
                 del_lists = []
-                lists = os.listdir(path.strip())
+                lists = os.listdir(unicode(path.strip())
                 for f in lists:
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
@@ -108,7 +108,7 @@ class LogicNormal(object):
                                         os.rmdir(unicode(item['fullPath']))
                         elif os.path.isdir(p):
                             sub_del_lists = []
-                            sub_lists = os.listdir(p)
+                            sub_lists = os.listdir(unicode(p))
                             for fs in sub_lists:
                                 try:
                                     if LogicNormal.isHangul(str(fs)) > 0:
