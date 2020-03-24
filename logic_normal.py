@@ -55,7 +55,6 @@ class LogicNormal(object):
 
             try:
                 fileList = LogicNormal.make_list(source_base_path, ktv_base_path, movie_base_path, error_path)
-                time.sleep(int(interval))
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -130,6 +129,7 @@ class LogicNormal(object):
                     except Exception as e:
                         logger.error('Exxception:%s', e)
                         logger.error(traceback.format_exc())
+            time.sleep(int(interval))
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
