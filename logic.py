@@ -96,15 +96,13 @@ class Logic(object):
     def scheduler_function():
         try:
             #Test
-            LogicNormal.scheduler_function()
-            '''
+            ##LogicNormal.scheduler_function()
             from framework import app
             if app.config['config']['use_celery']:
                 result = LogicNormal.scheduler_function.apply_async()
                 result.get()
             else:
                 LogicNormal.scheduler_function()
-            '''
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
