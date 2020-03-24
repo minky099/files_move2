@@ -149,16 +149,16 @@ class LogicNormal(object):
     @staticmethod
     def check_move_list(item, ktv_target_path, movie_target_path, error_target_path):
         try:
-            #TV
-            logger.debug('cml - drama ' + item['name'])
             rules = ['4K', '4k', 'UHD', '2160p', '2160P']
-            for keywords in rules:
-                gregx = re.compile(keywords, re.I)
-                if (gregx.search(item['name'])) is not None:
-                    logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
-                    item['uhd'] += 1
-
+            #TV
             if 'episode' in item['guessit'] > 0:
+                logger.debug('cml - drama ' + item['name'])
+                for keywords in rules:
+                    gregx = re.compile(keywords, re.I)
+                    if (gregx.search(item['name'])) is not None:
+                        logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
+                        item['uhd'] += 1
+
                 logger.debug('cml - drama ' + item['guessit']['title'] + ' : ' + item['name'])
                 #logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
                 #LogicNormal.move_except(item, error_target_path)
@@ -183,7 +183,6 @@ class LogicNormal(object):
             #Movie
             else:
                 logger.debug('cml - movie ' + item['name'])
-                rules = ['4K', '4k', 'UHD', '2160p', '2160P']
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
