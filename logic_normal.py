@@ -140,6 +140,7 @@ class LogicNormal(object):
             rules = ['4K', '4k', 'UHD', '2160p', '2160P']
             #TV
             if 'episode' in item['guessit'] > 0:
+                from framework.common.daum import DaumTV
                 logger.debug('cml - drama ' + item['name'])
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
@@ -158,6 +159,7 @@ class LogicNormal(object):
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
+                import daum_tv
                 logger.debug('cml - movie ' + item['name'])
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
@@ -166,7 +168,7 @@ class LogicNormal(object):
 
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
-                    (item['is_include_kor'], daum_movie_info) = DaumTV.search_movie(item['search_name'], item['guessit']['year'])
+                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if daum_movie_info and daum_movie_info[0]['score'] >= 90:
                         LogicNormal.set_movie(item, daum_movie_info[0])
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
