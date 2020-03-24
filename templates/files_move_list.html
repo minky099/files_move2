@@ -94,7 +94,11 @@ function make_list(data) {
     tmp = data[i].fileName;
     str += m_col(4, tmp);
     tmp = data[i].dirName;
-    tmp = data[i].dirName + '-&gt;' + data[i].targetPath;
+    if (data[i].match_type == 'none') {
+        tmp += '-&gt;' + data[i].dirName;
+      }
+    } else {
+      tmp = data[i].dirName + '-&gt;' + data[i].targetPath;
     }
     str += m_col(4, tmp);
     str += m_row_end();
