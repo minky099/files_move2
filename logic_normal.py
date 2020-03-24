@@ -91,12 +91,6 @@ class LogicNormal(object):
             for path in source_path:
                 logger.debug('path:%s', path)
                 del_lists = []
-
-                p_th = ''
-                for words in path.split('/'):
-                    words.decode('utf-8').encode('utf-8')
-                    p_th = os.path.join(p_th, words)
-
                 lists = os.listdir(p_th.strip())
                 for f in lists:
                     try:
