@@ -26,8 +26,8 @@
   {{ macros.m_hr_head_top() }}
   {{ macros.m_row_start('0') }}
   {{ macros.m_col(2, macros.m_strong('Created Time')) }}
-  {{ macros.m_col(4, macros.m_strong('FileName')) }}
-  {{ macros.m_col(4, macros.m_strong('Result')) }}
+  {{ macros.m_col(6, macros.m_strong('FileName')) }}
+  {{ macros.m_col(2, macros.m_strong('MovePath')) }}
   {{ macros.m_row_end() }}
   {{ macros.m_hr_head_bottom() }}
   <div id="list_div"></div>
@@ -92,15 +92,19 @@ function make_list(data) {
     str += m_row_start();
     str += m_col(2, data[i].created_time);
     tmp = data[i].fileName;
-    str += m_col(4, tmp);
+    str += m_col(6, tmp);
+    str += m_col(2, data[i].match_type);
     tmp = data[i].dirName;
     if (data[i].match_type == 'none') {
+      if (data[i].is_moved == '0') {
+        tmp += '-&gt; 이동안함';
+      } else {
         tmp += '-&gt;' + data[i].dirName;
       }
     } else {
       tmp = data[i].dirName + '-&gt;' + data[i].targetPath;
     }
-    str += m_col(4, tmp);
+    str += m_col(2, tmp);
     str += m_row_end();
     if (i != data.length -1) str += m_hr();
   }
