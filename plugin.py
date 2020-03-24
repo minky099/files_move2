@@ -22,7 +22,7 @@ from framework.common.torrent.process import TorrentProcess
 package_name = __name__.split('.')[0]
 logger = get_logger(package_name)
 
-from .model import ModelSetting, ModelMediaItem
+from .model import ModelSetting, ModelItem
 from .logic import Logic
 from .logic_normal import LogicNormal
 
@@ -47,7 +47,7 @@ plugin_info = {
     'name' : 'files_move',
     'category_name' : 'fileprocess',
     'developer' : 'arkx82',
-    'description' : '구글 드라이브 파일 정리',
+    'description' : '파일 정리',
     'home' : 'https://github.com/arkx82/files_move',
     'more' : '',
 }
@@ -58,29 +58,27 @@ def plugin_load():
 def plugin_unload():
     Logic.plugin_unload()
 
-def process_telegram_data(data):
-    pass
-
 #########################################################
 # WEB Menu
 #########################################################
 @blueprint.route('/')
 def home():
-    return redirect('/%s/list' % package_name)
+    return redirect('/%s/setting' % package_name)
 
 @blueprint.route('/<sub>')
 @login_required
 def first_menu(sub):
-    arg = ModelSetting.to_dict()
-    arg['package_name'] = package_name
+    logger.debug('DETAIL %s %s', package_name, sub)
     if sub == 'setting':
+    	arg = ModelSetting.to_dict()
+	    arg['package_name'] = package_name
         arg['scheduler'] = str(scheduler.is_include(package_name))
         arg['is_running'] = str(scheduler.is_running(package_name))
-        return render_template('%s_%s.html' % (package_name, sub), arg=arg)
+        return render_template('{package_name}_{sub}.html'.format(package_name=package_name, sub=sub), arg=arg)
     elif sub == 'list':
-        return render_template('%s_%s.html' % (package_name, sub), arg=arg)
-    elif sub == 'manage':
-        return render_template('/manage/%s_%s.html' % (package_name, sub), arg=arg)
+        arg = {}
+        arg['package_name'] = package_name
+        return render_template('{package_name}_{sub}.html'.format(package_name=package_name, sub=sub), arg=arg)
     elif sub == 'log':
         return render_template('log.html', package=package_name)
     return render_template('sample.html', title='%s - %s' % (package_name, sub))
@@ -91,6 +89,7 @@ def first_menu(sub):
 @blueprint.route('/ajax/<sub>', methods=['GET', 'POST'])
 @login_required
 def ajax(sub):
+    logger.debug('AJAX %s %s', package_name, sub)
     try:
         # 설정
         if sub == 'setting_save':
@@ -112,6 +111,13 @@ def ajax(sub):
             return jsonify(ret)
         elif sub == 'reset_db':
             ret = Logic.reset_db()
+            return jsonify(ret)
+        # list
+        elif sub == 'web_list':
+            ret = ModelItem.web_list(request)
+            return jsonify(ret)
+        elif sub == 'list_remove':
+            ret = ModelItem.delete(request)
             return jsonify(ret)
 
     except Exception as e:

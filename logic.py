@@ -18,7 +18,7 @@ from sqlalchemy import desc, or_, and_, func, not_
 
 # 패키지
 from .plugin import logger, package_name
-from .model import ModelSetting, ModelMediaItem
+from .model import ModelSetting, ModelItem
 
 from .logic_normal import LogicNormal
 #########################################################
@@ -44,7 +44,6 @@ class Logic(object):
                 if db.session.query(ModelSetting).filter_by(key=key).count() == 0:
                     db.session.add(ModelSetting(key, value))
             db.session.commit()
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -54,7 +53,8 @@ class Logic(object):
         try:
             logger.debug('%s plugin_load', package_name)
             Logic.db_init()
-            if ModelSetting.query.filter_by(key='auto_start').first().value == 'True':
+
+            if ModelSetting.get_bool('auto_start'):
                 Logic.scheduler_start()
             # 편의를 위해 json 파일 생성
             from plugin import plugin_info
@@ -68,7 +68,6 @@ class Logic(object):
     def plugin_unload():
         try:
             logger.debug('%s plugin_unload', package_name)
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -77,10 +76,8 @@ class Logic(object):
     def scheduler_start():
         try:
             logger.debug('%s scheduler_start' % package_name)
-            schedulerInterval = ModelSetting.query.filter_by(key = 'schedulerInterval').first().value
-            job = Job(package_name, package_name, schedulerInterval, Logic.scheduler_function, u"파일정리", False)
+			job = Job(package_name, package_name, ModelSetting.get('schedulerInterval'), Logic.scheduler_function, u"파일정리", False)
             scheduler.add_job_instance(job)
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -90,7 +87,6 @@ class Logic(object):
         try:
             logger.debug('%s scheduler_stop' % package_name)
             scheduler.remove_job(package_name)
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -116,10 +112,9 @@ class Logic(object):
     @staticmethod
     def reset_db():
         try:
-            db.session.query(ModelSetting).delete()
+            db.session.query(ModelItem).delete()
             db.session.commit()
             return True
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -160,17 +155,17 @@ class Logic(object):
                page = int(req.form['page'])
             if 'search_word' in req.form:
                search = req.form['search_word']
-            query = db.session.query(ModelMediaItem)
+            query = db.session.query(ModelItem)
             if search != '':
-                query = query.filter(ModelMediaItem.filename.like('%' + search + '%'))
+                query = query.filter(ModelItem.filename.like('%' + search + '%'))
             option = req.form['option']
             if option == 'all':
                 pass
             order = 'desc'
             if order == 'desc':
-               query = query.order_by(desc(ModelMediaItem.id))
+               query = query.order_by(desc(ModelItem.id))
             else:
-               query = query.order_by(ModelMediaItem.id)
+               query = query.order_by(ModelItem.id)
             count = query.count()
             query = query.limit(page_size).offset((page - 1) * page_size)
             logger.debug('ModelFileprocessMovieItem count:%s', count)

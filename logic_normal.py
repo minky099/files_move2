@@ -13,11 +13,6 @@ import time
 import urllib
 import rclone
 import daum_tv
-import json
-import requests
-import urllib
-import urllib2
-import lxml.html as lxml
 
 # third-party
 from sqlalchemy import desc
@@ -33,7 +28,7 @@ from framework.logger import get_logger
 
 # 패키지
 from .plugin import logger, package_name
-from .model import ModelSetting, ModelMediaItem
+from .model import ModelSetting, ModelItem
 
 
 #########################################################
@@ -60,11 +55,9 @@ class LogicNormal(object):
             try:
                 fileList = LogicNormal.make_list(source_base_path, ktv_base_path, movie_base_path, error_path)
                 time.sleep(int(interval))
-
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
-
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -92,9 +85,7 @@ class LogicNormal(object):
                 #logger.debug('ml - search_name: %s', item['search_name'])
             if LogicNormal.isHangul(item['name']) > 0:
                 item['search_name'] = f
-
             return item
-
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -125,7 +116,6 @@ class LogicNormal(object):
                                     logger.debug( "dir_path : " + item['fullPath'])
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
-
                         elif os.path.isdir(p):
                             sub_del_lists = []
                             sub_lists = os.listdir(p)
@@ -145,15 +135,12 @@ class LogicNormal(object):
                                                 logger.debug( "dir_path : " + item['fullPath'])
                                                 if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                                     os.rmdir(unicode(item['fullPath']))
-
                                 except Exception as e:
                                     logger.error('Exxception:%s', e)
                                     logger.error(traceback.format_exc())
-
                     except Exception as e:
                         logger.error('Exxception:%s', e)
                         logger.error(traceback.format_exc())
-
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -217,8 +204,8 @@ class LogicNormal(object):
                     logger.debug('cml - movie ' + item['name'] + item['search_name'])
                     if daum_movie_info and daum_movie_info[0]['score'] == 100:
                         LogicNormal.set_movie(item, daum_movie_info[0])
-                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)                '''
-
+                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)                
+				'''
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -264,7 +251,6 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             shutil.move(fullPath.encode('utf-8'), dest_folder_path)
             LogicNormal.db_save(data, dest_folder_path)
-
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -278,7 +264,6 @@ class LogicNormal(object):
             #    os.makedirs(dest_folder_path)
             #shutil.move(data['fullPath'], dest_folder_path)
             #LogicNormal.db_save(data, dest_folder_path)
-
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -367,7 +352,6 @@ class LogicNormal(object):
             #if not os.path.isfile(fileCheck):
                 #shutil.move(data['fullPath'], dest_folder_path)
                 #dest_folder_path = os.path.join(dest_folder_path, '/')
-
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -380,12 +364,10 @@ class LogicNormal(object):
             entity['fileName'] = data['name']
             entity['dirName'] = data['fullPath']
             entity['targetPath'] = dest
-            ModelMediaItem.save_as_dict(entity)
-
+            ModelItem.save_as_dict(entity)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
-
 
     @staticmethod
     def search(values, searchFor):
