@@ -47,7 +47,7 @@ class LogicNormal(object):
             interval = ModelSetting.get('interval')
             emptyFolderDelete = ModelSetting.get('emptyFolderDelete')
 
-            source_base_path = [ x.decode('utf-8') and x.strip() and for x in source_base_path.split(',') ]
+            source_base_path = [ x.decode('utf-8') and x.strip() for x in source_base_path.split(',') ]
             if not source_base_path:
                 return None
             if None == '':
