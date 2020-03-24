@@ -215,9 +215,9 @@ class LogicNormal(object):
     def set_ktv(data, ktv):
         try:
             data['ktv'] = ktv
-            data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv.title).replace('  ', ' '))
+            data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv['title']).replace('  ', ' '))
             folder_rule = ModelSetting.get_setting_value('folder_rule')
-            tmp = folder_rule.replace('%TITLE%', ktv.title).replace('%GENRE%', ktv.genre)
+            tmp = folder_rule.replace('%TITLE%', ktv['title']).replace('%GENRE%', ktv['genre'])
             tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
             data['dest_folder_name'] = tmp
         except Exception as e:
