@@ -75,15 +75,9 @@ class LogicNormal(object):
             item['search_name'] = None
             item['uhd'] = 0
             match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
-            logger.debug('ml - match: %s', match)
             if match:
                 item['search_name'] = match.group('name').replace('.', ' ').strip()
-                logger.debug('ml 1 - item[search_name]: %s', item['search_name'])
                 item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-                logger.debug('ml 2 - item[search_name]: %s', item['search_name'])
-            #else:
-                #item['search_name'] = item['title']
-                #logger.debug('ml - search_name: %s', item['search_name'])
             if LogicNormal.isHangul(item['name']) > 0:
                 item['search_name'] = f
             return item
@@ -96,7 +90,6 @@ class LogicNormal(object):
     def make_list(source_path, ktv_path, movie_path, err_path):
         try:
             for path in source_path:
-                logger.debug('path:%s', path)
                 del_lists = []
                 lists = os.listdir(path.strip())
                 for f in lists:
@@ -105,8 +98,6 @@ class LogicNormal(object):
                             f = f.encode('utf-8')
                         #f = str(f).strip()
                         p = os.path.join(path.strip(), f)
-                        logger.debug('p:%s', p)
-
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
                             del_lists.append(item)
@@ -114,7 +105,6 @@ class LogicNormal(object):
                             if ModelSetting.get_bool('emptyFolderDelete'):
                                 del_lists.reverse()
                                 for item in del_lists:
-                                    logger.debug( "dir_path : " + item['fullPath'])
                                     if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                         os.rmdir(unicode(item['fullPath']))
                         elif os.path.isdir(p):
@@ -125,7 +115,6 @@ class LogicNormal(object):
                                     if LogicNormal.isHangul(str(fs)) > 0:
                                         fs = fs.encode('utf-8')
                                     #fs = str(fs).strip()
-                                    logger.debug('sub path:%s', os.path.join(p.strip(), fs))
                                     if os.path.isfile(os.path.join(p.strip(), fs)):
                                         item = LogicNormal.item_list(p, fs)
                                         sub_del_lists.append(item)
@@ -133,7 +122,6 @@ class LogicNormal(object):
                                         if ModelSetting.get_bool('emptyFolderDelete'):
                                             sub_del_lists.reverse()
                                             for item in sub_del_lists:
-                                                logger.debug( "dir_path : " + item['fullPath'])
                                                 if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
                                                     os.rmdir(unicode(item['fullPath']))
                                 except Exception as e:
@@ -156,29 +144,17 @@ class LogicNormal(object):
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
-                        logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
                         item['uhd'] += 1
 
-                logger.debug('cml - drama ' + item['guessit']['title'] + ' : ' + item['name'])
-                #logger.debug('cml - drama condition not not ok ' + item['guessit']['title'])
-                #LogicNormal.move_except(item, error_target_path)
+
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
-                    #logger.debug('cml - daum_tv_info[countries]: %s', daum_tv_info['countries'])
-                    #for country in daum_tv_info['countries']:
-                        #item['country'] = daum_tv_info.countries.add(country.strip())
-                    #logger.debug('cml - item[country]: %s', item['country'])
-                    #if 'country' in item['country'] == u'한국':
-                    logger.debug('cml - drama %s', daum_tv_info['genre'])
                     if u'드라마' in daum_tv_info['genre']:
-                        logger.debug('cml - drama condition ok ' + item['guessit']['title']  + ' : ' + item['name'])
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                     else:
-                        logger.debug('cml - drama condition not ok ' + item['name'])
                         LogicNormal.move_except(item, error_target_path)
                 else:
-                    logger.debug('cml - drama condition not not ok ' + item['guessit']['title']  + ' : ' + item['name'])
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
@@ -186,36 +162,18 @@ class LogicNormal(object):
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
-                        logger.debug('cml - uhd condition match %s : %s', keywords, item['name'])
                         item['uhd'] += 1
 
-                logger.debug('cml - uhd condition not match %s : %s', keywords, item['name'])
-                #if LogicNormal.isHangul(item['name']) is False:
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
-                    logger.debug('cml - movie year %s', year)
                     (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                    logger.debug('cml - movie ' + item['name'] + '' + item['search_name'])
                     if daum_movie_info and daum_movie_info[0]['score'] >= 90:
-                        #item['movie'] = movie[0]
-                        logger.debug('cml - movie condition ok ' + item['name'])
                         LogicNormal.set_movie(item, daum_movie_info[0])
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     else:
-                        logger.debug('cml - movie condition not ok ' + item['name'])
                         LogicNormal.move_except(item, error_target_path)
                 else:
-                    logger.debug('cml - movie condition not not ok ' + item['name'])
                     LogicNormal.move_except(item, error_target_path)
-                '''
-                else:
-                    logger.debug('cml - movie is hangul ' + item['name'])
-                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], 2020)
-                    logger.debug('cml - movie ' + item['name'] + item['search_name'])
-                    if daum_movie_info and daum_movie_info[0]['score'] == 100:
-                        LogicNormal.set_movie(item, daum_movie_info[0])
-                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
-				'''
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -260,7 +218,6 @@ class LogicNormal(object):
                 set_country = u'한국-UHD(4k)'
 
             dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
-            logger.debug('mk - dest_folder_path: %s', dest_folder_path)
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
             shutil.move(fullPath.encode('utf-8'), dest_folder_path)
@@ -277,7 +234,7 @@ class LogicNormal(object):
             #if not os.path.isdir(dest_folder_path):
             #    os.makedirs(dest_folder_path)
             #shutil.move(data['fullPath'], dest_folder_path)
-            #LogicNormal.db_save(data, dest_folder_path)
+            LogicNormal.db_save(data, dest_folder_path)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -289,18 +246,14 @@ class LogicNormal(object):
             set_year = []
             condition = 0
 
-            logger.debug('mm - info[more][info]: %s', info['more']['info'])
             keywords = ''.join(info['more']['info'])
 
             for words in keywords.split('|'):
                 if u' 애니메이션 외' in words:
-                    logger.debug('mm - ani condition match : %s', words)
                     condition += 1
                 else:
-                    logger.debug('mm - ani not condition match : %s', words)
                     condition -= 0
 
-            logger.debug('mm - info[more][country]: %s', info['more']['country'])
             if u'한국' in info['more']['country']:
                 set_country = u'한국'
             elif u'중국' in info['more']['country']:
@@ -314,7 +267,6 @@ class LogicNormal(object):
             else:
                 set_country = u'외국'
 
-            logger.debug('mm - info[year]: %s', info['year'])
             if int(info['year']) < 1990:
                 set_year = u'1900s'
             elif int(info['year']) >= 1990 and int(info['year']) < 2000:
@@ -350,22 +302,12 @@ class LogicNormal(object):
             else:
                 dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
 
-            logger.debug('mm - dest_folder_path: %s', dest_folder_path)
-            logger.debug('mm - fullPath: %s', data['fullPath'])
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'], data['name'])
-            logger.debug('mm - fileCheck: %s', fileCheck)
             if not os.path.isfile(fileCheck):
-                #os.rename(data['fullPath'], fileCheck)
                 shutil.move(data['fullPath'], dest_folder_path)
-                #if not os.path.isfile(fileCheck):
-                #os.rename(data['fullPath'], fileCheck)
                 LogicNormal.db_save(data, dest_folder_path)
-            #fileCheck = os.path.join(base_path, set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['name'])
-            #if not os.path.isfile(fileCheck):
-                #shutil.move(data['fullPath'], dest_folder_path)
-                #dest_folder_path = os.path.join(dest_folder_path, '/')
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
