@@ -91,7 +91,12 @@ class LogicNormal(object):
             for path in source_path:
                 logger.debug('path:%s', path)
                 del_lists = []
-                lists = os.listdir(path)
+
+                p_th = ''
+                for words in path.split('/'):
+                   p_th = os.path.join(p_th, words)
+
+                lists = os.listdir(p_th.strip())
                 for f in lists:
                     try:
                         if LogicNormal.isHangul(str(f)) > 0:
