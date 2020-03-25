@@ -268,10 +268,12 @@ class LogicNormal(object):
                 except Exception as e:
                     logger.error('Exxception:%s', e)
                     logger.error(traceback.format_exc())
-            elif u'애니메이션' in info['genre']:
-                condition += 1
-            else:
-                condition = 0
+
+            if 'genre' in info:
+                if u'애니메이션' in info['genre']:
+                    condition += 1
+                else:
+                    condition = 0
 
             if u'한국' in info['more']['country']:
                 set_country = u'한국'
