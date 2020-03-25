@@ -203,8 +203,8 @@ class LogicNormal(object):
             data['movie'] = movie
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', movie['title']).replace('  ', ' '))
             if 'more' in movie:
-                if movie['more']['country'] is None
-                    if movie['country'] is not None
+                if movie['more']['country'] is None:
+                    if movie['country'] is not None:
                         movie['more']['country'] = movie['country']
                 folder_rule = ModelSetting.get_setting_value('folder_rule')
                 tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
