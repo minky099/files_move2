@@ -142,15 +142,16 @@ class LogicNormal(object):
     def check_move_list(item, ktv_target_path, movie_target_path, error_target_path):
         try:
             rules = ['4K', '4k', 'UHD', '2160p', '2160P']
+            condition = 0
+
             #TV
             if 'episode' in item['guessit'] > 0:
                 from framework.common.daum import DaumTV
-                logger.debug('cml - drama ' + item['name'])
+                logger.debug('cml - drama %s, %s' + item['name'], item['search_name'])
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
                         item['uhd'] += 1
-
 
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
