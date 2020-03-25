@@ -145,7 +145,7 @@ class LogicNormal(object):
             condition = 0
 
             #TV
-            if 'episode' in item['guessit'] > 0:
+            if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode':
                 from framework.common.daum import DaumTV
                 logger.debug('cml - drama %s, %s' + item['name'], item['search_name'])
                 for keywords in rules:
