@@ -203,6 +203,9 @@ class LogicNormal(object):
             data['movie'] = movie
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', movie['title']).replace('  ', ' '))
             if 'more' in movie:
+                if movie['more']['country'] is None
+                    if movie['country'] is not None
+                        movie['more']['country'] = movie['country']
                 folder_rule = ModelSetting.get_setting_value('folder_rule')
                 tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
                 tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
@@ -224,10 +227,12 @@ class LogicNormal(object):
                 set_country = u'한국-UHD(4k)'
 
             dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
-            if not os.path.isdir(dest_folder_path):
+            if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-            LogicNormal.db_save(data, dest_folder_path)
+            fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'), data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -252,13 +257,21 @@ class LogicNormal(object):
             set_year = []
             condition = 0
 
-            keywords = ''.join(info['more']['info'])
-
-            for words in keywords.split('|'):
-                if u' 애니메이션 외' in words:
-                    condition += 1
-                else:
-                    condition -= 0
+            if 'more' in info:
+                try:
+                    keywords = ''.join(info['more']['info'])
+                    for words in keywords.split('|'):
+                        if u' 애니메이션 외' in words:
+                            condition += 1
+                        else:
+                            condition -= 0
+                except Exception as e:
+                    logger.error('Exxception:%s', e)
+                    logger.error(traceback.format_exc())
+            elif u'애니메이션' in info['genre']:
+                condition += 1
+            else:
+                condition = 0
 
             if u'한국' in info['more']['country']:
                 set_country = u'한국'
