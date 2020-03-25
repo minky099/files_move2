@@ -266,7 +266,7 @@ class LogicNormal(object):
                         else:
                             condition -= 0
 
-            if condition == 0
+            if condition == 0:
                 if 'genre' in info:
                     if u'애니메이션' in info['genre']:
                         condition += 1
