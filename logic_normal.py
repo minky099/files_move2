@@ -203,7 +203,7 @@ class LogicNormal(object):
             data['movie'] = movie
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', movie['title']).replace('  ', ' '))
             if 'more' in movie:
-                if movie['more']['country'] is None:
+                if not 'country' in movie['more']:
                     if movie['country'] is not None:
                         movie['more']['country'] = movie['country']
                 folder_rule = ModelSetting.get_setting_value('folder_rule')
@@ -258,32 +258,38 @@ class LogicNormal(object):
             condition = 0
 
             if 'more' in info:
-                try:
+                if 'info' in info['more']:
                     keywords = ''.join(info['more']['info'])
                     for words in keywords.split('|'):
                         if u' 애니메이션 외' in words:
                             condition += 1
                         else:
                             condition -= 0
-                except Exception as e:
-                    logger.error('Exxception:%s', e)
-                    logger.error(traceback.format_exc())
 
-            if 'genre' in info:
-                if u'애니메이션' in info['genre']:
-                    condition += 1
-                else:
-                    condition = 0
+            if condition == 0
+                if 'genre' in info:
+                    if u'애니메이션' in info['genre']:
+                        condition += 1
+                    else:
+                        condition -= 0
 
-            if u'한국' in info['more']['country']:
+            country = []
+            if 'more' in info:
+                if 'country' in info['more']:
+                    country = info['more']['country']
+            else:
+                if 'country' in info:
+                    country = info['country']
+
+            if u'한국' in country:
                 set_country = u'한국'
-            elif u'중국' in info['more']['country']:
+            elif u'중국' in country:
                 set_country = u'중국'
-            elif u'홍콩' in info['more']['country']:
+            elif u'홍콩' in country:
                 set_country = u'중국'
-            elif u'대만' in info['more']['country']:
+            elif u'대만' in country:
                 set_country = u'중국'
-            elif u'일본' in info['more']['country']:
+            elif u'일본' in country:
                 set_country = u'일본'
             else:
                 set_country = u'외국'
