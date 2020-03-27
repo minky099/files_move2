@@ -325,7 +325,8 @@ class LogicNormal(object):
 
             set_cat = u'영화'
             if data['uhd'] > 0:
-                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), 'UHD', info['more']['eng_title'])
+                dest_folder_name = '%s' % (re.sub('[\\/:*?"<>|]', '', info['more']['eng_title']).replace('  ', ' '))
+                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), 'UHD', dest_folder_name)
             elif condition >= 1:
                 set_cat = u'애니메이션'
                 target = u'극장판'
