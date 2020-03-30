@@ -149,7 +149,7 @@ class LogicNormal(object):
             #TV
             if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode':
                 from framework.common.daum import DaumTV
-                logger.debug('cml - drama %s, %s' + item['name'], item['search_name'])
+                logger.debug('cml - drama %s, %s', item['name'], item['search_name'])
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
@@ -157,7 +157,8 @@ class LogicNormal(object):
 
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 if daum_tv_info is not None:
-                    if u'드라마' in daum_tv_info['genre']:
+                    if daum_tv_info['genre'] == u'드라마':
+                        logger.debug('cml - korea drama %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
                     else:
@@ -167,7 +168,7 @@ class LogicNormal(object):
             #Movie
             else:
                 import daum_tv
-                logger.debug('cml - movie ' + item['name'])
+                logger.debug('cml - movie %s', item['name'])
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
                     if (gregx.search(item['name'])) is not None:
