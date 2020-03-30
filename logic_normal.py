@@ -71,7 +71,7 @@ class LogicNormal(object):
             item['fullPath'] = os.path.join(path, f)
             temp = re.sub('(s|S)+\d\d', '', f)
             logger.debug('il1 - %s : %s', item['name'], temp)
-            temp = re.sub('[\[\]][a-zA-Z ]+', '', f)
+            temp = re.sub('\-\d\d', '', f)
             logger.debug('il2 - %s : %s', item['name'], temp)
             item['guessit'] = guessit(temp)
             item['ext'] = os.path.splitext(f)[1].lower()
