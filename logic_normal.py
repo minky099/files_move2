@@ -159,8 +159,8 @@ class LogicNormal(object):
                     if (gregx.search(item['name'])) is not None:
                         item['uhd'] += 1
 
-                #daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
-                daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
+                daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
+                #daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
                 if daum_tv_info is not None:
                     if daum_tv_info['genre'] == u'드라마':
                         logger.debug('cml - korea drama %s', daum_tv_info['genre'])
