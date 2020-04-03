@@ -84,7 +84,7 @@ class LogicNormal(object):
             if match:
                 item['search_name'] = match.group('name').replace('.', ' ').strip()
                 item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-            else
+            else:
                 return None
             #if LogicNormal.isHangul(item['name']) > 0:
                 #item['search_name'] = f
