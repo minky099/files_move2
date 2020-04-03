@@ -9,6 +9,7 @@ import threading
 import re
 import subprocess
 import shutil
+import json
 import time
 import urllib
 import rclone
@@ -83,8 +84,11 @@ class LogicNormal(object):
             if match:
                 item['search_name'] = match.group('name').replace('.', ' ').strip()
                 item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
-            if LogicNormal.isHangul(item['name']) > 0:
-                item['search_name'] = f
+            else
+                return None
+            #if LogicNormal.isHangul(item['name']) > 0:
+                #item['search_name'] = f
+            logger.debug('il4 - search_name:%s', item['search_name'])
             return item
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -109,13 +113,14 @@ class LogicNormal(object):
 
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
-                            del_lists.append(item)
-                            LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
-                            if ModelSetting.get_bool('emptyFolderDelete'):
-                                del_lists.reverse()
-                                for item in del_lists:
-                                    if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
-                                        os.rmdir(unicode(item['fullPath']))
+                            if item is not None:
+                                del_lists.append(item)
+                                LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
+                                if ModelSetting.get_bool('emptyFolderDelete'):
+                                    del_lists.reverse()
+                                    for item in del_lists:
+                                        if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                                            os.rmdir(unicode(item['fullPath']))
                         elif os.path.isdir(p):
                             sub_del_lists = []
                             sub_lists = os.listdir(p)
@@ -126,13 +131,14 @@ class LogicNormal(object):
                                     #fs = str(fs).strip()
                                     if os.path.isfile(os.path.join(p.strip(), fs)):
                                         item = LogicNormal.item_list(p, fs)
-                                        sub_del_lists.append(item)
-                                        LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
-                                        if ModelSetting.get_bool('emptyFolderDelete'):
-                                            sub_del_lists.reverse()
-                                            for item in sub_del_lists:
-                                                if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
-                                                    os.rmdir(unicode(item['fullPath']))
+                                        if item is not None:
+                                            sub_del_lists.append(item)
+                                            LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
+                                            if ModelSetting.get_bool('emptyFolderDelete'):
+                                                sub_del_lists.reverse()
+                                                for item in sub_del_lists:
+                                                    if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
+                                                        os.rmdir(unicode(item['fullPath']))
                                 except Exception as e:
                                     logger.error('Exxception:%s', e)
                                     logger.error(traceback.format_exc())
@@ -172,7 +178,7 @@ class LogicNormal(object):
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
-                import daum_tv
+                from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
                 for keywords in rules:
                     gregx = re.compile(keywords, re.I)
@@ -181,7 +187,7 @@ class LogicNormal(object):
 
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
-                    (item['is_include_kor'], daum_movie_info) = daum_tv.MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
+                    (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if daum_movie_info and daum_movie_info[0]['score'] >= 100:
                         LogicNormal.set_movie(item, daum_movie_info[0])
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
@@ -346,6 +352,18 @@ class LogicNormal(object):
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path)
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def read_directory_structure():
+        try:
+            json_info = json.loads(ModelSetting.get('directory_json'))
+            for info in json_info:
+                if info['base']:
+                    return None
+            return info
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
