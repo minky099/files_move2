@@ -86,8 +86,10 @@ class LogicNormal(object):
                 item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
             else:
                 return None
-            #if LogicNormal.isHangul(item['name']) > 0:
-                #item['search_name'] = f
+            if LogicNormal.isHangul(item['search_name']) > 0:
+                str = item['search_name']
+                str.decode('utf-8').encode('utf-8')
+                item['search_name'] = str
             logger.debug('il4 - search_name:%s', item['search_name'])
             return item
         except Exception as e:
