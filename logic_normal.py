@@ -87,10 +87,7 @@ class LogicNormal(object):
             else:
                 return None
             if LogicNormal.isHangul(item['search_name']) > 0:
-                str = item['search_name']
-                str.encode('utf-8')
-                #.decode('utf-16')
-                #str.decode('iso-8859-1').encode('utf-16')
+                str = unicode(item['search_name'])
                 item['search_name'] = str
             logger.debug('il4 - search_name:%s', item['search_name'])
             return item
