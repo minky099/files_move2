@@ -358,18 +358,6 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def read_directory_structure():
-        try:
-            json_info = json.loads(ModelSetting.get('directory_json'))
-            for info in json_info:
-                if info['base']:
-                    return None
-            return info
-        except Exception as e:
-            logger.error('Exxception:%s', e)
-            logger.error(traceback.format_exc())
-
-    @staticmethod
     def db_save(data, dest):
         try:
             entity = {}
