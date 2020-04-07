@@ -319,11 +319,15 @@ class LogicNormal(object):
     @staticmethod
     def move_movie(data, info, base_path):
         sort = json.loads(ModelSetting.get('movie_sort'))
+        json.dumps(sort)
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
         movie_country_option = json.loads(ModelSetting.get('movie_country_option'))
+        json.dumps(movie_country_option)
         movie_year_option = json.loads(ModelSetting.get('movie_year_option'))
+        json.dumps(movie_year_option)
         movie_rate_option = json.loads(ModelSetting.get('movie_rate_option'))
+        json.dumps(movie_rate_option)
         uhd_flag = ModelSetting.get_bool('uhd_flag')
         arg1 = []
         arg2 = []
