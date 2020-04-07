@@ -337,7 +337,7 @@ class LogicNormal(object):
         arg2 = []
         arg3 = []
         try:
-            for k, v in sort:
+            for k, v in sort.items():
                 if k == u'국가':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_country(info, movie_country_option)
@@ -424,7 +424,7 @@ class LogicNormal(object):
                     country = info['country']
 
             if country is not None:
-                for keywords, values in option:
+                for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     if (gregx.search(country)) is not None:
@@ -446,7 +446,7 @@ class LogicNormal(object):
         try:
             set_year = []
             if info['year'] is not None:
-                for keywords, values in option:
+                for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     encValues = values.encode('utf-8')
                     if int(info['year']) <= encKeywords:
@@ -470,7 +470,7 @@ class LogicNormal(object):
                     rate = info['more']['rate']
 
             if rate is not None:
-                for keywords, values in option:
+                for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     if (gregx.search(rate)) is not None:
