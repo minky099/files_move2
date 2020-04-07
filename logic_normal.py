@@ -156,7 +156,7 @@ class LogicNormal(object):
                     if daum_tv_info['genre'] == u'드라마':
                         logger.debug('cml - korea drama %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
-                        LogicNormal.move_ktv_drama(item, daum_tv_info, ktv_target_path)
+                        LogicNormal.move_ktv_drama(item, daum_tv_info, ktv_drama_target_path)
                     elif ktv_show_genre_flag == 1:
                         logger.debug('cml - korea drama %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
@@ -228,14 +228,12 @@ class LogicNormal(object):
         uhd_ktv_drama_base_path = ModelSetting.get('uhd_ktv_drama_base_path')
         try:
             logger.debug('=== title %s', data['dest_folder_name'])
-            set_cat = u'드라마'
-            set_country = u'한국'
             title = data['dest_folder_name']
             fullPath = data['fullPath']
             if data['uhd'] > 0:
                 LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
                 return
-            dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
+            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
