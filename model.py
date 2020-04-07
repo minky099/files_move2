@@ -138,7 +138,7 @@ class ModelItem(db.Model):
             entity.dirName = unicode(item['dirName'])
             entity.targetPath = unicode(item['targetPath'])
             entity.match_type = unicode(item['match_type'])
-            entity.is_moved = d['is_moved']
+            entity.is_moved = item['is_moved']
 
             db.session.add(entity)
             db.session.commit()
