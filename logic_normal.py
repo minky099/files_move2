@@ -378,7 +378,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True))
+                LogicNormal.db_save(data, dest_folder_path, 'match', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
