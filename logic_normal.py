@@ -475,7 +475,7 @@ class LogicNormal(object):
                     else:
                         set_rate = u'기타'
                 return set_rate
-             else:
+            else:
                 return None
         except Exception as e:
             logger.error('Exxception:%s', e)
