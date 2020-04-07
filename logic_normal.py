@@ -429,7 +429,7 @@ class LogicNormal(object):
                     else:
                         set_country = u'외국'
                 return set_country
-             else:
+            else:
                 return None
         except Exception as e:
             logger.error('Exxception:%s', e)
