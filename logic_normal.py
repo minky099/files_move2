@@ -318,16 +318,20 @@ class LogicNormal(object):
 
     @staticmethod
     def move_movie(data, info, base_path):
-        sort = json.loads(ModelSetting.get('movie_sort'))
-        json.dumps(sort)
+        sort = ModelSetting.get('movie_sort')
+        json_sort = json.dumps(sort)
+        sort = json.loads(json_sort.decode('utf-8'))
+        movie_country_option = ModelSetting.get('movie_country_option')
+        json_movie_country_option = json.dumps(movie_country_option)
+        movie_country_option = json.loads(json_movie_country_option.decode('utf-8'))
+        movie_year_option = ModelSetting.get('movie_year_option')
+        json_movie_year_option = json.dumps(movie_year_option)
+        movie_year_option = json.loads(json_movie_year_option.decode('utf-8'))
+        movie_rate_option = ModelSetting.get('movie_rate_option')
+        json_movie_rate_option = json.dumps(movie_rate_option)
+        movie_rate_option = json.loads(json_movie_rate_option.decode('utf-8'))
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
-        movie_country_option = json.loads(ModelSetting.get('movie_country_option'))
-        json.dumps(movie_country_option)
-        movie_year_option = json.loads(ModelSetting.get('movie_year_option'))
-        json.dumps(movie_year_option)
-        movie_rate_option = json.loads(ModelSetting.get('movie_rate_option'))
-        json.dumps(movie_rate_option)
         uhd_flag = ModelSetting.get_bool('uhd_flag')
         arg1 = []
         arg2 = []
