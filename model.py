@@ -115,6 +115,7 @@ class ModelItem(db.Model):
     fileName = db.Column(db.String)
     dirName = db.Column(db.String)
     targetPath = db.Column(db.String)
+    match_type = db.Column(db.String)
     #interval = db.Column(db.Integer)
     #emptyFolderDelete = db.Column(db.Boolean)
 
@@ -135,6 +136,7 @@ class ModelItem(db.Model):
             entity.fileName = unicode(item['fileName'])
             entity.dirName = unicode(item['dirName'])
             entity.targetPath = unicode(item['targetPath'])
+            entity.match_type = unicode(item['match_type'])
 
             db.session.add(entity)
             db.session.commit()

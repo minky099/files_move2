@@ -7,9 +7,23 @@
   {{ macros.setting_input_int('schedulerInterval', '스케쥴링 실행 주기', value=arg['schedulerInterval'], min='1', placeholder='10', desc='minute 단위') }}
   {{ macros.setting_checkbox('auto_start', '시작시 자동실행', value=arg['auto_start'], desc='On : 시작시 자동으로 사용 설정합니다.') }}
   {{ macros.setting_input_text('source_base_path', '소스 경로', value=arg['source_base_path'], desc=['소스 경로. 구분자 ,', '실행 후 경로 안의 모든 파일과 폴더는 이동하여 비워집니다.']) }}
-  {{ macros.setting_input_text('ktv_base_path', 'ktv가 이동할 베이스 경로', value=arg['ktv_base_path'], desc=['ktv가 이동할 베이스 경로']) }}
-  {{ macros.setting_input_text('movie_base_path', '영화가 이동할 베이스 경로', value=arg['movie_base_path'], desc=['영화가 이동할 베이스 경로']) }}
-  {{ macros.setting_input_text('error_path', '예외처리된 파일이 이동할 베이스 경로', value=arg['error_path'], desc=['예외처리된 파일이 이동할 베이스 경로']) }}
+  {{ macros.setting_input_text('movie_base_path', '영화가 이동할 경로', value=arg['movie_base_path'], desc=['영화가 이동할 경로']) }}
+  {{ macros.setting_input_text('movie_sort', '영화 폴더 순서', value=arg['movie_sort'], desc=['{'국가':0}, {'연도':1}, {'등급':2}']) }}
+  {{ macros.setting_input_text('movie_country_option', '국가 옵션', value=arg['movie_country_option'], desc=['{'한국':'한국'}, {'중국':'중국'}, {'홍콩':'중국'}, {'대만':'중국'}, {'일본':'일본'}', 나머지는 외국]) }}
+  {{ macros.setting_input_text('movie_year_option', '연도 옵션', value=arg['movie_year_option'], desc=['{1900:'1900s'}, {1990:'1990s'}, {2012:'~2012'}, {2015:'2015'}']) }}
+  {{ macros.setting_input_text('movie_rate_option', '등급 옵션', value=arg['movie_rate_option'], desc=['['12세이상관람가', '15세이상관람가', '전체관람가', '청소년관람불가']']) }}
+  {{ macros.setting_button_with_info([['toggle_btn', 'Toggle', [{'key':'category', 'value':'advanced'}]]], left='고급설정', desc=None) }}
+  {{ macros.setting_checkbox('uhd_flag', 'UHD 따로 처리', value=arg['uhd_flag'], desc='On : uhd 따로 처리') }}
+  {{ macros.setting_input_text('uhd_base_path', 'UHD 영화가 이동할 경로', value=arg['uhd_base_path'], desc=['UHD 영화가 이동할 경로']) }}
+  {{ macros.setting_checkbox('eng_title_flag', 'UHD인 경우 eng title', value=arg['eng_title_flag'], desc='On : UHD인 경우 english title 사용') }}
+  {{ macros.setting_checkbox('ani_flag', '애니 따로 처리', value=arg['ani_flag'], desc='On : 애니 따로 처리') }}
+  {{ macros.setting_input_text('ani_base_path', '애니메이션이 이동할 경로', value=arg['ani_base_path'], desc=['애니메이션이 이동할 경로']) }}
+  {{ macros.setting_input_text('ktv_drama_base_path', 'ktv drama가 이동할 경로', value=arg['ktv_drama_base_path'], desc=['ktv drama가 이동할 경로']) }}
+  {{ macros.setting_checkbox('uhd_ktv_drama_flag', 'UHD ktv drama 따로 처리', value=arg['uhd_ktv_drama_flag'], desc='On : uhd ktv drama 따로 처리') }}
+  {{ macros.setting_input_text('uhd_ktv_drama_base_path', 'UHD ktv drama가 이동할 경로', value=arg['uhd_ktv_drama_base_path'], desc=['UHD ktv drama가 이동할 경로']) }}
+  {{ macros.setting_input_text('ktv_show_base_path', 'ktv show가 이동할 경로', value=arg['ktv_show_base_path'], desc=['ktv show가 이동할 경로']) }}
+  {{ macros.setting_checkbox('ktv_show_genre_flag', 'ktv show 장르 별 처리', value=arg['ktv_show_genre_flag'], desc='On : ktv show 장르별 처리, 없는것은 기타') }}
+  {{ macros.setting_input_text('error_path', '예외처리된 파일이 이동할 경로', value=arg['error_path'], desc=['예외처리된 파일이 이동할 경로']) }}
   {{ macros.setting_button_with_info([['toggle_btn', 'Toggle', [{'key':'category', 'value':'advanced'}]]], left='고급설정', desc=None) }}
     <div id="toggle_advanced_div" class="collapse">
       {{ macros.setting_input_text('folder_rule', '폴더명 규칙', value=arg['folder_rule'], desc=['%TITLE% - 영화제목', '%YEAR% - 년도', '%ENG_TITLE% - 영문제목', '%COUNTRY% - 국가', '%GENRE% - 장르', '%DATE% - 개봉일', '%RATE% - 등급', '%DURING% - 런닝타임', '', '예) %TITLE% [%ENG_TITLE%] (%YEAR%) [%COUNTRY%-%RATE%-%DURING%]', '미스 슬로운 [Miss Sloane] (2016) [미국-15세이상관람가-132분]']) }}

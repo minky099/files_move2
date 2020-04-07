@@ -32,7 +32,6 @@ from .plugin import logger, package_name
 from .model import ModelSetting, ModelItem
 
 #from framework.common.daum import DaumTV
-
 #########################################################
 class LogicNormal(object):
 
@@ -42,20 +41,19 @@ class LogicNormal(object):
         try:
             logger.debug("파일정리 시작!")
             source_base_path = ModelSetting.get('source_base_path')
-            ktv_base_path = ModelSetting.get('ktv_base_path')
+            ktv_drama_base_path = ModelSetting.get('ktv_drama_base_path')
+            ktv_show_base_path = ModelSetting.get('ktv_show_base_path')
             movie_base_path = ModelSetting.get('movie_base_path')
             error_path = ModelSetting.get('error_path')
-            interval = ModelSetting.get('interval')
-            emptyFolderDelete = ModelSetting.get('emptyFolderDelete')
-
             source_base_path = [ x.strip() for x in source_base_path.split(',') ]
             if not source_base_path:
                 return None
             if None == '':
                 return None
-
             try:
-                fileList = LogicNormal.make_list(source_base_path, ktv_base_path, movie_base_path, error_path)
+                fileList = LogicNormal.make_list(source_base_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
+                if ModelSetting.get_bool('emptyFolderDelete'):
+                    LogicNormal.empty_folder_remove(source_base_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -71,11 +69,11 @@ class LogicNormal(object):
             item['name'] = f
             item['fullPath'] = os.path.join(path, f)
             temp = re.sub('(s|S)+\d\d', '', f)
-            logger.debug('il1 - %s : %s', item['name'], temp)
+            #logger.debug('il1 - %s : %s', item['name'], temp)
             temp = re.sub('\-\d\d', '', temp)
-            logger.debug('il2 - %s : %s', item['name'], temp)
+            #logger.debug('il2 - %s : %s', item['name'], temp)
             temp = re.sub(u'\d?\d-\d?\d회 ?합?본?', '', temp)
-            logger.debug('il3 - %s : %s', item['name'], temp)
+            #logger.debug('il3 - %s : %s', item['name'], temp)
             item['guessit'] = guessit(temp)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
@@ -97,12 +95,11 @@ class LogicNormal(object):
 
 
     @staticmethod
-    def make_list(source_path, ktv_path, movie_path, err_path):
+    def make_list(source_path, ktv_drama_path, ktv_show_path, movie_path, err_path):
         interval = ModelSetting.get('interval')
         try:
             for path in source_path:
                 logger.debug('path:%s', path)
-                del_lists = []
                 lists = os.listdir(path.strip())
                 for f in lists:
                     try:
@@ -115,15 +112,8 @@ class LogicNormal(object):
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
                             if item is not None:
-                                del_lists.append(item)
-                                LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
-                                if ModelSetting.get_bool('emptyFolderDelete'):
-                                    del_lists.reverse()
-                                    for item in del_lists:
-                                        if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
-                                            os.rmdir(unicode(item['fullPath']))
+                                LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
                         elif os.path.isdir(p):
-                            sub_del_lists = []
                             sub_lists = os.listdir(p)
                             for fs in sub_lists:
                                 try:
@@ -133,13 +123,7 @@ class LogicNormal(object):
                                     if os.path.isfile(os.path.join(p.strip(), fs)):
                                         item = LogicNormal.item_list(p, fs)
                                         if item is not None:
-                                            sub_del_lists.append(item)
-                                            LogicNormal.check_move_list(item, ktv_path, movie_path, err_path)
-                                            if ModelSetting.get_bool('emptyFolderDelete'):
-                                                sub_del_lists.reverse()
-                                                for item in sub_del_lists:
-                                                    if source_path != item['fullPath'] and len(os.listdir(item['fullPath'])) == 0:
-                                                        os.rmdir(unicode(item['fullPath']))
+                                            LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
                                 except Exception as e:
                                     logger.error('Exxception:%s', e)
                                     logger.error(traceback.format_exc())
@@ -152,11 +136,11 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def check_move_list(item, ktv_target_path, movie_target_path, error_target_path):
+    def check_move_list(item, ktv_drama_target_path, ktv_show_target_path, movie_target_path, error_target_path):
+        ktv_show_genre_flag = ModelSetting.get_bool('ktv_show_genre_flag')
         try:
             rules = ['4K', '4k', 'UHD', '2160p', '2160P']
             condition = 0
-
             #TV
             if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode':
                 from framework.common.daum import DaumTV
@@ -172,7 +156,15 @@ class LogicNormal(object):
                     if daum_tv_info['genre'] == u'드라마':
                         logger.debug('cml - korea drama %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
-                        LogicNormal.move_ktv(item, daum_tv_info, ktv_target_path)
+                        LogicNormal.move_ktv_drama(item, daum_tv_info, ktv_target_path)
+                    elif ktv_show_genre_flag == 1:
+                        logger.debug('cml - korea drama %s', daum_tv_info['genre'])
+                        LogicNormal.set_ktv(item, daum_tv_info)
+                        LogicNormal.move_ktv_show_genre(item, daum_tv_info, ktv_show_target_path)
+                    elif ktv_show_target_path is not None and ktv_genre == 0:
+                        logger.debug('cml - korea drama %s', daum_tv_info['genre'])
+                        LogicNormal.set_ktv(item, daum_tv_info)
+                        LogicNormal.move_ktv_show(item, daum_tv_info, ktv_show_target_path)
                     else:
                         LogicNormal.move_except(item, error_target_path)
                 else:
@@ -232,24 +224,83 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def move_ktv(data, info, base_path):
+    def move_ktv_drama(data, info, base_path):
+        uhd_ktv_drama_base_path = ModelSetting.get('uhd_ktv_drama_base_path')
         try:
             logger.debug('=== title %s', data['dest_folder_name'])
             set_cat = u'드라마'
             set_country = u'한국'
             title = data['dest_folder_name']
             fullPath = data['fullPath']
-
             if data['uhd'] > 0:
-                set_country = u'한국-UHD(4k)'
-
+                LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
+                return
             dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), title.encode('utf-8'), data['name'])
+            fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, 'match')
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def move_ktv_drama_uhd(data, info, base_path):
+        try:
+            logger.debug('=== title %s', data['dest_folder_name'])
+            title = data['dest_folder_name']
+            fullPath = data['fullPath']
+
+            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            if not os.path.exists(dest_folder_path):
+                os.makedirs(dest_folder_path)
+            fileCheck = os.path.join(dest_folder_path, data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, 'match')
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def move_ktv_show(data, info, base_path):
+        try:
+            logger.debug('=== title %s', data['dest_folder_name'])
+            title = data['dest_folder_name']
+            fullPath = data['fullPath']
+
+            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            if not os.path.exists(dest_folder_path):
+                os.makedirs(dest_folder_path)
+            fileCheck = os.path.join(dest_folder_path, data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, 'match')
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def move_ktv_show_genre(data, info, base_path):
+        try:
+            set_genre = []
+            logger.debug('=== title %s', data['dest_folder_name'])
+            if 'genre' in info:
+                set_genre = info['genre']
+            else:
+                set_genre = u'기타'
+            title = data['dest_folder_name']
+            fullPath = data['fullPath']
+
+            dest_folder_path = os.path.join(base_path.strip(), set_genre.encode('utf-8'), title.encode('utf-8'))
+            if not os.path.exists(dest_folder_path):
+                os.makedirs(dest_folder_path)
+            fileCheck = os.path.join(dest_folder_path, data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, 'match')
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -262,35 +313,103 @@ class LogicNormal(object):
             #if not os.path.isdir(dest_folder_path):
             #    os.makedirs(dest_folder_path)
             #shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(data, dest_folder_path)
+            LogicNormal.db_save(data, dest_folder_path, 'notMatch')
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
     def move_movie(data, info, base_path):
+        sort = ModelSetting.get('movie_sort')
+        uhd_base_path = ModelSetting.get('uhd_base_path')
+        ani_base_path = ModelSetting.get('ani_base_path')
+        movie_country_option = ModelSetting.get('movie_country_option')
+        movie_year_option = ModelSetting.get('movie_year_option')
+        movie_rate_option = ModelSetting.get('movie_rate_option')
+        uhd_flag = ModelSetting.get_bool('uhd_flag')
+        arg1 = []
+        arg2 = []
+        arg3 = []
         try:
-            set_country = []
-            set_year = []
-            condition = 0
+            for k, v in sort:
+                if k == '국가':
+                    if v == 0:
+                        arg1 = LogicNormal.movie_path_country(info, movie_country_option)
+                    elif v == 1:
+                        arg2 = LogicNormal.movie_path_country(info, movie_country_option)
+                    elif v == 2:
+                        arg3 = LogicNormal.movie_path_country(info, movie_country_option)
+                if k == '연도':
+                    if v == 0:
+                        arg1 = LogicNormal.movie_path_year(info, movie_year_option)
+                    elif v == 1:
+                        arg2 = LogicNormal.movie_path_year(info, movie_year_option)
+                    elif v == 2:
+                        arg3 = LogicNormal.movie_path_year(info, movie_year_option)
+                if k == '등급':
+                    if v == 0:
+                        arg1 = LogicNormal.movie_path_rate(info, movie_rate_option)
+                    elif v == 1:
+                        arg2 = LogicNormal.movie_path_rate(info, movie_rate_option)
+                    elif v == 2:
+                        arg3 = LogicNormal.movie_path_rate(info, movie_rate_option)
 
-            if 'more' in info:
-                if 'info' in info['more']:
-                    keywords = ''.join(info['more']['info'])
-                    for words in keywords.split('|'):
-                        if u' 애니메이션 외' in words:
-                            condition += 1
-                        else:
-                            condition -= 0
+            check_ani = LogicNormal.check_ani(info)
+            if data['uhd'] > 0 and uhd_flag == 1:
+                LogicNormal.move_movie_uhd(data, info, uhd_base_path)
+                return
+            elif check_ani >= 1:
+                set_cat = u'애니메이션'
+                target = u'극장판'
+                dest_folder_path = os.path.join(ani_base_path, data['dest_folder_name'])
+            else:
+                if arg1 is not None and arg2 is not None and arg3 is not None:
+                    logger.debug('mm - arg1+2+3')
+                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
+                    logger.debug('mm - dest_folder_path:%s', dest_folder_path)
+                elif arg1 is not None and arg2 is not None:
+                    logger.debug('mm - arg1+2')
+                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
+                    logger.debug('mm - dest_folder_path:%s', dest_folder_path)
+                elif arg1 is not None and:
+                    logger.debug('mm - arg1')
+                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
+                    logger.debug('mm - dest_folder_path:%s', dest_folder_path)
+            if not os.path.exists(dest_folder_path):
+                os.makedirs(dest_folder_path)
+            fileCheck = os.path.join(dest_folder_path, data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(data['fullPath'], dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, 'match')
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
 
-            if condition == 0:
-                if 'genre' in info:
-                    if u'애니메이션' in info['genre']:
-                        condition += 1
-                    else:
-                        condition -= 0
+    @staticmethod
+    def move_movie_uhd(data, info, base_path):
+        eng_title_flag = ModelSetting.get_bool('eng_title_flag')
+        try:
+            if eng_title_flag == 1:
+                dest_folder_name = '%s' % (re.sub('[\\/:*?"<>|]', '', info['more']['eng_title']).replace('  ', ' '))
+                dest_folder_path = os.path.join(base_path.strip(), dest_folder_name)
+            else:
+                dest_folder_path = os.path.join(base_path.strip(), data['dest_folder_name'])
 
+            if not os.path.exists(dest_folder_path):
+                os.makedirs(dest_folder_path)
+            fileCheck = os.path.join(dest_folder_path, data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(data['fullPath'], dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, 'match')
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def movie_path_country(info, option):
+        try:
             country = []
+            set_country = []
             if 'more' in info:
                 if 'country' in info['more']:
                     country = info['more']['country']
@@ -298,73 +417,131 @@ class LogicNormal(object):
                 if 'country' in info:
                     country = info['country']
 
-            if u'한국' in country:
-                set_country = u'한국'
-            elif u'중국' in country:
-                set_country = u'중국'
-            elif u'홍콩' in country:
-                set_country = u'중국'
-            elif u'대만' in country:
-                set_country = u'중국'
-            elif u'일본' in country:
-                set_country = u'일본'
-            else:
-                set_country = u'외국'
-
-            if int(info['year']) < 1990:
-                set_year = u'1900s'
-            elif int(info['year']) >= 1990 and int(info['year']) < 2000:
-                set_year = u'1990s'
-            elif int(info['year']) >= 2000 and int(info['year']) < 2010:
-                set_year = u'2000s'
-            elif int(info['year']) >= 2010 and int(info['year']) <= 2012:
-                set_year = u'~2012'
-            elif int(info['year']) == 2013:
-                set_year = u'2013'
-            elif int(info['year']) == 2014:
-                set_year = u'2014'
-            elif int(info['year']) == 2015:
-                set_year = u'2015'
-            elif int(info['year']) == 2016:
-                set_year = u'2016'
-            elif int(info['year']) == 2017:
-                set_year = u'2017'
-            elif int(info['year']) == 2018:
-                set_year = u'2018'
-            elif int(info['year']) == 2019:
-                set_year = u'2019'
-            else:
-                set_year = u'2020'
-
-            set_cat = u'영화'
-            if data['uhd'] > 0:
-                dest_folder_name = '%s' % (re.sub('[\\/:*?"<>|]', '', info['more']['eng_title']).replace('  ', ' '))
-                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), 'UHD', dest_folder_name)
-            elif condition >= 1:
-                set_cat = u'애니메이션'
-                target = u'극장판'
-                dest_folder_path = os.path.join(base_path, set_cat.encode('utf-8'), target.encode('utf-8'), data['dest_folder_name'])
-            else:
-                dest_folder_path = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'])
-
-            if not os.path.exists(dest_folder_path):
-                os.makedirs(dest_folder_path)
-            fileCheck = os.path.join(base_path.strip(), set_cat.encode('utf-8'), set_country.encode('utf-8'), set_year.encode('utf-8'), data['dest_folder_name'], data['name'])
-            if not os.path.isfile(fileCheck):
-                shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path)
+            if country is not None:
+                for keywords, values in option:
+                    encKeywords = keywords.encode('utf-8')
+                    gregx = re.compile(encKeywords, re.I)
+                    if (gregx.search(country)) is not None:
+                        encValues = values.encode('utf-8')
+                        set_country = encValues
+                        logger.debug('mpc - country:%s, encValues:%s', set_country, encValues)
+                        break
+                    else:
+                        set_country = u'외국'
+                return set_country
+             else:
+                return None
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def db_save(data, dest):
+    def movie_path_year(info, option):
+        try:
+            set_year = []
+            if info['year'] is not None:
+                for keywords, values in option:
+                    encKeywords = keywords.encode('utf-8')
+                    encValues = values.encode('utf-8')
+                    if int(info['year']) <= encKeywords:
+                        set_year = encValues
+                        logger.debug('mpy - year:%s, encValues:%s', set_year, encValues)
+                        break
+                return set_year
+            else:
+                return None
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def movie_path_rate(info, option):
+        try:
+            rate = []
+            set_rate = []
+            if 'more' in info:
+                if 'rate' in info['more']:
+                    rate = info['more']['rate']
+
+            if rate is not None:
+                for keywords, values in option:
+                    encKeywords = keywords.encode('utf-8')
+                    gregx = re.compile(encKeywords, re.I)
+                    if (gregx.search(rate)) is not None:
+                        encValues = values.encode('utf-8')
+                        set_rate = encValues
+                        logger.debug('mpr - rate:%s, encValues:%s', set_rate, encValues)
+                        break
+                    else:
+                        set_rate = u'기타'
+                return set_rate
+             else:
+                return None
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def check_ani(info):
+        ani_flag = ModelSetting.get_bool('ani_flag')
+        try:
+            condition = 0
+            if ani_flag == 1:
+                if 'more' in info:
+                    if 'info' in info['more']:
+                        keywords = ''.join(info['more']['info'])
+                        for words in keywords.split('|'):
+                            if u' 애니메이션 외' in words:
+                                condition += 1
+                            else:
+                                condition -= 0
+
+                if condition == 0:
+                    if 'genre' in info:
+                        if u'애니메이션' in info['genre']:
+                            condition += 1
+                        else:
+                            condition -= 0
+            return condition
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def empty_folder_remove(base_path):
+        try:
+            for path in source_path:
+                logger.debug('efr - path:%s', path)
+                lists = os.listdir(path.strip())
+                for f in lists:
+                    try:
+                        if LogicNormal.isHangul(str(f)) > 0:
+                            f = f.encode('utf-8')
+                        p = os.path.join(path.strip(), f)
+                        logger.debug('efr - p:%s', p)
+                        if os.path.isdir(p):
+                            sub_lists = os.listdir(p)
+                            if sub_lists is not None:
+                                empty_folder_remove(p)
+                            else:
+                                logger.debug('efr - rmdir %s', p)
+                                os.rmdir(p)
+                    except Exception as e:
+                        logger.error('Exxception:%s', e)
+                        logger.error(traceback.format_exc())
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def db_save(data, dest, match_type):
         try:
             entity = {}
             entity['name'] = data['search_name']
             entity['fileName'] = data['name']
             entity['dirName'] = data['fullPath']
             entity['targetPath'] = dest
+            entity['match_type'] = match_type
             ModelItem.save_as_dict(entity)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -381,19 +558,15 @@ class LogicNormal(object):
 
     @staticmethod
     def isHangul(text):
-
         if type(text) is not unicode:
             encText = text.decode('utf-8')
         else:
             encText = text
-
         hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
-
         return hanCount > 0
 
     @staticmethod
     def strip_all(x):
-
       if isinstance(x, str): # if using python2 replace str with basestring to include unicode type
         x = x.strip()
       elif isinstance(x, list):
@@ -402,7 +575,4 @@ class LogicNormal(object):
         for k, v in x.iteritems():
           x.pop(k)  # also strip keys
           x[ LogicNormal.strip_all(k) ] = LogicNormal.strip_all(v)
-
       return x
-
-

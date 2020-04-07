@@ -12,6 +12,8 @@
           </select>
           <select id="option" name="option" class="form-control form-control-sm">
             <option value="all">전체</option>
+            <option value="match">일치</option>
+            <option value="notMatch">불일치</option>
           </select>
         </span>
         <span class="col-md-8">
@@ -26,8 +28,9 @@
   {{ macros.m_hr_head_top() }}
   {{ macros.m_row_start('0') }}
   {{ macros.m_col(2, macros.m_strong('Created Time')) }}
-  {{ macros.m_col(6, macros.m_strong('FileName')) }}
-  {{ macros.m_col(2, macros.m_strong('MovePath')) }}
+  {{ macros.m_col(4, macros.m_strong('FileName')) }}
+  {{ macros.m_col(1, macros.m_strong('Match')) }}
+  {{ macros.m_col(5, macros.m_strong('MovePath')) }}
   {{ macros.m_row_end() }}
   {{ macros.m_hr_head_bottom() }}
   <div id="list_div"></div>
@@ -73,7 +76,7 @@ function request_search(page) {
   formData += '&page=' + page;
   $.ajax({
     url: '/' + package_name + '/ajax/web_list',
-    type: "POST", 
+    type: "POST",
     cache: false,
     data: formData,
     dataType: "json",
@@ -92,8 +95,8 @@ function make_list(data) {
     str += m_row_start();
     str += m_col(2, data[i].created_time);
     tmp = data[i].fileName;
-    str += m_col(6, tmp);
-    str += m_col(2, data[i].match_type);
+    str += m_col(4, tmp);
+    str += m_col(1, data[i].match_type);
     tmp = data[i].dirName;
     if (data[i].match_type == 'none') {
       if (data[i].is_moved == '0') {
@@ -104,12 +107,12 @@ function make_list(data) {
     } else {
       tmp = data[i].dirName + '-&gt;' + data[i].targetPath;
     }
-    str += m_col(2, tmp);
+    str += m_col(5, tmp);
     str += m_row_end();
     if (i != data.length -1) str += m_hr();
   }
   document.getElementById("list_div").innerHTML = str;
 }
 
-</script>    
+</script>
 {% endblock %}
