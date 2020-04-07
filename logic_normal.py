@@ -338,21 +338,21 @@ class LogicNormal(object):
         arg3 = []
         try:
             for k, v in sort:
-                if k == '국가':
+                if k == u'국가':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_country(info, movie_country_option)
                     elif v == 1:
                         arg2 = LogicNormal.movie_path_country(info, movie_country_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_country(info, movie_country_option)
-                if k == '연도':
+                if k == u'연도':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_year(info, movie_year_option)
                     elif v == 1:
                         arg2 = LogicNormal.movie_path_year(info, movie_year_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_year(info, movie_year_option)
-                if k == '등급':
+                if k == u'등급':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_rate(info, movie_rate_option)
                     elif v == 1:
