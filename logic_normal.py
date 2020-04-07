@@ -346,33 +346,34 @@ class LogicNormal(object):
 
     @staticmethod
     def move_movie(data, info, base_path):
-        temp_sort = ModelSetting.get('movie_sort')
-        sort = temp_sort.replace("'", "\"")
-        #json_sort = json.dumps(sort)
+        sort = ModelSetting.get('movie_sort')
+        #sort = temp_sort.replace("'", "\"")
+        json_sort = json.dumps(sort, ensure_ascii = False)
         #sort = json.loads(json_sort, object_hook=LogicNormal._decode_dict)
+        sort = json.loads(json_sort)
         #sort = json.loads(json_sort.decode('utf-8'))
-        sort = json.dumps(json.loads(sort))
+        #sort = json.dumps(json.loads(sort))
 
-        temp_movie_country_option = ModelSetting.get('movie_country_option')
-        movie_country_option = temp_movie_country_option.replace("'", "\"")
-        #json_movie_country_option = json.dumps(movie_country_option)
+        movie_country_option = ModelSetting.get('movie_country_option')
+        #movie_country_option = temp_movie_country_option.replace("'", "\"")
+        json_movie_country_option = json.dumps(movie_country_option, ensure_ascii = False)
         #movie_country_option = json.loads(json_movie_country_option, object_hook=LogicNormal._decode_dict)
-        #movie_country_option = json.loads(json_movie_country_option.decode('utf-8'))
-        movie_country_option = json.dumps(json.loads(movie_country_option))
+        movie_country_option = json.loads(json_movie_country_option)
+        #movie_country_option = json.dumps(json.loads(movie_country_option))
 
-        temp_movie_year_option = ModelSetting.get('movie_year_option')
-        movie_year_option = temp_movie_year_option.replace("'", "\"")
-        #json_movie_year_option = json.dumps(movie_year_option)
+        movie_year_option = ModelSetting.get('movie_year_option')
+        #movie_year_option = temp_movie_year_option.replace("'", "\"")
+        json_movie_year_option = json.dumps(movie_year_option, ensure_ascii = False)
         #movie_year_option = json.loads(json_movie_year_option, object_hook=LogicNormal._decode_dict)
-        #movie_year_option = json.loads(json_movie_year_option.decode('utf-8'))
-        movie_year_option = json.dumps(json.loads(movie_year_option))
+        movie_year_option = json.loads(json_movie_year_option)
+        #movie_year_option = json.dumps(json.loads(movie_year_option))
 
-        temp_movie_rate_option = ModelSetting.get('movie_rate_option')
-        movie_rate_option = temp_movie_rate_option.replace("'", "\"")
-        #json_movie_rate_option = json.dumps(movie_rate_option)
+        movie_rate_option = ModelSetting.get('movie_rate_option')
+        #movie_rate_option = temp_movie_rate_option.replace("'", "\"")
+        json_movie_rate_option = json.dumps(movie_rate_option, ensure_ascii = False)
         #movie_rate_option = json.loads(json_movie_rate_option, object_hook=LogicNormal._decode_dict)
-        #movie_rate_option = json.loads(json_movie_rate_option.decode('utf-8'))
-        movie_rate_option = json.dumps(json.loads(movie_rate_option))
+        movie_rate_option = json.loads(json_movie_rate_option)
+        #movie_rate_option = json.dumps(json.loads(movie_rate_option))
 
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
@@ -382,21 +383,21 @@ class LogicNormal(object):
         arg3 = []
         try:
             for k, v in sort.items():
-                if k == u'국가':
+                if k == '국가':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_country(info, movie_country_option)
                     elif v == 1:
                         arg2 = LogicNormal.movie_path_country(info, movie_country_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_country(info, movie_country_option)
-                if k == u'연도':
+                if k == '연도':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_year(info, movie_year_option)
                     elif v == 1:
                         arg2 = LogicNormal.movie_path_year(info, movie_year_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_year(info, movie_year_option)
-                if k == u'등급':
+                if k == '등급':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_rate(info, movie_rate_option)
                     elif v == 1:
