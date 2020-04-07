@@ -346,25 +346,29 @@ class LogicNormal(object):
 
     @staticmethod
     def move_movie(data, info, base_path):
-        sort = ModelSetting.get('movie_sort')
+        temp_sort = ModelSetting.get('movie_sort')
+        sort = temp_sort.replace("'", "\"")
         #json_sort = json.dumps(sort)
         #sort = json.loads(json_sort, object_hook=LogicNormal._decode_dict)
         #sort = json.loads(json_sort.decode('utf-8'))
         sort = json.dumps(json.loads(sort))
 
-        movie_country_option = ModelSetting.get('movie_country_option')
+        temp_movie_country_option = ModelSetting.get('movie_country_option')
+        movie_country_option = temp_movie_country_option.replace("'", "\"")
         #json_movie_country_option = json.dumps(movie_country_option)
         #movie_country_option = json.loads(json_movie_country_option, object_hook=LogicNormal._decode_dict)
         #movie_country_option = json.loads(json_movie_country_option.decode('utf-8'))
         movie_country_option = json.dumps(json.loads(movie_country_option))
 
-        movie_year_option = ModelSetting.get('movie_year_option')
+        temp_movie_year_option = ModelSetting.get('movie_year_option')
+        movie_year_option = temp_movie_year_option.replace("'", "\"")
         #json_movie_year_option = json.dumps(movie_year_option)
         #movie_year_option = json.loads(json_movie_year_option, object_hook=LogicNormal._decode_dict)
         #movie_year_option = json.loads(json_movie_year_option.decode('utf-8'))
         movie_year_option = json.dumps(json.loads(movie_year_option))
 
-        movie_rate_option = ModelSetting.get('movie_rate_option')
+        temp_movie_rate_option = ModelSetting.get('movie_rate_option')
+        movie_rate_option = temp_movie_rate_option.replace("'", "\"")
         #json_movie_rate_option = json.dumps(movie_rate_option)
         #movie_rate_option = json.loads(json_movie_rate_option, object_hook=LogicNormal._decode_dict)
         #movie_rate_option = json.loads(json_movie_rate_option.decode('utf-8'))
