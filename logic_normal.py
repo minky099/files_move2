@@ -239,7 +239,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match')
+                LogicNormal.db_save(data, dest_folder_path, 'match', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -257,7 +257,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match')
+                LogicNormal.db_save(data, dest_folder_path, 'match', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -275,7 +275,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match')
+                LogicNormal.db_save(data, dest_folder_path, 'match', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -298,7 +298,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match')
+                LogicNormal.db_save(data, dest_folder_path, 'match', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -311,7 +311,7 @@ class LogicNormal(object):
             #if not os.path.isdir(dest_folder_path):
             #    os.makedirs(dest_folder_path)
             #shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(data, dest_folder_path, 'notMatch')
+            LogicNormal.db_save(data, dest_folder_path, 'notMatch', False)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -378,7 +378,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match')
+                LogicNormal.db_save(data, dest_folder_path, 'match', True))
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -398,7 +398,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match')
+                LogicNormal.db_save(data, dest_folder_path, 'match', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -532,7 +532,7 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def db_save(data, dest, match_type):
+    def db_save(data, dest, match_type, is_moved):
         try:
             entity = {}
             entity['name'] = data['search_name']
@@ -540,6 +540,10 @@ class LogicNormal(object):
             entity['dirName'] = data['fullPath']
             entity['targetPath'] = dest
             entity['match_type'] = match_type
+            if is_moved:
+                entity['is_moved'] = 1
+            else:
+                entity['is_moved'] = 0
             ModelItem.save_as_dict(entity)
         except Exception as e:
             logger.error('Exxception:%s', e)

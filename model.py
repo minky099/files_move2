@@ -116,6 +116,7 @@ class ModelItem(db.Model):
     dirName = db.Column(db.String)
     targetPath = db.Column(db.String)
     match_type = db.Column(db.String)
+    is_moved = db.Column(db.Boolean)
     #interval = db.Column(db.Integer)
     #emptyFolderDelete = db.Column(db.Boolean)
 
@@ -137,6 +138,7 @@ class ModelItem(db.Model):
             entity.dirName = unicode(item['dirName'])
             entity.targetPath = unicode(item['targetPath'])
             entity.match_type = unicode(item['match_type'])
+            entity.is_moved = d['is_moved']
 
             db.session.add(entity)
             db.session.commit()
