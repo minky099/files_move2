@@ -28,6 +28,7 @@ class Logic(object):
         'db_version' : '1',
 		'source_base_path' : '',
 		'ktv_drama_base_path' : '',
+		'uhd_ktv_drama_base_path' : '',
 		'ktv_show_base_path' : '',
 		'movie_base_path' : '',
 		'error_path' : '',
