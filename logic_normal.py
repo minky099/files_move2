@@ -239,7 +239,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True)
+                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -257,7 +257,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True)
+                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -275,7 +275,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True)
+                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -298,7 +298,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True)
+                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -311,19 +311,19 @@ class LogicNormal(object):
             #if not os.path.isdir(dest_folder_path):
             #    os.makedirs(dest_folder_path)
             #shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(data, dest_folder_path, 'notMatch', False)
+            LogicNormal.db_save(data, dest_folder_path, u'불일치', False)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
     @staticmethod
     def move_movie(data, info, base_path):
-        sort = ModelSetting.get('movie_sort')
+        sort = json.loads(ModelSetting.get('movie_sort'))
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
-        movie_country_option = ModelSetting.get('movie_country_option')
-        movie_year_option = ModelSetting.get('movie_year_option')
-        movie_rate_option = ModelSetting.get('movie_rate_option')
+        movie_country_option = json.loads(ModelSetting.get('movie_country_option'))
+        movie_year_option = json.loads(ModelSetting.get('movie_year_option'))
+        movie_rate_option = json.loads(ModelSetting.get('movie_rate_option'))
         uhd_flag = ModelSetting.get_bool('uhd_flag')
         arg1 = []
         arg2 = []
@@ -378,7 +378,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True)
+                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -398,7 +398,7 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, 'match', True)
+                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
