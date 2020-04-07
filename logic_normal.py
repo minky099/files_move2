@@ -317,19 +317,51 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
+    def _decode_list(data):
+        rv = []
+        for item in data:
+            if isinstance(item, unicode):
+                item = item.encode('utf-8')
+            elif isinstance(item, list):
+                item = LogicNormal._decode_list(item)
+            elif isinstance(item, dict):
+                item = LogicNormal._decode_dict(item)
+            rv.append(item)
+        return rv
+
+    @staticmethod
+    def _decode_dict(data):
+        rv = {}
+        for key, value in data.iteritems():
+            if isinstance(key, unicode):
+                key = key.encode('utf-8')
+            if isinstance(value, unicode):
+                value = value.encode('utf-8')
+            elif isinstance(value, list):
+                value = LogicNormal._decode_list(value)
+            elif isinstance(value, dict):
+                value = LogicNormal._decode_dict(value)
+            rv[key] = value
+        return rv
+
+    @staticmethod
     def move_movie(data, info, base_path):
         sort = ModelSetting.get('movie_sort')
         json_sort = json.dumps(sort)
-        sort = json.loads(json_sort.decode('utf-8'))
+        sort = json.loads(json_sort, object_hook=LogicNormal._decode_dict)
+        #sort = json.loads(json_sort.decode('utf-8'))
         movie_country_option = ModelSetting.get('movie_country_option')
         json_movie_country_option = json.dumps(movie_country_option)
-        movie_country_option = json.loads(json_movie_country_option.decode('utf-8'))
+        movie_country_option = json.loads(json_movie_country_option, object_hook=LogicNormal._decode_dict)
+        #movie_country_option = json.loads(json_movie_country_option.decode('utf-8'))
         movie_year_option = ModelSetting.get('movie_year_option')
         json_movie_year_option = json.dumps(movie_year_option)
-        movie_year_option = json.loads(json_movie_year_option.decode('utf-8'))
+        movie_year_option = json.loads(json_movie_year_option, object_hook=LogicNormal._decode_dict)
+        #movie_year_option = json.loads(json_movie_year_option.decode('utf-8'))
         movie_rate_option = ModelSetting.get('movie_rate_option')
         json_movie_rate_option = json.dumps(movie_rate_option)
-        movie_rate_option = json.loads(json_movie_rate_option.decode('utf-8'))
+        movie_rate_option = json.loads(json_movie_rate_option, object_hook=LogicNormal._decode_dict)
+        #movie_rate_option = json.loads(json_movie_rate_option.decode('utf-8'))
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
         uhd_flag = ModelSetting.get_bool('uhd_flag')
@@ -337,7 +369,7 @@ class LogicNormal(object):
         arg2 = []
         arg3 = []
         try:
-            for k, v in sort.iteritems():
+            for k, v in sort.items():
                 if k == u'국가':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_country(info, movie_country_option)
@@ -424,7 +456,7 @@ class LogicNormal(object):
                     country = info['country']
 
             if country is not None:
-                for keywords, values in option.iteritems():
+                for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     if (gregx.search(country)) is not None:
@@ -446,7 +478,7 @@ class LogicNormal(object):
         try:
             set_year = []
             if info['year'] is not None:
-                for keywords, values in option.iteritems():
+                for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     encValues = values.encode('utf-8')
                     if int(info['year']) <= encKeywords:
@@ -470,7 +502,7 @@ class LogicNormal(object):
                     rate = info['more']['rate']
 
             if rate is not None:
-                for keywords, values in option.iteritems():
+                for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     if (gregx.search(rate)) is not None:
@@ -528,7 +560,7 @@ class LogicNormal(object):
                         if os.path.isdir(p):
                             sub_lists = os.listdir(p)
                             if sub_lists is not None:
-                                empty_folder_remove(p)
+                                LogicNormal.empty_folder_remove(p)
                             else:
                                 logger.debug('efr - rmdir %s', p)
                                 os.rmdir(p)
