@@ -371,7 +371,7 @@ class LogicNormal(object):
                     logger.debug('mm - arg1+2')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
                     logger.debug('mm - dest_folder_path:%s', dest_folder_path)
-                elif arg1 is not None and:
+                elif arg1 is not None:
                     logger.debug('mm - arg1')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
                     logger.debug('mm - dest_folder_path:%s', dest_folder_path)
