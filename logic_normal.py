@@ -479,14 +479,18 @@ class LogicNormal(object):
     def movie_path_year(info, option):
         try:
             set_year = ""
+            temp = None
             if info['year'] is not None:
                 for keywords, values in option.items():
                     #encKeywords = keywords.encode('utf-8')
                     encValues = values.encode('utf-8')
-                    if int(info['year']) <= keywords:
+                    if int(info['year']) == keywords:
                         set_year = encValues
-                        logger.debug('mpy - year:%s, encValues:%s', set_year, encValues)
+                        logger.debug('mpy break - year:%s, encValues:%s', set_year, encValues)
                         break
+                    elif int(info['year']) <= keywords:
+                        set_year = encValues
+                        logger.debug('mpy search - year:%s, encValues:%s', set_year, encValues)
                 return set_year
             else:
                 return None
