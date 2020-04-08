@@ -470,46 +470,6 @@ class LogicNormal(object):
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
-'''
-    @staticmethod
-    def movie_path_genre(info):
-        try:
-            condition = 0
-            if ani_flag == 1:
-                if 'more' in info:
-                    if 'info' in info['more']:
-                        keywords = ''.join(info['more']['info'])
-                        for words in keywords.split('|'):
-                            if u' 애니메이션 외' in words:
-                                condition += 1
-                            else:
-                                condition -= 0
-
-                if condition == 0:
-                    if 'genre' in info:
-                        if u'애니메이션' in info['genre']:
-                            condition += 1
-                        else:
-                            condition -= 0
-            return condition
-            set_year = ""
-            temp = None
-            if info['year'] is not None:
-                for keywords, values in sorted(option.items()):
-                    #encKeywords = keywords.encode('utf-8')
-                    encValues = values.encode('utf-8')
-                    if int(info['year']) <= keywords:
-                        set_year = encValues
-                        logger.debug('mpy break - year:%s, encValues:%s', info['year'], encValues)
-                        break
-                return set_year
-            else:
-                return None
-        except Exception as e:
-            logger.error('Exxception:%s', e)
-            logger.error(traceback.format_exc())
-'''
-
     @staticmethod
     def movie_path_rate(info, option):
         try:
