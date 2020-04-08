@@ -54,6 +54,7 @@ class LogicNormal(object):
             try:
                 fileList = LogicNormal.make_list(source_base_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
                 if ModelSetting.get_bool('emptyFolderDelete') == 1:
+                    logger.debug('empty_folder_remove')
                     LogicNormal.empty_folder_remove(source_base_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
@@ -539,6 +540,7 @@ class LogicNormal(object):
                     continue
             datas = os.listdir(target)
             if not datas:
+                logger.debug('efr - %s', target)
                 os.rmdir(target)
         except Exception as e:
             logger.error('Exxception:%s', e)
