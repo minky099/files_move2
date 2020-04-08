@@ -320,34 +320,6 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def _decode_list(data):
-        rv = []
-        for item in data:
-            if isinstance(item, unicode):
-                item = item.encode('utf-8')
-            elif isinstance(item, list):
-                item = LogicNormal._decode_list(item)
-            elif isinstance(item, dict):
-                item = LogicNormal._decode_dict(item)
-            rv.append(item)
-        return rv
-
-    @staticmethod
-    def _decode_dict(data):
-        rv = {}
-        for key, value in data.iteritems():
-            if isinstance(key, unicode):
-                key = key.encode('utf-8')
-            if isinstance(value, unicode):
-                value = value.encode('utf-8')
-            elif isinstance(value, list):
-                value = LogicNormal._decode_list(value)
-            elif isinstance(value, dict):
-                value = LogicNormal._decode_dict(value)
-            rv[key] = value
-        return rv
-
-    @staticmethod
     def move_movie(data, info, base_path):
         if ModelSetting.get('movie_sort').strip():
             sort = ast.literal_eval(ModelSetting.get('movie_sort'))
@@ -552,15 +524,13 @@ class LogicNormal(object):
 
     @staticmethod
     def empty_folder_remove(base_path):
-        files = []
-
         if not os.path.isdir(base_path):
            return
 
         files = os.listdir(base_path)
         if len(files):
             for f in files:
-                fullPath = os.path.join(path, f)
+                fullPath = os.path.join(path, unicode(f))
                 if os.path.isdir(fullPath):
                     LogicNormal.empty_folder_remove(fullPath)
         # if folder empty, delete it
