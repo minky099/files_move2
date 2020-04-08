@@ -481,7 +481,7 @@ class LogicNormal(object):
             set_year = []
             if info['year'] is not None:
                 for keywords, values in option.items():
-                    encKeywords = keywords.encode('utf-8')
+                    #encKeywords = keywords.encode('utf-8')
                     encValues = values.encode('utf-8')
                     if int(info['year']) <= encKeywords:
                         set_year = encValues
