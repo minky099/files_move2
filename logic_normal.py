@@ -53,9 +53,6 @@ class LogicNormal(object):
                 return None
             try:
                 fileList = LogicNormal.make_list(source_base_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
-                #if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    #logger.debug('empty_folder_remove')
-                    #LogicNormal.empty_folder_remove(source_base_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -242,8 +239,6 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    os.rmdir(fullPath)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -262,8 +257,6 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    os.rmdir(fullPath)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -282,8 +275,6 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    os.rmdir(fullPath)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -307,8 +298,6 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(fullPath.encode('utf-8'), dest_folder_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    os.rmdir(fullPath)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -404,8 +393,6 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    os.rmdir(data['fullPath'])
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -426,8 +413,6 @@ class LogicNormal(object):
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
                 shutil.move(data['fullPath'], dest_folder_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    os.rmdir(data['fullPath'])
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -540,26 +525,6 @@ class LogicNormal(object):
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
-'''
-    @staticmethod
-    def empty_folder_remove(base_path):
-        try:
-            for path in base_path:
-                logger.debug('efr - path:%s', path)
-                datas = os.listdir(path.strip())
-                for data in datas:
-                    p = os.path.join(path, data)
-                    if os.path.isdir(p):
-                        LogicNormal.empty_folder_remove(p)
-                        continue
-                datas = os.listdir(path)
-                if not datas:
-                    logger.debug('efr rmdir - %s', path)
-                    os.rmdir(path)
-        except Exception as e:
-            logger.error('Exxception:%s', e)
-            logger.error(traceback.format_exc())
-'''
     @staticmethod
     def db_save(data, dest, match_type, is_moved):
         try:
