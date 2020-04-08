@@ -53,8 +53,8 @@ class LogicNormal(object):
                 return None
             try:
                 fileList = LogicNormal.make_list(source_base_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
-                #if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    #LogicNormal.empty_folder_remove(source_base_path)
+                if ModelSetting.get_bool('emptyFolderDelete') == 1:
+                    LogicNormal.empty_folder_remove(source_base_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
