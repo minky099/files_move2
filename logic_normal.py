@@ -231,7 +231,7 @@ class LogicNormal(object):
             logger.debug('=== title %s', data['dest_folder_name'])
             title = data['dest_folder_name']
             fullPath = data['fullPath']
-            if data['uhd'] > 0:
+            if data['uhd'] > 0 and uhd_ktv_drama_flag == 1:
                 LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
                 return
             dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
@@ -435,7 +435,7 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
-                    logger.debug('mpc - country:%s, encValues:%s', country, encValues)
+                    logger.debug('mpc - country:%s, encValues:%s', country, values)
                     if (gregx.search(country)) is not None:
                         #encValues = values.encode('utf-8')
                         encValues = unicode(values.encode('utf-8'))
@@ -484,7 +484,7 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
-                    logger.debug('mpr - rate:%s, encValues:%s', rate, encValues)
+                    logger.debug('mpr - rate:%s, encValues:%s', rate, values)
                     if (gregx.search(rate)) is not None:
                         #encValues = values.encode('utf-8')
                         encValues = unicode(values.encode('utf-8'))
