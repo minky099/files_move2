@@ -6,12 +6,12 @@
   <form id='setting' name='setting'>
   {{ macros.setting_input_int('schedulerInterval', '스케쥴링 실행 주기', value=arg['schedulerInterval'], min='1', placeholder='10', desc='minute 단위') }}
   {{ macros.setting_checkbox('auto_start', '시작시 자동실행', value=arg['auto_start'], desc='On : 시작시 자동으로 사용 설정합니다.') }}
-  {{ macros.setting_input_text('source_base_path', '소스 경로', value=arg['source_base_path'], desc=['소스 경로. 구분자 ,', '영화, 한국 드라마, 쇼 등이 들어있는 폴더']) }}
+  {{ macros.setting_input_text('source_base_path', '소스 경로', value=arg['source_base_path'], desc=['소스 경로. 구분자 ,', '영화, 한국 드라마/쇼 등이 들어있는 폴더']) }}
   {{ macros.setting_input_text('movie_base_path', '영화가 이동할 경로', value=arg['movie_base_path'], desc=['영화가 이동할 경로']) }}
-  {{ macros.setting_input_text('movie_sort', '영화 폴더 순서', value=arg['movie_sort'], desc=['{국가:0}', '{연도:1}', '{등급:2}']) }}
-  {{ macros.setting_input_textarea('movie_country_option', '국가 옵션', value=arg['movie_country_option'], row='10', desc=['{한국:한국}', '{중국:중국}', '{홍콩:중국}', '{대만:중국}', '{일본:일본}', '나머지는 외국']) }}
-  {{ macros.setting_input_textarea('movie_year_option', '연도 옵션', value=arg['movie_year_option'], row='10', desc=['{1900:1900s}', '{1990:1990s}', '{2012:~2012}', '{2015:2015}']) }}
-  {{ macros.setting_input_text('movie_rate_option', '등급 옵션', value=arg['movie_rate_option'], desc=['12세이상관람가', '15세이상관람가', '전체관람가', '청소년관람불가']) }}
+  {{ macros.setting_input_text('movie_sort', '영화 폴더 순서', value=arg['movie_sort'], desc=['{&#39;국가&#39;:0, &#39;연도&#39;:1, &#39;등급&#39;:2}']) }}
+  {{ macros.setting_input_textarea('movie_country_option', '국가 옵션', value=arg['movie_country_option'], row='10', desc=['{&#39;한국&#39;:&#39;한국&#39;, &#39;중국&#39;:&#39;중국&#39;, &#39;홍콩&#39;:&#39;중국&#39;, &#39;대만&#39;:&#39;중국&#39;, &#39;일본&#39;:&#39;일본&#39;}', '나머지는 외국']) }}
+  {{ macros.setting_input_textarea('movie_year_option', '연도 옵션', value=arg['movie_year_option'], row='10', desc=['{1900:&#39;1900s&#39;, 1990:&#39;1990s&#39;, 2000:&#39;2000s&#39;, 2012:&#39;~2012&#39;, 2013:&#39;2013&#39;, 2014:&#39;2014&#39;, 2015:&#39;2015&#39;, 2016:&#39;2016&#39;, 2017:&#39;2017&#39;, 2018:&#39;2018&#39;, 2019:&#39;2019&#39;, 2020:&#39;2020&#39;}']) }}
+  {{ macros.setting_input_text('movie_rate_option', '등급 옵션', value=arg['movie_rate_option'], desc=['{&#39;12세이상관람가&#39;:&#39;12세이상관람가&#39;, &#39;15세이상관람가&#39;:&#39;15세이상관람가&#39;, &#39;전체관람가&#39;:&#39;전체관람가&#39;, &#39;청소년관람불가&#39;:&#39;청소년관람불가&#39;}']) }}
   {{ macros.setting_checkbox('uhd_flag', 'UHD 따로 처리', value=arg['uhd_flag'], desc='On : uhd 따로 처리') }}
   {{ macros.setting_input_text('uhd_base_path', 'UHD 영화가 이동할 경로', value=arg['uhd_base_path'], desc=['UHD 영화가 이동할 경로']) }}
   {{ macros.setting_checkbox('eng_title_flag', 'UHD인 경우 eng title', value=arg['eng_title_flag'], desc='On : UHD인 경우 english title 사용') }}
@@ -25,7 +25,7 @@
   {{ macros.setting_input_text('error_path', '예외처리된 파일이 이동할 경로', value=arg['error_path'], desc=['예외처리된 파일이 이동할 경로']) }}
   {{ macros.setting_button_with_info([['toggle_btn', 'Toggle', [{'key':'category', 'value':'advanced'}]]], left='고급설정', desc=None) }}
     <div id="toggle_advanced_div" class="collapse">
-      {{ macros.setting_input_text('folder_rule', '폴더명 규칙', value=arg['folder_rule'], desc=['%TITLE% - 영화제목', '%YEAR% - 년도', '%ENG_TITLE% - 영문제목', '%COUNTRY% - 국가', '%GENRE% - 장르', '%DATE% - 개봉일', '%RATE% - 등급', '%DURING% - 런닝타임', '', '예) %TITLE% [%ENG_TITLE%] (%YEAR%) [%COUNTRY%-%RATE%-%DURING%]', '미스 슬로운 [Miss Sloane] (2016) [미국-15세이상관람가-132분]']) }}
+      {{ macros.setting_input_text('folder_rule', '폴더명 규칙', value=arg['folder_rule'], desc=['%TITLE% - 영화제목', '%YEAR% - 년도', '%ENG_TITLE% - 영문제목', '', '예) %TITLE% [%ENG_TITLE%] (%YEAR%)', '미스 슬로운 [Miss Sloane] (2016)']) }}
       {{ macros.setting_input_text('interval', '건당처리지연시간', value=arg['interval'], desc=['기준단위 : 초']) }}
 <!--
       {{ macros.setting_checkbox('emptyFolderDelete', '빈폴더 삭제', value=arg['emptyFolderDelete'], desc='On : 작업후 빈폴더 삭제') }}
