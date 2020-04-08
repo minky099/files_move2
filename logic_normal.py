@@ -227,6 +227,7 @@ class LogicNormal(object):
     @staticmethod
     def move_ktv_drama(data, info, base_path):
         uhd_ktv_drama_base_path = ModelSetting.get('uhd_ktv_drama_base_path')
+        uhd_ktv_drama_flag = ModelSetting.get_bool('uhd_ktv_drama_flag')
         try:
             logger.debug('=== title %s', data['dest_folder_name'])
             title = data['dest_folder_name']
@@ -422,7 +423,7 @@ class LogicNormal(object):
     @staticmethod
     def movie_path_country(info, option):
         try:
-            country = []
+            country = ""
             set_country = ""
             if 'more' in info:
                 if 'country' in info['more']:
@@ -432,13 +433,13 @@ class LogicNormal(object):
                     country = info['country']
 
             if country is not None:
+                country = country.encode('utf-8')
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
-                    logger.debug('mpc - country:%s, encValues:%s', country, values)
+                    logger.debug('mpc - country:%s, values:%s', country, values)
                     if (gregx.search(country)) is not None:
-                        #encValues = values.encode('utf-8')
-                        encValues = unicode(values.encode('utf-8'))
+                        encValues = values.encode('utf-8')
                         set_country = encValues
                         logger.debug('mpc search - country:%s, encValues:%s', country, encValues)
                         break
@@ -481,13 +482,13 @@ class LogicNormal(object):
                     rate = info['more']['rate']
 
             if rate is not None:
+                rate = rate.encode('utf-8')
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
-                    logger.debug('mpr - rate:%s, encValues:%s', rate, values)
+                    logger.debug('mpr - rate:%s, values:%s', rate, values)
                     if (gregx.search(rate)) is not None:
-                        #encValues = values.encode('utf-8')
-                        encValues = unicode(values.encode('utf-8'))
+                        encValues = values.encode('utf-8')
                         set_rate = encValues
                         logger.debug('mpr search - rate:%s, encValues:%s', rate, encValues)
                         break
