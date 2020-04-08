@@ -525,15 +525,16 @@ class LogicNormal(object):
     @staticmethod
     def empty_folder_remove(base_path):
         try:
-            datas = os.listdir(base_path)
+            target = unicode(base_path)
+            datas = os.listdir(target)
             for data in datas:
-                p = os.path.join(base_path, data)
+                p = os.path.join(target, data)
                 if os.path.isdir(p):
                     LogicNormal.clear_folder(p)
                     continue
-            datas = os.listdir(base_path)
+            datas = os.listdir(target)
             if not datas:
-                os.rmdir(base_path)
+                os.rmdir(target)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
