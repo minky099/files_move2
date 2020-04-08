@@ -535,14 +535,14 @@ class LogicNormal(object):
                 logger.debug('efr - path:%s', path)
                 datas = os.listdir(path.strip())
                 for data in datas:
-                    p = os.path.join(base_path, data)
+                    p = os.path.join(path, data)
                     if os.path.isdir(p):
                         LogicNormal.empty_folder_remove(p)
                         continue
-                datas = os.listdir(base_path)
+                datas = os.listdir(path)
                 if not datas:
-                    logger.debug('efr rmdir - %s', base_path)
-                    os.rmdir(base_path)
+                    logger.debug('efr rmdir - %s', path)
+                    os.rmdir(path)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
