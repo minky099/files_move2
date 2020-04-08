@@ -531,19 +531,18 @@ class LogicNormal(object):
     @staticmethod
     def empty_folder_remove(base_path):
         try:
-            #target = base_path.encode('utf-8')
-            #target = ast.literal_eval(base_path)
-            target = os.path.join(base_path)
-            datas = os.listdir(target)
-            for data in datas:
-                p = os.path.join(target, data)
-                if os.path.isdir(p):
-                    LogicNormal.empty_folder_remove(p)
-                    continue
-            datas = os.listdir(target)
-            if not datas:
-                logger.debug('efr - %s', target)
-                os.rmdir(target)
+            for path in base_path:
+                logger.debug('efr - path:%s', path)
+                datas = os.listdir(path.strip())
+                for data in datas:
+                    p = os.path.join(base_path, data)
+                    if os.path.isdir(p):
+                        LogicNormal.empty_folder_remove(p)
+                        continue
+                datas = os.listdir(base_path)
+                if not datas:
+                    logger.debug('efr rmdir - %s', base_path)
+                    os.rmdir(base_path)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
