@@ -162,7 +162,7 @@ class LogicNormal(object):
                         logger.debug('cml - korea drama %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv_show_genre(item, daum_tv_info, ktv_show_target_path)
-                    elif ktv_show_target_path is not None and ktv_genre == 0:
+                    elif ktv_show_target_path is not None and ktv_show_genre_flag == 0:
                         logger.debug('cml - korea drama %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv_show(item, daum_tv_info, ktv_show_target_path)
@@ -550,6 +550,8 @@ class LogicNormal(object):
 
     @staticmethod
     def empty_folder_remove(base_path):
+        files = []
+
         if not os.path.isdir(base_path):
            return
 
