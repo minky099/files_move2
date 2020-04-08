@@ -347,10 +347,22 @@ class LogicNormal(object):
 
     @staticmethod
     def move_movie(data, info, base_path):
-        sort = ast.literal_eval(ModelSetting.get('movie_sort'))
-        movie_country_option = ast.literal_eval(ModelSetting.get('movie_country_option'))
-        movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
-        movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
+        if ModelSetting.get('movie_sort') is not None:
+            sort = ast.literal_eval(ModelSetting.get('movie_sort'))
+        else:
+            sort = None
+        if ModelSetting.get('movie_country_option') is not None:
+            movie_country_option = ast.literal_eval(ModelSetting.get('movie_country_option'))
+        else:
+            movie_country_option = None
+        if ModelSetting.get('movie_year_option') is not None:
+            movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
+        else:
+            movie_year_option = None
+        if ModelSetting.get('movie_rate_option') is not None:
+            movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
+        else:
+            movie_rate_option = None
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
         uhd_flag = ModelSetting.get_bool('uhd_flag')
