@@ -309,10 +309,12 @@ class LogicNormal(object):
         try:
             dest_folder_path = os.path.join(base_path.strip())
             logger.debug('me - move exception %s' , data['search_name'])
-            #if not os.path.isdir(dest_folder_path):
-            #    os.makedirs(dest_folder_path)
-            #shutil.move(data['fullPath'], dest_folder_path)
-            LogicNormal.db_save(data, dest_folder_path, u'불일치', False)
+            if not os.path.isdir(dest_folder_path):
+                os.makedirs(dest_folder_path)
+            fileCheck = os.path.join(dest_folder_path, data['name'])
+            if not os.path.isfile(fileCheck):
+                shutil.move(data['fullPath'], dest_folder_path)
+                LogicNormal.db_save(data, dest_folder_path, u'불일치', False)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
