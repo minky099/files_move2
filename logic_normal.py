@@ -53,8 +53,8 @@ class LogicNormal(object):
                 return None
             try:
                 fileList = LogicNormal.make_list(source_base_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
-                if ModelSetting.get_bool('emptyFolderDelete') == 1:
-                    LogicNormal.empty_folder_remove(source_base_path)
+                #if ModelSetting.get_bool('emptyFolderDelete') == 1:
+                    #LogicNormal.empty_folder_remove(source_base_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -435,10 +435,11 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
+                    logger.debug('mpc - country:%s, encValues:%s', country, encValues)
                     if (gregx.search(country)) is not None:
                         encValues = values.encode('utf-8')
                         set_country = encValues
-                        logger.debug('mpc - country:%s, encValues:%s', set_country, encValues)
+                        logger.debug('mpc search - country:%s, encValues:%s', country, encValues)
                         break
                     else:
                         set_country = u'외국'
@@ -460,7 +461,7 @@ class LogicNormal(object):
                     encValues = values.encode('utf-8')
                     if int(info['year']) <= keywords:
                         set_year = encValues
-                        logger.debug('mpy break - year:%s, encValues:%s', set_year, encValues)
+                        logger.debug('mpy break - year:%s, encValues:%s', info['year'], encValues)
                         break
                 return set_year
             else:
@@ -482,10 +483,11 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
+                    logger.debug('mpr - rate:%s, encValues:%s', rate, encValues)
                     if (gregx.search(rate)) is not None:
                         encValues = values.encode('utf-8')
                         set_rate = encValues
-                        logger.debug('mpr - rate:%s, encValues:%s', set_rate, encValues)
+                        logger.debug('mpr search - rate:%s, encValues:%s', rate, encValues)
                         break
                     else:
                         set_rate = u'기타'
@@ -530,7 +532,7 @@ class LogicNormal(object):
             for data in datas:
                 p = os.path.join(target, data)
                 if os.path.isdir(p):
-                    LogicNormal.clear_folder(p)
+                    LogicNormal.empty_folder_remove(p)
                     continue
             datas = os.listdir(target)
             if not datas:
