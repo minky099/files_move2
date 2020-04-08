@@ -437,7 +437,8 @@ class LogicNormal(object):
                     gregx = re.compile(encKeywords, re.I)
                     logger.debug('mpc - country:%s, encValues:%s', country, encValues)
                     if (gregx.search(country)) is not None:
-                        encValues = values.encode('utf-8')
+                        #encValues = values.encode('utf-8')
+                        encValues = unicode(values.encode('utf-8'))
                         set_country = encValues
                         logger.debug('mpc search - country:%s, encValues:%s', country, encValues)
                         break
@@ -485,7 +486,8 @@ class LogicNormal(object):
                     gregx = re.compile(encKeywords, re.I)
                     logger.debug('mpr - rate:%s, encValues:%s', rate, encValues)
                     if (gregx.search(rate)) is not None:
-                        encValues = values.encode('utf-8')
+                        #encValues = values.encode('utf-8')
+                        encValues = unicode(values.encode('utf-8'))
                         set_rate = encValues
                         logger.debug('mpr search - rate:%s, encValues:%s', rate, encValues)
                         break
