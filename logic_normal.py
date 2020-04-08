@@ -551,7 +551,7 @@ class LogicNormal(object):
     @staticmethod
     def empty_folder_remove(base_path):
         try:
-            for path in source_path:
+            for path in base_path:
                 logger.debug('efr - path:%s', path)
                 lists = os.listdir(path.strip())
                 for f in lists:
