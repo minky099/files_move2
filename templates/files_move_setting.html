@@ -8,10 +8,10 @@
   {{ macros.setting_checkbox('auto_start', '시작시 자동실행', value=arg['auto_start'], desc='On : 시작시 자동으로 사용 설정합니다.') }}
   {{ macros.setting_input_text('source_base_path', '소스 경로', value=arg['source_base_path'], desc=['소스 경로. 구분자 ,', '영화, 한국 드라마/쇼 등이 들어있는 폴더']) }}
   {{ macros.setting_input_text('movie_base_path', '영화가 이동할 경로', value=arg['movie_base_path'], desc=['영화가 이동할 경로']) }}
-  {{ macros.setting_input_text('movie_sort', '영화 폴더 순서', value=arg['movie_sort'], desc='{'국가':0, '연도':1, '등급':2}') }}
-  {{ macros.setting_input_textarea('movie_country_option', '국가 옵션', value=arg['movie_country_option'], row='10', desc='{'한국':'한국', '중국':'중국', '홍콩':'중국', '대만':'중국', '일본':'일본'}', '나머지는 외국') }}
-  {{ macros.setting_input_textarea('movie_year_option', '연도 옵션', value=arg['movie_year_option'], row='10', desc='{1900:'1900s', 1990:'1990s', 2000:'2000s', 2012:'~2012', 2013:'2013', 2014:'2014', 2015:'2015', 2016:'2016', 2017:'2017', 2018:'2018', 2019:'2019', 2020:'2020'}') }}
-  {{ macros.setting_input_text('movie_rate_option', '등급 옵션', value=arg['movie_rate_option'], desc='{'12세이상관람가':'12세이상관람가', '15세이상관람가':'15세이상관람가', '전체관람가':'전체관람가', '청소년관람불가':'청소년관람불가'}') }}
+  {{ macros.setting_input_text('movie_sort', '영화 폴더 순서', value=arg['movie_sort'], desc=['&#123;&#39국가&#39:0, &#39연도&#39:1, &#39등급&#39:2&#125;']) }}
+  {{ macros.setting_input_textarea('movie_country_option', '국가 옵션', value=arg['movie_country_option'], row='10', desc=['&#123;&#39한국&#39:&#39한국&#39, &#39중국&#39:&#39중국&#39, &#39홍콩&#39:&#39중국&#39, &#39대만&#39:&#39중국&#39, &#39일본&#39:&#39일본&#39&#125;'], '나머지는 외국') }}
+  {{ macros.setting_input_textarea('movie_year_option', '연도 옵션', value=arg['movie_year_option'], row='10', desc=['&#123;1900:&#391900s&#39, 1990:&#391990s&#39, 2000:&#392000s&#39, 2012:&#39~2012&#39, 2013:&#392013&#39, 2014:&#392014&#39, 2015:&#392015&#39, 2016:&#392016&#39, 2017:&#392017&#39, 2018:&#392018&#39, 2019:&#392019&#39, 2020:&#392020&#39&#125;']) }}
+  {{ macros.setting_input_text('movie_rate_option', '등급 옵션', value=arg['movie_rate_option'], desc=['&#123;&#3912세이상관람가&#39:&#3912세이상관람가&#39, &#3915세이상관람가&#39:&#3915세이상관람가&#39, &#39전체관람가&#39:&#39전체관람가&#39, &#39청소년관람불가&#39:&#39청소년관람불가&#39&#125;']) }}
   {{ macros.setting_checkbox('uhd_flag', 'UHD 따로 처리', value=arg['uhd_flag'], desc='On : uhd 따로 처리') }}
   {{ macros.setting_input_text('uhd_base_path', 'UHD 영화가 이동할 경로', value=arg['uhd_base_path'], desc=['UHD 영화가 이동할 경로']) }}
   {{ macros.setting_checkbox('eng_title_flag', 'UHD인 경우 eng title', value=arg['eng_title_flag'], desc='On : UHD인 경우 english title 사용') }}
