@@ -532,7 +532,8 @@ class LogicNormal(object):
     def empty_folder_remove(base_path):
         try:
             #target = base_path.encode('utf-8')
-            target = ast.literal_eval(base_path)
+            #target = ast.literal_eval(base_path)
+            target = os.path.join(base_path)
             datas = os.listdir(target)
             for data in datas:
                 p = os.path.join(target, data)
