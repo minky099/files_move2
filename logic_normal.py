@@ -524,21 +524,16 @@ class LogicNormal(object):
 
     @staticmethod
     def empty_folder_remove(base_path):
-        base_path = unicode(base_path)
-        if not os.path.isdir(base_path):
-           return
-
-        files = os.listdir(base_path)
-        if len(files):
-            for f in files:
-                fullPath = os.path.join(path, f)
-                if os.path.isdir(fullPath):
-                    LogicNormal.empty_folder_remove(fullPath)
-        # if folder empty, delete it
-        files = os.listdir(path)
-        if len(files) == 0:
-            logger.debug('Removing empty folder: %s', path)
-            os.rmdir(path)
+        try:
+            base_path = unicode(base_path)
+            folders = list(os.walk(base_path))[1:]
+            for folder in folders:
+                # folder example: ('FOLDER/3', [], ['file'])
+                if not folder[2]:
+                    os.rmdir(folder[0])
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
 
     @staticmethod
     def db_save(data, dest, match_type, is_moved):
