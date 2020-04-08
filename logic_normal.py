@@ -483,7 +483,7 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     #encKeywords = keywords.encode('utf-8')
                     encValues = values.encode('utf-8')
-                    if int(info['year']) <= encKeywords:
+                    if int(info['year']) <= keywords:
                         set_year = encValues
                         logger.debug('mpy - year:%s, encValues:%s', set_year, encValues)
                         break
