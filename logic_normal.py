@@ -366,9 +366,9 @@ class LogicNormal(object):
         uhd_base_path = ModelSetting.get('uhd_base_path')
         ani_base_path = ModelSetting.get('ani_base_path')
         uhd_flag = ModelSetting.get_bool('uhd_flag')
-        arg1 = []
-        arg2 = []
-        arg3 = []
+        arg1 = ""
+        arg2 = ""
+        arg3 = ""
         try:
             for k, v in sort.items():
                 logger.debug('mm - k:%s, v:%s', k, v)
@@ -403,15 +403,15 @@ class LogicNormal(object):
                 target = u'극장판'
                 dest_folder_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
-                if arg1 is not None and arg2 is not None and arg3 is not None:
+                if arg1 and arg2 and arg3:
                     logger.debug('mm - arg1+2+3')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
                     logger.debug('mm - dest_folder_path:%s', dest_folder_path)
-                elif arg1 is not None and arg2 is not None:
+                elif arg1 and arg2:
                     logger.debug('mm - arg1+2')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
                     logger.debug('mm - dest_folder_path:%s', dest_folder_path)
-                elif arg1 is not None:
+                elif arg1:
                     logger.debug('mm - arg1')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
                     logger.debug('mm - dest_folder_path:%s', dest_folder_path)
