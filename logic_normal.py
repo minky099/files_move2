@@ -550,29 +550,20 @@ class LogicNormal(object):
 
     @staticmethod
     def empty_folder_remove(base_path):
-        try:
-            for path in base_path:
-                logger.debug('efr - path:%s', path)
-                lists = os.listdir(path.strip())
-                for f in lists:
-                    try:
-                        if LogicNormal.isHangul(str(f)) > 0:
-                            f = f.encode('utf-8')
-                        p = os.path.join(path.strip(), f)
-                        logger.debug('efr - p:%s', p)
-                        if os.path.isdir(p):
-                            sub_lists = os.listdir(p)
-                            if sub_lists is not None:
-                                LogicNormal.empty_folder_remove(p)
-                            else:
-                                logger.debug('efr - rmdir %s', p)
-                                os.rmdir(p)
-                    except Exception as e:
-                        logger.error('Exxception:%s', e)
-                        logger.error(traceback.format_exc())
-        except Exception as e:
-            logger.error('Exxception:%s', e)
-            logger.error(traceback.format_exc())
+        if not os.path.isdir(base_path):
+           return
+
+        files = os.listdir(base_path)
+        if len(files):
+            for f in files:
+                fullPath = os.path.join(path, f)
+                if os.path.isdir(fullPath):
+                    LogicNormal.empty_folder_remove(fullPath)
+        # if folder empty, delete it
+        files = os.listdir(path)
+        if len(files) == 0:
+            logger.debug('Removing empty folder: %s', path)
+            os.rmdir(path)
 
     @staticmethod
     def db_save(data, dest, match_type, is_moved):
