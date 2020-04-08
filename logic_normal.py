@@ -449,7 +449,7 @@ class LogicNormal(object):
     def movie_path_country(info, option):
         try:
             country = []
-            set_country = []
+            set_country = ""
             if 'more' in info:
                 if 'country' in info['more']:
                     country = info['more']['country']
@@ -478,7 +478,7 @@ class LogicNormal(object):
     @staticmethod
     def movie_path_year(info, option):
         try:
-            set_year = []
+            set_year = ""
             if info['year'] is not None:
                 for keywords, values in option.items():
                     #encKeywords = keywords.encode('utf-8')
@@ -498,7 +498,7 @@ class LogicNormal(object):
     def movie_path_rate(info, option):
         try:
             rate = []
-            set_rate = []
+            set_rate = ""
             if 'more' in info:
                 if 'rate' in info['more']:
                     rate = info['more']['rate']
