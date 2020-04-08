@@ -525,11 +525,15 @@ class LogicNormal(object):
     @staticmethod
     def empty_folder_remove(base_path):
         try:
-            base_path = unicode(base_path)
-            for dir, subdirs, files in os.walk(base_path, topdown=False):
-                for name in files:
-                    if len(os.listdir(dir)) == 0: #check whether the directory is now empty after deletions, and if so, remove it
-                        os.rmdir(dir)
+            datas = os.listdir(base_path)
+            for data in datas:
+                p = os.path.join(base_path, data)
+                if os.path.isdir(p):
+                    LogicNormal.clear_folder(p)
+                    continue
+            datas = os.listdir(base_path)
+            if not datas:
+                os.rmdir(base_path)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
