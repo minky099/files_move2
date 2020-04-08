@@ -157,11 +157,11 @@ class LogicNormal(object):
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv_drama(item, daum_tv_info, ktv_drama_target_path)
                     elif ktv_show_genre_flag == 1:
-                        logger.debug('cml - korea drama %s', daum_tv_info['genre'])
+                        logger.debug('cml - korea show genre %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv_show_genre(item, daum_tv_info, ktv_show_target_path)
                     elif ktv_show_target_path is not None and ktv_show_genre_flag == 0:
-                        logger.debug('cml - korea drama %s', daum_tv_info['genre'])
+                        logger.debug('cml - korea show %s', daum_tv_info['genre'])
                         LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv_show(item, daum_tv_info, ktv_show_target_path)
                     else:
@@ -344,7 +344,7 @@ class LogicNormal(object):
         arg3 = ""
         try:
             for k, v in sort.items():
-                logger.debug('mm - k:%s, v:%s', k, v)
+                #logger.debug('mm - k:%s, v:%s', k, v)
                 if k == u'국가':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_country(info, movie_country_option)
@@ -377,17 +377,17 @@ class LogicNormal(object):
                 dest_folder_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
                 if arg1 and arg2 and arg3:
-                    logger.debug('mm - arg1+2+3')
+                    #logger.debug('mm - arg1+2+3')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
-                    logger.debug('mm - dest_folder_path:%s', dest_folder_path)
+                    #logger.debug('mm - dest_folder_path:%s', dest_folder_path)
                 elif arg1 and arg2:
-                    logger.debug('mm - arg1+2')
+                    #logger.debug('mm - arg1+2')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
-                    logger.debug('mm - dest_folder_path:%s', dest_folder_path)
+                    #logger.debug('mm - dest_folder_path:%s', dest_folder_path)
                 elif arg1:
-                    logger.debug('mm - arg1')
+                    #logger.debug('mm - arg1')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
-                    logger.debug('mm - dest_folder_path:%s', dest_folder_path)
+                    #logger.debug('mm - dest_folder_path:%s', dest_folder_path)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -435,7 +435,7 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
-                    logger.debug('mpc - country:%s, values:%s', country, values)
+                    #logger.debug('mpc - country:%s, values:%s', country, values)
                     if (gregx.search(country)) is not None:
                         encValues = values.encode('utf-8')
                         set_country = encValues
@@ -484,7 +484,7 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
-                    logger.debug('mpr - rate:%s, values:%s', rate, values)
+                    #logger.debug('mpr - rate:%s, values:%s', rate, values)
                     if (gregx.search(rate)) is not None:
                         encValues = values.encode('utf-8')
                         set_rate = encValues
