@@ -347,6 +347,7 @@ class LogicNormal(object):
         arg3 = ""
         arg4 = ""
         arg5 = ""
+        dest_path = ''
         try:
             for k, v in sort.items():
                 #logger.debug('mm - k:%s, v:%s', k, v)
@@ -413,24 +414,24 @@ class LogicNormal(object):
             elif check_ani >= 1:
                 set_cat = u'애니메이션'
                 target = u'극장판'
-                dest_folder_path = os.path.join(ani_base_path, data['dest_folder_name'])
+                dest_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
                 if arg1 and arg2 and arg3 and arg4 and arg5:
-                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2 and arg3 and arg4:
-                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2 and arg3:
-                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2:
-                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
                 elif arg1:
-                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
-            if not os.path.exists(dest_folder_path):
-                os.makedirs(dest_folder_path)
-            fileCheck = os.path.join(dest_folder_path, data['name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
+            if not os.path.exists(dest_path):
+                os.makedirs(dest_path)
+            fileCheck = os.path.join(dest_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(data['fullPath'], dest_folder_path)
-                LogicNormal.db_save(data, dest_folder_path, u'일치', True)
+                shutil.move(data['fullPath'], dest_path)
+                LogicNormal.db_save(data, dest_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -599,6 +600,8 @@ class LogicNormal(object):
         uhd_flag = ModelSetting.get_bool('uhd_flag')
         try:
             set_resolution = ""
+            values = ""
+            encValues = ""
             if uhd_flag == 1:
                 if data['uhd'] >= 1:
                     return None
