@@ -206,9 +206,9 @@ class ModelItem(db.Model):
 
         #if match_type != 'all':
             #query = query.filter(ModelItem.match_type == match_type)
-        if option == 'match':
+        if match_type == 'match':
             query = query.filter(ModelItem.match_type == u'일치')
-        elif option == 'notMatch':
+        elif match_type == 'notMatch':
             query = query.filter(ModelItem.match_type == u'불일치')
 
         if order == 'desc':
