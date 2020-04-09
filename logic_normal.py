@@ -332,6 +332,10 @@ class LogicNormal(object):
             movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
         else:
             movie_year_option = None
+        if ModelSetting.get('movie_genre_option').strip():
+            movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
+        else:
+            movie_genre_option = None
         if ModelSetting.get('movie_rate_option').strip():
             movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
         else:
@@ -454,16 +458,61 @@ class LogicNormal(object):
     def movie_path_year(info, option):
         try:
             set_year = ""
-            temp = None
             if info['year'] is not None:
-                for keywords, values in sorted(option.items()):
-                    #encKeywords = keywords.encode('utf-8')
-                    encValues = values.encode('utf-8')
-                    if int(info['year']) <= keywords:
-                        set_year = encValues
-                        logger.debug('mpy break - year:%s, encValues:%s', info['year'], encValues)
+                keywords = sorted(option.keys())
+                for idx in range(len(keywords))
+                    if int(info['year']) == keywords[idx]:
+                        logger.debug('mpy break perfect match - year:%s, keywords:%s', info['year'], keywords[idx])
+                        tmp = keywords[idx]
                         break
+                    elif int(info['year']) <= keywords[idx] and int(info['year']) > keywords[idx-1]:
+                        logger.debug('mpy break decade match - year:%s, keywords:%s', info['year'], keywords[idx-1])
+                        tmp = keywords[idx-1]
+                        break
+                    elif int(info['year']) >= keywords[idx] and int(info['year']) < keywords[idx+1]:
+                        logger.debug('mpy break decade base match - year:%s, keywords:%s', info['year'], keywords[idx])
+                        tmp = keywords[idx]
+                        break
+                    else:
+                        logger.debug('mpy break not match - year:%s, keywords:%s', info['year'], keywords[idx])
+                        return None
+                years = sorted(option.items())
+                values = years.get(tmp)
+                encValues = values.encode('utf-8')
+                set_year = encValues
                 return set_year
+            else:
+                return None
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def movie_path_genre(info, option):
+        ani_flag = ModelSetting.get_bool('ani_flag')
+        try:
+            genre = []
+            set_genre = ""
+            if 'more' in info:
+                if 'genre' in info['more']:
+                    genre = info['more']['genre']
+
+            if genre is not None:
+                genre = genre.encode('utf-8')
+                for keywords, values in option.items():
+                    if ani_flag == 1 and u'애니메이션' in info['more']['genre']:
+                        return None
+                    else:
+                        encKeywords = keywords.encode('utf-8')
+                        gregx = re.compile(encKeywords, re.I)
+                        if (gregx.search(genre)) is not None:
+                            encValues = values.encode('utf-8')
+                            set_genre = encValues
+                            logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
+                            break
+                        else:
+                            set_genre = u'기타'
+                return set_genre
             else:
                 return None
         except Exception as e:
