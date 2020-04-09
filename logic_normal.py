@@ -316,27 +316,27 @@ class LogicNormal(object):
     @staticmethod
     def move_movie(data, info, base_path):
         if ModelSetting.get('movie_sort').strip():
-            sort = json.loads(ModelSetting.get('movie_sort'))
+            sort = ast.literal_eval(ModelSetting.get('movie_sort'))
         else:
             sort = None
         if ModelSetting.get('movie_country_option').strip():
-            movie_country_option = json.loads(ModelSetting.get('movie_country_option'))
+            movie_country_option = ast.literal_eval(ModelSetting.get('movie_country_option'))
         else:
             movie_country_option = None
         if ModelSetting.get('movie_year_option').strip():
-            movie_year_option = json.loads(ModelSetting.get('movie_year_option'))
+            movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
         else:
             movie_year_option = None
         if ModelSetting.get('movie_genre_option').strip():
-            movie_genre_option = json.loads(ModelSetting.get('movie_genre_option'))
+            movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
         else:
             movie_genre_option = None
         if ModelSetting.get('movie_resolution_option').strip():
-            movie_resolution_option = json.loads(ModelSetting.get('movie_resolution_option'))
+            movie_resolution_option = ast.literal_eval(ModelSetting.get('movie_resolution_option'))
         else:
             movie_resolution_option = None
         if ModelSetting.get('movie_rate_option').strip():
-            movie_rate_option = json.loads(ModelSetting.get('movie_rate_option'))
+            movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
         else:
             movie_rate_option = None
         uhd_base_path = ModelSetting.get('uhd_base_path')
