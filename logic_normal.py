@@ -462,19 +462,21 @@ class LogicNormal(object):
                 keywords = sorted(option.keys())
                 for idx in range(len(keywords)):
                     if int(info['year']) == keywords[idx]:
-                        logger.debug('mpy break perfect match - year:%s, keywords:%s', info['year'], keywords[idx])
+                        logger.debug('mpy perfect match - year:%s, keywords:%s', info['year'], keywords[idx])
                         tmp = keywords[idx]
                         break
-                    elif int(info['year']) <= keywords[idx] and int(info['year']) > keywords[idx-1]:
-                        logger.debug('mpy break decade match - year:%s, keywords:%s', info['year'], keywords[idx-1])
-                        tmp = keywords[idx-1]
-                        break
-                    elif int(info['year']) >= keywords[idx] and int(info['year']) < keywords[idx+1]:
-                        logger.debug('mpy break decade base match - year:%s, keywords:%s', info['year'], keywords[idx])
-                        tmp = keywords[idx]
-                        break
+                    elif int(info['year']) <= keywords[idx] and idx > 0:
+                        if int(info['year']) > keywords[idx-1]:
+                            logger.debug('mpy decade match - year:%s, keywords:%s', info['year'], keywords[idx-1])
+                            tmp = keywords[idx-1]
+                            break
+                    elif int(info['year']) >= keywords[idx] and idx < (len(keywords) - 1):
+                        if int(info['year']) < keywords[idx+1]:
+                            logger.debug('mpy decade base match - year:%s, keywords:%s', info['year'], keywords[idx])
+                            tmp = keywords[idx]
+                            break
                     else:
-                        logger.debug('mpy break not match - year:%s, keywords:%s', info['year'], keywords[idx])
+                        logger.debug('mpy not match and searching... year:%s, keywords:%s', info['year'], keywords[idx])
                         continue
                 values = option.get(tmp)
                 encValues = values.encode('utf-8')
