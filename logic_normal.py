@@ -332,10 +332,10 @@ class LogicNormal(object):
             movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
         else:
             movie_year_option = None
-        if ModelSetting.get('movie_genre_option').strip():
-            movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
-        else:
-            movie_genre_option = None
+        #if ModelSetting.get('movie_genre_option').strip():
+            #movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
+        #else:
+            #movie_genre_option = None
         if ModelSetting.get('movie_rate_option').strip():
             movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
         else:
