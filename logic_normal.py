@@ -396,15 +396,15 @@ class LogicNormal(object):
                         arg5 = LogicNormal.movie_path_rate(info, movie_rate_option)
                 if k == u'해상도':
                     if v == 0:
-                        arg1 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                        arg1 = LogicNormal.movie_path_resolution(data, movie_resolution_option)
                     elif v == 1:
-                        arg2 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                        arg2 = LogicNormal.movie_path_resolution(data, movie_resolution_option)
                     elif v == 2:
-                        arg3 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                        arg3 = LogicNormal.movie_path_resolution(data, movie_resolution_option)
                     elif v == 3:
-                        arg4 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                        arg4 = LogicNormal.movie_path_resolution(data, movie_resolution_option)
                     elif v == 4:
-                        arg5 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                        arg5 = LogicNormal.movie_path_resolution(data, movie_resolution_option)
 
             check_ani = LogicNormal.check_ani(info)
             if data['uhd'] > 0 and uhd_flag == 1 and movie_resolution_option == None:
@@ -595,24 +595,24 @@ class LogicNormal(object):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def movie_path_resolution(info, option):
+    def movie_path_resolution(data, option):
         uhd_flag = ModelSetting.get_bool('uhd_flag')
         try:
             set_resolution = ""
             if uhd_flag == 1:
-                if info['uhd'] >= 1:
+                if data['uhd'] >= 1:
                     return None
                 else:
-                    if info['fhd'] >= 1:
+                    if data['fhd'] >= 1:
                         values = option.get(1080)
-                    elif info['hd'] >= 1:
+                    elif data['hd'] >= 1:
                         values = option.get(720)
             else:
-                if info['uhd'] >= 1:
+                if data['uhd'] >= 1:
                     values = option.get(2160)
-                elif info['fhd'] >= 1:
+                elif data['fhd'] >= 1:
                     values = option.get(1080)
-                elif info['hd'] >= 1:
+                elif data['hd'] >= 1:
                     values = option.get(720)
             encValues = values.encode('utf-8')
             set_resolution = encValues
