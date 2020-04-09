@@ -475,7 +475,7 @@ class LogicNormal(object):
                         break
                     else:
                         logger.debug('mpy break not match - year:%s, keywords:%s', info['year'], keywords[idx])
-                        return None
+                        continue
                 years = sorted(option.items())
                 values = years.get(tmp)
                 encValues = values.encode('utf-8')
