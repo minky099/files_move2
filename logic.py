@@ -172,6 +172,12 @@ class Logic(object):
             option = req.form['option']
             if option == 'all':
                 pass
+            if option == 'match':
+                query = query.filter(ModelItem.match_type == u'일치')
+            elif option == 'notMatch':
+                query = query.filter(ModelItem.match_type == u'불일치')
+            if 'order' in req.form:
+                pass
             order = 'desc'
             if order == 'desc':
                query = query.order_by(desc(ModelItem.id))
