@@ -77,6 +77,8 @@ class LogicNormal(object):
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
             item['uhd'] = 0
+            item['hd'] = 0
+            item['fhd'] = 0
             match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
             if match:
                 item['search_name'] = match.group('name').replace('.', ' ').strip()
@@ -111,6 +113,7 @@ class LogicNormal(object):
                         if os.path.isfile(p):
                             item = LogicNormal.item_list(path, f)
                             if item is not None:
+                                item = LogicNormal.check_resolution(item)
                                 LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
                         elif os.path.isdir(p):
                             sub_lists = os.listdir(p)
@@ -138,17 +141,10 @@ class LogicNormal(object):
     def check_move_list(item, ktv_drama_target_path, ktv_show_target_path, movie_target_path, error_target_path):
         ktv_show_genre_flag = ModelSetting.get_bool('ktv_show_genre_flag')
         try:
-            rules = ['4K', '4k', 'UHD', '2160p', '2160P']
-            condition = 0
             #TV
             if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode':
                 from framework.common.daum import DaumTV
                 logger.debug('cml - drama %s, %s', item['name'], item['search_name'])
-                for keywords in rules:
-                    gregx = re.compile(keywords, re.I)
-                    if (gregx.search(item['name'])) is not None:
-                        item['uhd'] += 1
-
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 #daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
                 if daum_tv_info is not None:
@@ -172,11 +168,6 @@ class LogicNormal(object):
             else:
                 from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
-                for keywords in rules:
-                    gregx = re.compile(keywords, re.I)
-                    if (gregx.search(item['name'])) is not None:
-                        item['uhd'] += 1
-
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
@@ -282,13 +273,17 @@ class LogicNormal(object):
 
     @staticmethod
     def move_ktv_show_genre(data, info, base_path):
+        etc_name = ModelSetting.get('etc_show_genre')
         try:
             set_genre = []
             logger.debug('=== title %s', data['dest_folder_name'])
             if 'genre' in info:
                 set_genre = info['genre']
             else:
-                set_genre = u'기타'
+                if LogicNormal.isHangul(etc_name) > 0:
+                    str = unicode(etc_name)
+                    etc_name = str
+                set_genre = etc_name
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
@@ -332,10 +327,14 @@ class LogicNormal(object):
             movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
         else:
             movie_year_option = None
-        #if ModelSetting.get('movie_genre_option').strip():
-            #movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
-        #else:
-            #movie_genre_option = None
+        if ModelSetting.get('movie_genre_option').strip():
+            movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
+        else:
+            movie_genre_option = None
+        if ModelSetting.get('movie_resolution_option').strip():
+            movie_resolution_option = ast.literal_eval(ModelSetting.get('movie_resolution_option'))
+        else:
+            movie_resolution_option = None
         if ModelSetting.get('movie_rate_option').strip():
             movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
         else:
@@ -346,6 +345,8 @@ class LogicNormal(object):
         arg1 = ""
         arg2 = ""
         arg3 = ""
+        arg4 = ""
+        arg5 = ""
         try:
             for k, v in sort.items():
                 #logger.debug('mm - k:%s, v:%s', k, v)
@@ -356,6 +357,10 @@ class LogicNormal(object):
                         arg2 = LogicNormal.movie_path_country(info, movie_country_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_country(info, movie_country_option)
+                    elif v == 3:
+                        arg4 = LogicNormal.movie_path_country(info, movie_country_option)
+                    elif v == 4:
+                        arg5 = LogicNormal.movie_path_country(info, movie_country_option)
                 if k == u'연도':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_year(info, movie_year_option)
@@ -363,6 +368,21 @@ class LogicNormal(object):
                         arg2 = LogicNormal.movie_path_year(info, movie_year_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_year(info, movie_year_option)
+                    elif v == 3:
+                        arg4 = LogicNormal.movie_path_year(info, movie_year_option)
+                    elif v == 4:
+                        arg5 = LogicNormal.movie_path_year(info, movie_year_option)
+                if k == u'장르':
+                    if v == 0:
+                        arg1 = LogicNormal.movie_path_genre(info, movie_genre_option)
+                    elif v == 1:
+                        arg2 = LogicNormal.movie_path_genre(info, movie_genre_option)
+                    elif v == 2:
+                        arg3 = LogicNormal.movie_path_genre(info, movie_genre_option)
+                    elif v == 3:
+                        arg4 = LogicNormal.movie_path_genre(info, movie_genre_option)
+                    elif v == 4:
+                        arg5 = LogicNormal.movie_path_genre(info, movie_genre_option)
                 if k == u'등급':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_rate(info, movie_rate_option)
@@ -370,9 +390,24 @@ class LogicNormal(object):
                         arg2 = LogicNormal.movie_path_rate(info, movie_rate_option)
                     elif v == 2:
                         arg3 = LogicNormal.movie_path_rate(info, movie_rate_option)
+                    elif v == 3:
+                        arg4 = LogicNormal.movie_path_rate(info, movie_rate_option)
+                    elif v == 4:
+                        arg5 = LogicNormal.movie_path_rate(info, movie_rate_option)
+                if k == u'해상도':
+                    if v == 0:
+                        arg1 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                    elif v == 1:
+                        arg2 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                    elif v == 2:
+                        arg3 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                    elif v == 3:
+                        arg4 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
+                    elif v == 4:
+                        arg5 = LogicNormal.movie_path_resolution(info, movie_resolution_option)
 
             check_ani = LogicNormal.check_ani(info)
-            if data['uhd'] > 0 and uhd_flag == 1:
+            if data['uhd'] > 0 and uhd_flag == 1 and movie_resolution_option == None:
                 LogicNormal.move_movie_uhd(data, info, uhd_base_path)
                 return
             elif check_ani >= 1:
@@ -380,18 +415,16 @@ class LogicNormal(object):
                 target = u'극장판'
                 dest_folder_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
-                if arg1 and arg2 and arg3:
-                    #logger.debug('mm - arg1+2+3')
+                if arg1 and arg2 and arg3 and arg4 and arg5:
+                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
+                elif arg1 and arg2 and arg3 and arg4:
+                    dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
+                elif arg1 and arg2 and arg3:
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
-                    #logger.debug('mm - dest_folder_path:%s', dest_folder_path)
                 elif arg1 and arg2:
-                    #logger.debug('mm - arg1+2')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
-                    #logger.debug('mm - dest_folder_path:%s', dest_folder_path)
                 elif arg1:
-                    #logger.debug('mm - arg1')
                     dest_folder_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
-                    #logger.debug('mm - dest_folder_path:%s', dest_folder_path)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -424,6 +457,7 @@ class LogicNormal(object):
 
     @staticmethod
     def movie_path_country(info, option):
+        etc_name = ModelSetting.get('etc_movie_country')
         try:
             country = ""
             set_country = ""
@@ -446,7 +480,10 @@ class LogicNormal(object):
                         logger.debug('mpc search - country:%s, encValues:%s', country, encValues)
                         break
                     else:
-                        set_country = u'외국'
+                        if LogicNormal.isHangul(etc_name) > 0:
+                            str = unicode(etc_name)
+                            etc_name = str
+                        set_country = etc_name
                 return set_country
             else:
                 return None
@@ -491,6 +528,7 @@ class LogicNormal(object):
     @staticmethod
     def movie_path_genre(info, option):
         ani_flag = ModelSetting.get_bool('ani_flag')
+        etc_name = ModelSetting.get('etc_movie_genre')
         try:
             genre = []
             set_genre = ""
@@ -512,7 +550,10 @@ class LogicNormal(object):
                             logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
                             break
                         else:
-                            set_genre = u'기타'
+                            if LogicNormal.isHangul(etc_name) > 0:
+                                str = unicode(etc_name)
+                                etc_name = str
+                            set_genre = etc_name
                 return set_genre
             else:
                 return None
@@ -522,6 +563,7 @@ class LogicNormal(object):
 
     @staticmethod
     def movie_path_rate(info, option):
+        etc_name = ModelSetting.get('etc_movie_rate')
         try:
             rate = []
             set_rate = ""
@@ -541,10 +583,41 @@ class LogicNormal(object):
                         logger.debug('mpr search - rate:%s, encValues:%s', rate, encValues)
                         break
                     else:
-                        set_rate = u'기타'
+                        if LogicNormal.isHangul(etc_name) > 0:
+                            str = unicode(etc_name)
+                            etc_name = str
+                        set_rate = etc_name
                 return set_rate
             else:
                 return None
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def movie_path_resolution(info, option):
+        uhd_flag = ModelSetting.get_bool('uhd_flag')
+        try:
+            set_resolution = ""
+            if uhd_flag == 1:
+                if info['uhd'] >= 1:
+                    return None
+                else:
+                    if info['fhd'] >= 1:
+                        values = option.get(1080)
+                    elif info['hd'] >= 1:
+                        values = option.get(720)
+            else:
+                if info['uhd'] >= 1:
+                    values = option.get(2160)
+                elif info['fhd'] >= 1:
+                    values = option.get(1080)
+                elif info['hd'] >= 1:
+                    values = option.get(720)
+            encValues = values.encode('utf-8')
+            set_resolution = encValues
+            logger.debug('mpre search - encValues:%s', encValues)
+            return set_resolution
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -571,6 +644,36 @@ class LogicNormal(object):
                         else:
                             condition -= 0
             return condition
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def check_resolution(info):
+        rules_uhd = ['4K', '4k', 'UHD', '2160p', '2160P']
+        rules_fhd = ['1080p', '1080P', 'fhd', 'FHD']
+        rules_hd = ['720p', '720P', 'hd', 'HD']
+        try:
+            for keywords in rules_uhd:
+                gregx = re.compile(keywords, re.I)
+                if (gregx.search(info['name'])) is not None:
+                    info['uhd'] += 1
+            for keywords in rules_fhd:
+                gregx = re.compile(keywords, re.I)
+                if (gregx.search(info['name'])) is not None:
+                    info['fhd'] += 1
+            for keywords in rules_hd:
+                gregx = re.compile(keywords, re.I)
+                if (gregx.search(info['name'])) is not None:
+                    info['hd'] += 1
+
+            if info['uhd'] >= 1 and (info['fhd'] >= 1 or info['hd'] >= 1):
+                info['fhd'] = 0
+                info['hd'] = 0
+            elif info['fhd'] >= 1 and info['hd'] >= 1:
+                info['hd'] = 0
+
+            return info
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
