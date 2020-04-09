@@ -50,7 +50,7 @@ class Logic(object):
 		'uhd_ktv_drama_flag' : '',
 		'eng_title_flag' : '',
         'schedulerInterval' : '60',
-        'interval' : '2',
+        'interval' : '3',
         'emptyFolderDelete' : 'False',
         'auto_start' : 'False',
         'folder_rule': '%TITLE%'
