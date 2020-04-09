@@ -315,28 +315,28 @@ class LogicNormal(object):
 
     @staticmethod
     def move_movie(data, info, base_path):
-        if ModelSetting.get('movie_sort').strip():
-            sort = ast.literal_eval(ModelSetting.get('movie_sort'))
+        if ModelSetting.get_setting_value('movie_sort'):
+            sort = ast.literal_eval(ModelSetting.get_setting_value('movie_sort'))
         else:
             sort = None
-        if ModelSetting.get('movie_country_option').strip():
-            movie_country_option = ast.literal_eval(ModelSetting.get('movie_country_option'))
+        if ModelSetting.get_setting_value('movie_country_option'):
+            movie_country_option = ast.literal_eval(ModelSetting.get_setting_value('movie_country_option'))
         else:
             movie_country_option = None
-        if ModelSetting.get('movie_year_option').strip():
-            movie_year_option = ast.literal_eval(ModelSetting.get('movie_year_option'))
+        if ModelSetting.get_setting_value('movie_year_option'):
+            movie_year_option = ast.literal_eval(ModelSetting.get_setting_value('movie_year_option'))
         else:
             movie_year_option = None
-        if ModelSetting.get('movie_genre_option').strip():
-            movie_genre_option = ast.literal_eval(ModelSetting.get('movie_genre_option'))
+        if ModelSetting.get_setting_value('movie_genre_option'):
+            movie_genre_option = ast.literal_eval(ModelSetting.get_setting_value('movie_genre_option'))
         else:
             movie_genre_option = None
-        if ModelSetting.get('movie_resolution_option').strip():
-            movie_resolution_option = ast.literal_eval(ModelSetting.get('movie_resolution_option'))
+        if ModelSetting.get_setting_value('movie_resolution_option'):
+            movie_resolution_option = ast.literal_eval(ModelSetting.get_setting_value('movie_resolution_option'))
         else:
             movie_resolution_option = None
-        if ModelSetting.get('movie_rate_option').strip():
-            movie_rate_option = ast.literal_eval(ModelSetting.get('movie_rate_option'))
+        if ModelSetting.get_setting_value('movie_rate_option'):
+            movie_rate_option = ast.literal_eval(ModelSetting.get_setting_value('movie_rate_option'))
         else:
             movie_rate_option = None
         uhd_base_path = ModelSetting.get('uhd_base_path')
