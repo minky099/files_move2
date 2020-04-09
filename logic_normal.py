@@ -460,7 +460,7 @@ class LogicNormal(object):
             set_year = ""
             if info['year'] is not None:
                 keywords = sorted(option.keys())
-                for idx in range(len(keywords))
+                for idx in range(len(keywords)):
                     if int(info['year']) == keywords[idx]:
                         logger.debug('mpy break perfect match - year:%s, keywords:%s', info['year'], keywords[idx])
                         tmp = keywords[idx]
