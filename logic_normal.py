@@ -407,7 +407,7 @@ class LogicNormal(object):
                         arg5 = LogicNormal.movie_path_resolution(data, movie_resolution_option)
 
             check_ani = LogicNormal.check_ani(info)
-            if data['uhd'] > 0 and uhd_flag == 1 and movie_resolution_option == None:
+            if data['uhd'] > 0 and uhd_flag == 1:
                 LogicNormal.move_movie_uhd(data, info, uhd_base_path)
                 return
             elif check_ani >= 1:
