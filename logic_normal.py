@@ -27,7 +27,6 @@ from framework.job import Job
 from framework.util import Util
 from system.model import ModelSetting as SystemModelSetting
 from framework.logger import get_logger
-import framework.common.celery as celery_shutil
 
 # 패키지
 from .plugin import logger, package_name
@@ -230,7 +229,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -248,7 +247,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -266,7 +265,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -293,7 +292,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -308,7 +307,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(data['fullPath'], dest_folder_path)
+                shutil.move(data['fullPath'], dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'불일치', False)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -430,7 +429,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(data['fullPath'], dest_folder_path)
+                shutil.move(data['fullPath'], dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -450,7 +449,7 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                celery_shutil.move(data['fullPath'], dest_folder_path)
+                shutil.move(data['fullPath'], dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
