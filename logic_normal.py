@@ -316,27 +316,27 @@ class LogicNormal(object):
     @staticmethod
     def move_movie(data, info, base_path):
         if ModelSetting.get_setting_value('movie_sort'):
-            sort = ast.literal_eval(ModelSetting.get_setting_value('movie_sort'))
+            sort = ast.literal_eval(ModelSetting.get_setting_value('movie_sort').strip())
         else:
             sort = None
         if ModelSetting.get_setting_value('movie_country_option'):
-            movie_country_option = ast.literal_eval(ModelSetting.get_setting_value('movie_country_option'))
+            movie_country_option = ast.literal_eval(ModelSetting.get_setting_value('movie_country_option').strip())
         else:
             movie_country_option = None
         if ModelSetting.get_setting_value('movie_year_option'):
-            movie_year_option = ast.literal_eval(ModelSetting.get_setting_value('movie_year_option'))
+            movie_year_option = ast.literal_eval(ModelSetting.get_setting_value('movie_year_option').strip())
         else:
             movie_year_option = None
         if ModelSetting.get_setting_value('movie_genre_option'):
-            movie_genre_option = ast.literal_eval(ModelSetting.get_setting_value('movie_genre_option'))
+            movie_genre_option = ast.literal_eval(ModelSetting.get_setting_value('movie_genre_option').strip())
         else:
             movie_genre_option = None
         if ModelSetting.get_setting_value('movie_resolution_option'):
-            movie_resolution_option = ast.literal_eval(ModelSetting.get_setting_value('movie_resolution_option'))
+            movie_resolution_option = ast.literal_eval(ModelSetting.get_setting_value('movie_resolution_option').strip())
         else:
             movie_resolution_option = None
         if ModelSetting.get_setting_value('movie_rate_option'):
-            movie_rate_option = ast.literal_eval(ModelSetting.get_setting_value('movie_rate_option'))
+            movie_rate_option = ast.literal_eval(ModelSetting.get_setting_value('movie_rate_option').strip())
         else:
             movie_rate_option = None
         uhd_base_path = ModelSetting.get('uhd_base_path')
