@@ -204,8 +204,12 @@ class ModelItem(db.Model):
             else:
                 query = query.filter(ModelItem.fileName.like('%'+search+'%'))
 
-        if match_type != 'all':
-            query = query.filter(ModelItem.match_type == match_type)
+        #if match_type != 'all':
+            #query = query.filter(ModelItem.match_type == match_type)
+        if option == 'match':
+            query = query.filter(ModelItem.match_type == u'일치')
+        elif option == 'notMatch':
+            query = query.filter(ModelItem.match_type == u'불일치')
 
         if order == 'desc':
             query = query.order_by(desc(ModelItem.id))

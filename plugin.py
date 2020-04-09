@@ -103,9 +103,6 @@ def ajax(sub):
             else:
                 Logic.scheduler_stop()
             return jsonify(go)
-        elif sub == 'filelist':
-            ret = Logic.fileList(request)
-            return jsonify(ret)
         elif sub == 'one_execute':
             ret = Logic.one_execute()
             return jsonify(ret)
