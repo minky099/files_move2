@@ -610,6 +610,8 @@ class LogicNormal(object):
                         values = option.get(1080)
                     elif data['hd'] >= 1:
                         values = option.get(720)
+                    else:
+                        values = u'기타'
             else:
                 if data['uhd'] >= 1:
                     values = option.get(2160)
@@ -617,6 +619,8 @@ class LogicNormal(object):
                     values = option.get(1080)
                 elif data['hd'] >= 1:
                     values = option.get(720)
+                else:
+                    values = u'기타'
             encValues = values.encode('utf-8')
             set_resolution = encValues
             logger.debug('mpre search - encValues:%s', encValues)
