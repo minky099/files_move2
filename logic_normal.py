@@ -143,10 +143,10 @@ class LogicNormal(object):
         try:
             weight_con = 0
             season_con = re.compile('(s|S)+\d?\d')
-            if season_con.match(item['name']):
+            if season_con.search(item['name']):
                 weight_con += 1
             episode_con = re.compile('(e|E)+\d?\d?\d')
-            if episode_con.match(item['name']):
+            if episode_con.search(item['name']):
                 weight_con += 1
             logger.debug('cml - weight:%s', weight_con)
             #TV
