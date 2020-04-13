@@ -669,18 +669,22 @@ class LogicNormal(object):
         rules_uhd = ['4K', '4k', 'UHD', '2160p', '2160P']
         rules_fhd = ['1080p', '1080P', 'fhd', 'FHD']
         rules_hd = ['720p', '720P', 'hd', 'HD']
+        fileName = ""
         try:
+            #remove hdr word
+            fileName = info['name']
+            re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)])
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
-                if (gregx.search(info['name'])):
+                if (gregx.search(fileName)):
                     info['uhd'] += 1
             for keywords in rules_fhd:
                 gregx = re.compile(keywords, re.I)
-                if (gregx.search(info['name'])):
+                if (gregx.search(fileName)):
                     info['fhd'] += 1
             for keywords in rules_hd:
                 gregx = re.compile(keywords, re.I)
-                if (gregx.search(info['name'])):
+                if (gregx.search(fileName)):
                     info['hd'] += 1
 
             if info['uhd'] >= 1 and info['fhd'] >= 1:
