@@ -184,6 +184,7 @@ class LogicNormal(object):
                     else:
                         LogicNormal.move_except(item, error_target_path)
                 else:
+                    logger.debug('cml - movie NOT have year!')
                     LogicNormal.move_except(item, error_target_path)
         except Exception as e:
             logger.error('Exxception:%s', e)
