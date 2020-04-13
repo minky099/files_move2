@@ -687,6 +687,8 @@ class LogicNormal(object):
                 if (gregx.search(fileName)):
                     info['hd'] += 1
 
+            logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
+
             if info['uhd'] >= 1 and info['fhd'] >= 1:
                 info['uhd'] = 0
                 info['fhd'] = 1
