@@ -673,7 +673,7 @@ class LogicNormal(object):
         try:
             #remove hdr word
             fileName = info['name']
-            re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
+            fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
             logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
@@ -689,13 +689,26 @@ class LogicNormal(object):
                     info['hd'] += 1
             logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
             if info['uhd'] >= 1 and info['fhd'] >= 1:
-                info['uhd'] = 0
-                info['fhd'] = 1
+                if int(info['uhd']) > int(info['fhd']):
+                    info['uhd'] = 1
+                    info['fhd'] = 0
+                else:
+                    info['uhd'] = 0
+                    info['fhd'] = 1
             elif info['uhd'] >= 1 and info['hd'] >= 1:
-                info['uhd'] = 0
-                info['hd'] = 1
+                if int(info['uhd']) > int(info['hd']):
+                    info['uhd'] = 1
+                    info['hd'] = 0
+                else:
+                    info['uhd'] = 0
+                    info['hd'] = 1
             elif info['fhd'] >= 1 and info['hd'] >= 1:
-                info['hd'] = 1
+                if int(info['fhd']) > int(info['hd']):
+                    info['fhd'] = 1
+                    info['hd'] = 0
+                else:
+                    info['fhd'] = 0
+                    info['hd'] = 1
             logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
             return info
         except Exception as e:
