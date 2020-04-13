@@ -141,8 +141,14 @@ class LogicNormal(object):
     def check_move_list(item, ktv_drama_target_path, ktv_show_target_path, movie_target_path, error_target_path):
         ktv_show_genre_flag = ModelSetting.get_bool('ktv_show_genre_flag')
         try:
+            season_con = re.compile('(s|S)+\d?\d')
+            if season_con.match(item['name']):
+                weight_con += 1
+            episode_con = re.compile('(e|E)+\d?\d?\d')
+            if episode_con.match(item['name']):
+                weight_con += 1
             #TV
-            if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode':
+            if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode' and weight_con > 0:
                 from framework.common.daum import DaumTV
                 logger.debug('cml - drama %s, %s', item['name'], item['search_name'])
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
