@@ -141,6 +141,7 @@ class LogicNormal(object):
     def check_move_list(item, ktv_drama_target_path, ktv_show_target_path, movie_target_path, error_target_path):
         ktv_show_genre_flag = ModelSetting.get_bool('ktv_show_genre_flag')
         try:
+            weight_con = 0
             season_con = re.compile('(s|S)+\d?\d')
             if season_con.match(item['name']):
                 weight_con += 1
