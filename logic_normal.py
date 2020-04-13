@@ -674,6 +674,7 @@ class LogicNormal(object):
             #remove hdr word
             fileName = info['name']
             re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
+            logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
                 if (gregx.search(fileName)):
@@ -686,9 +687,7 @@ class LogicNormal(object):
                 gregx = re.compile(keywords, re.I)
                 if (gregx.search(fileName)):
                     info['hd'] += 1
-
             logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
-
             if info['uhd'] >= 1 and info['fhd'] >= 1:
                 info['uhd'] = 0
                 info['fhd'] = 1
@@ -697,7 +696,6 @@ class LogicNormal(object):
                 info['hd'] = 1
             elif info['fhd'] >= 1 and info['hd'] >= 1:
                 info['hd'] = 1
-
             logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
             return info
         except Exception as e:
