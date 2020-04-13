@@ -673,7 +673,7 @@ class LogicNormal(object):
         try:
             #remove hdr word
             fileName = info['name']
-            re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)])
+            re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
                 if (gregx.search(fileName)):
