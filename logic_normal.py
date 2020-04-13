@@ -672,15 +672,15 @@ class LogicNormal(object):
         try:
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
-                if (gregx.search(info['name'])) is not None:
+                if (gregx.search(info['name'])):
                     info['uhd'] += 1
             for keywords in rules_fhd:
                 gregx = re.compile(keywords, re.I)
-                if (gregx.search(info['name'])) is not None:
+                if (gregx.search(info['name'])):
                     info['fhd'] += 1
             for keywords in rules_hd:
                 gregx = re.compile(keywords, re.I)
-                if (gregx.search(info['name'])) is not None:
+                if (gregx.search(info['name'])):
                     info['hd'] += 1
 
             if info['uhd'] >= 1 and (info['fhd'] >= 1 or info['hd'] >= 1):
@@ -689,6 +689,7 @@ class LogicNormal(object):
             elif info['fhd'] >= 1 and info['hd'] >= 1:
                 info['hd'] = 0
 
+            logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
             return info
         except Exception as e:
             logger.error('Exxception:%s', e)
