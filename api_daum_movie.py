@@ -312,7 +312,7 @@ class MovieSearch(object):
                                 #results.Append(MetadataSearchResult(id=daum_id, name=match.group(1), year=match.group(2), score=score, lang=lang))
                         log_debug('first_url : %s' % first_url)
                         if need_another_search and first_url is not None:
-                            #log_debug('RRRRRRRRRRRRRRRRRRRRRR')
+                            log_debug('RRRRRRRRRRRRRRRRRRRRRR')
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
