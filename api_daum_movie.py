@@ -235,22 +235,22 @@ class MovieSearch(object):
 
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'외', '').strip()
-                more['genre'] = tmp[1]
-                #more['genre'] = tmp[1].replace(u'외', '').strip()
+                #more['genre'] = tmp[1]
+                more['genre'] = tmp[1].replace(u'외', '').strip()
                 more['date'] = tmp[2].replace(u'개봉', '').strip()
                 more['rate'] = tmp[3].strip()
                 more['during'] = tmp[4].strip()
             elif len(tmp) == 4:
                 more['country'] = tmp[0].replace(u'외', '').strip()
-                more['genre'] = tmp[1]
-                #more['genre'] = tmp[1].replace(u'외', '').strip()
+                #more['genre'] = tmp[1]
+                more['genre'] = tmp[1].replace(u'외', '').strip()
                 more['date'] = ''
                 more['rate'] = tmp[2].strip()
                 more['during'] = tmp[3].strip()
             elif len(tmp) == 3:
                 more['country'] = tmp[0].replace(u'외', '').strip()
-                more['genre'] = tmp[1]
-                #more['genre'] = tmp[1].replace(u'외', '').strip()
+                #more['genre'] = tmp[1]
+                more['genre'] = tmp[1].replace(u'외', '').strip()
                 more['date'] = ''
                 more['rate'] = ''
                 more['during'] = tmp[2].strip()
