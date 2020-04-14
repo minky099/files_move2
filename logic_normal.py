@@ -696,12 +696,8 @@ class LogicNormal(object):
                     info['uhd'] = 0
                     info['fhd'] = 1
             elif info['uhd'] >= 1 and info['hd'] >= 1:
-                if int(info['uhd']) > int(info['hd']):
-                    info['uhd'] = 1
-                    info['hd'] = 0
-                else:
-                    info['uhd'] = 0
-                    info['hd'] = 1
+                info['uhd'] = 1
+                info['hd'] = 0
             elif info['fhd'] >= 1 and info['hd'] >= 1:
                 if int(info['fhd']) > int(info['hd']):
                     info['fhd'] = 1
