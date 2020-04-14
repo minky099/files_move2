@@ -184,7 +184,7 @@ class LogicNormal(object):
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     elif daum_movie_info and daum_movie_info[0]['score'] >= 90:
                         if 'more' in item and 'eng_title' in item['more']:
-                            if item['guessit']['title'] == item['more']['eng_title']):
+                            if item['guessit']['title'] == item['more']['eng_title']:
                                 LogicNormal.set_movie(item, daum_movie_info[0])
                                 LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     else:
