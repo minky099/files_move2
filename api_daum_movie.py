@@ -9,8 +9,8 @@ import urllib
 
 logger = None
 is_sjva = True
-is_shell = True
-is_plex = True
+is_shell = False
+is_plex = False
 
 try:
     import requests
