@@ -180,10 +180,13 @@ class LogicNormal(object):
                     year = item['guessit']['year']
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if (daum_movie_info and daum_movie_info[0]['score'] >= 100):
+                        logger.debug('cml - movie score %s', daum_movie_info[0]['score'])
                         LogicNormal.set_movie(item, daum_movie_info[0])
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     elif daum_movie_info and daum_movie_info[0]['score'] >= 90:
+                        logger.debug('cml - movie score %s', daum_movie_info[0]['score'])
                         if 'more' in item and 'eng_title' in item['more']:
+                            logger.debug('cml - movie %s:%s', item['guessit']['title'], item['more']['eng_title'])
                             if item['guessit']['title'] == item['more']['eng_title']:
                                 LogicNormal.set_movie(item, daum_movie_info[0])
                                 LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
@@ -679,7 +682,8 @@ class LogicNormal(object):
             #remove hdr word
             #fileName = info['name']
             #fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
-            #logger.debug('cr - fileName: %s', fileName)
+            fileName = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', info['name'])
+            logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
                 if (gregx.search(fileName)):
