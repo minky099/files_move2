@@ -179,9 +179,14 @@ class LogicNormal(object):
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
-                    if daum_movie_info and daum_movie_info[0]['score'] >= 100:
+                    if (daum_movie_info and daum_movie_info[0]['score'] >= 100):
                         LogicNormal.set_movie(item, daum_movie_info[0])
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                    elif daum_movie_info and daum_movie_info[0]['score'] >= 90:
+                        if 'more' in item and 'eng_title' in item['more']:
+                            if item['guessit']['title'] == item['more']['eng_title']):
+                                LogicNormal.set_movie(item, daum_movie_info[0])
+                                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     else:
                         LogicNormal.move_except(item, error_target_path)
                 else:
@@ -672,9 +677,9 @@ class LogicNormal(object):
         fileName = ""
         try:
             #remove hdr word
-            fileName = info['name']
-            fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
-            logger.debug('cr - fileName: %s', fileName)
+            #fileName = info['name']
+            #fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
+            #logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
                 if (gregx.search(fileName)):
@@ -699,12 +704,8 @@ class LogicNormal(object):
                 info['uhd'] = 1
                 info['hd'] = 0
             elif info['fhd'] >= 1 and info['hd'] >= 1:
-                if int(info['fhd']) > int(info['hd']):
-                    info['fhd'] = 1
-                    info['hd'] = 0
-                else:
-                    info['fhd'] = 0
-                    info['hd'] = 1
+                info['fhd'] = 1
+                info['hd'] = 0
             logger.debug('cr - uhd:%s, fhd:%s, hd:%s', info['uhd'], info['fhd'], info['hd'])
             return info
         except Exception as e:
