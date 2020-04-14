@@ -277,10 +277,6 @@ class MovieSearch(object):
 
         try:
             url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', urllib.quote(movie_name.encode('utf8')))
-            req = requests.get(url)
-            req_data = json.loads(req.text)
-            print(req_data)
-
             ret = MovieSearch.get_movie_info_from_home(url)
             if ret is not None:
 
