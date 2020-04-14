@@ -695,7 +695,7 @@ class LogicNormal(object):
             #remove hdr word
             #fileName = info['name']
             #fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
-            fileName = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', '', info['name'])
+            fileName = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', info['name'])
             logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
