@@ -174,7 +174,8 @@ class LogicNormal(object):
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
-                from framework.common.daum import MovieSearch
+                from api_daum_movie import MovieSearch
+                #from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
                 if 'year' in item['guessit']:
                     year = item['guessit']['year']
