@@ -185,17 +185,23 @@ class LogicNormal(object):
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     elif daum_movie_info and daum_movie_info[0]['score'] >= 90:
                         logger.debug('cml - movie score %s', daum_movie_info[0]['score'])
-                        if 'more' in item:
-                            if'eng_title' in item['more']:
-                                logger.debug('cml - movie %s:%s', item['guessit']['title'], item['more']['eng_title'])
+                        if 'more' in daum_movie_info[0]:
+                            if'eng_title' in daum_movie_info[0]['more']:
+                                logger.debug('cml - movie %s:%s', item['guessit']['title'], daum_movie_info[0]['more']['eng_title'])
                                 str_cmp_0 = item['guessit']['title']
                                 str_cmp_0 = unicode(str_cmp_0)
-                                str_cmp_1 = item['more']['eng_title']
+                                str_cmp_1 = daum_movie_info[0]['more']['eng_title']
                                 str_cmp_1 = unicode(str_cmp_1)
                                 if str_cmp_0.lower() == str_cmp_1.lower():
                                     logger.debug('cml - movie file name checked!')
                                     LogicNormal.set_movie(item, daum_movie_info[0])
                                     LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                                else:
+                                     LogicNormal.move_except(item, error_target_path)
+                            else:
+                                 LogicNormal.move_except(item, error_target_path)
+                        else:
+                             LogicNormal.move_except(item, error_target_path)
                     else:
                         LogicNormal.move_except(item, error_target_path)
                 else:
