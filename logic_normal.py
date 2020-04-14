@@ -185,11 +185,17 @@ class LogicNormal(object):
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     elif daum_movie_info and daum_movie_info[0]['score'] >= 90:
                         logger.debug('cml - movie score %s', daum_movie_info[0]['score'])
-                        if 'more' in item and 'eng_title' in item['more']:
-                            logger.debug('cml - movie %s:%s', item['guessit']['title'], item['more']['eng_title'])
-                            if item['guessit']['title'] == item['more']['eng_title']:
-                                LogicNormal.set_movie(item, daum_movie_info[0])
-                                LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
+                        if 'more' in item:
+                            if'eng_title' in item['more']:
+                                logger.debug('cml - movie %s:%s', item['guessit']['title'], item['more']['eng_title'])
+                                str_cmp_0 = item['guessit']['title']
+                                str_cmp_0 = unicode(str_cmp_0)
+                                str_cmp_1 = item['more']['eng_title']
+                                str_cmp_1 = unicode(str_cmp_1)
+                                if str_cmp_0.lower() == str_cmp_1.lower():
+                                    logger.debug('cml - movie file name checked!')
+                                    LogicNormal.set_movie(item, daum_movie_info[0])
+                                    LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     else:
                         LogicNormal.move_except(item, error_target_path)
                 else:
@@ -682,7 +688,7 @@ class LogicNormal(object):
             #remove hdr word
             #fileName = info['name']
             #fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
-            fileName = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', info['name'])
+            fileName = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', '', info['name'])
             logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
                 gregx = re.compile(keywords, re.I)
