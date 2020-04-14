@@ -225,12 +225,14 @@ class MovieSearch(object):
             #more['info'].append(tmp[0].text_content().strip())
             more['info'].append(country_tag[0].text_content().strip())
 
-            tmp_genre = []
-            if tmp[1]:
-                tmp_genre.append(tmp[1].text_content().strip())
             #2019-09-07
             log_debug(more['info'][0])
             tmp = more['info'][0].split('|')
+            tmp_genre = []
+            if tmp[1]:
+                tmp_genre.append(tmp[1].text_content().strip())
+                log_debug(tmp_genre)
+
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'외', '').strip()
                 more['genre'] = tmp_genre
