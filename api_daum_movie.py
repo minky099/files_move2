@@ -220,36 +220,36 @@ class MovieSearch(object):
             more['title'] = movie.xpath('//*[@id="movieTitle"]/span')[0].text_content()
             tmp = movie.xpath('//*[@id="movieEColl"]/div[3]/div/div[1]/div[2]/dl')
             more['info'] = []
-            #for t in tmp:
-            #    more['info'].append(t.text_content().strip())
-            #more['info'].append(tmp[0].text_content().strip())
+            for t in tmp:
+                more['info'].append(t.text_content().strip())
+            more['info'].append(tmp[0].text_content().strip())
             more['info'].append(country_tag[0].text_content().strip())
 
             #2019-09-07
             log_debug(more['info'][0])
             tmp = more['info'][0].split('|')
-            tmp_genre = []
-            if tmp[1]:
-                tmp_genre.append(tmp[1].text_content().strip())
-                log_debug(tmp_genre)
+            #tmp_genre = []
+            #if tmp[1]:
+                #tmp_genre.append(tmp[1].text_content().strip())
+                #log_debug(tmp_genre)
 
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'외', '').strip()
-                more['genre'] = tmp_genre
+                more['genre'] = tmp[1]
                 #more['genre'] = tmp[1].replace(u'외', '').strip()
                 more['date'] = tmp[2].replace(u'개봉', '').strip()
                 more['rate'] = tmp[3].strip()
                 more['during'] = tmp[4].strip()
             elif len(tmp) == 4:
                 more['country'] = tmp[0].replace(u'외', '').strip()
-                more['genre'] = tmp_genre
+                more['genre'] = tmp[1]
                 #more['genre'] = tmp[1].replace(u'외', '').strip()
                 more['date'] = ''
                 more['rate'] = tmp[2].strip()
                 more['during'] = tmp[3].strip()
             elif len(tmp) == 3:
                 more['country'] = tmp[0].replace(u'외', '').strip()
-                more['genre'] = tmp_genre
+                more['genre'] = tmp[1]
                 #more['genre'] = tmp[1].replace(u'외', '').strip()
                 more['date'] = ''
                 more['rate'] = ''
