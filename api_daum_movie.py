@@ -6,76 +6,31 @@ import re
 import traceback
 import logging
 import urllib
+import requests
+import lxml.html
 #import json
 #import unicodedata
 
 #DAUM_MOVIE_DETAIL = "http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s"
 
-logger = None
-is_sjva = True
-is_shell = False
+# SJVA
+from .plugin import logger, package_name
+
 is_plex = False
-
-try:
-    import requests
-    import lxml.html
-    is_plex = False
-except:
-    is_sjva = False
-    is_shell = False
-
-try:
-    # SJVA
-    from framework.util import Util
-    package_name = __name__.split('.')[0]
-    logger = logging.getLogger(package_name)
-    is_shell = False
-except:
-    is_sjva = False
-
-
 ####################################################
-if is_shell:
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    logger.addHandler(logging.StreamHandler())
-
-
-def log_debug(msg, *args, **kwargs):
-    if logger is not None:
-        logger.debug(msg, *args, **kwargs)
-    else:
-        Log(msg, *args, **kwargs)
-
-def log_error(msg, *args, **kwargs):
-    if logger is not None:
-        logger.error(msg, *args, **kwargs)
-    else:
-        Log(msg, *args, **kwargs)
-
 def get_json(url):
     try:
-        if is_plex:
-            return JSON.ObjectFromURL(url)
-        else:
-            return requests.get(url).json()
+        return requests.get(url).json()
     except Exception as e:
-        log_error('Exception:%s', e)
-        log_error(traceback.format_exc())
+        logger.error('Exception:%s', e)
+        logger.error(traceback.format_exc())
 
 def get_html(url):
     try:
-        if is_plex:
-            return HTML.ElementFromURL(url)
-        else:
-            return lxml.html.document_fromstring(requests.get(url).content)
+        return lxml.html.document_fromstring(requests.get(url).content)
     except Exception as e:
-        log_error('Exception:%s', e)
-        log_error(traceback.format_exc())
-
-
-
-
+        logger.error('Exception:%s', e)
+        logger.error(traceback.format_exc())
 ####################################################
 
 class MovieSearch(object):
@@ -163,8 +118,8 @@ class MovieSearch(object):
 
             logger.debug('SEARCH_MOVIE STEP LAST : %s' % movie_list)
         except Exception as e:
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
         return is_include_kor, movie_list
 
     @staticmethod
@@ -183,8 +138,8 @@ class MovieSearch(object):
                 movie_list.append(data)
                 logger.debug('ma -  %s', data)
         except Exception as e:
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
 
     @staticmethod
     def get_movie_info_from_home(url):
@@ -194,10 +149,11 @@ class MovieSearch(object):
             try:
                 movie = html.get_element_by_id('movieEColl')
             except Exception as e:
-                #log_error('Exception:%s', e)
-                #log_error('SEARCH_MOVIE NOT MOVIEECOLL')
+                #logger.error('Exception:%s', e)
+                #logger.error('SEARCH_MOVIE NOT MOVIEECOLL')
                 pass
             if movie is None:
+                logger.debug('gmifh - movie is none')
                 return None
 
             title_tag = movie.get_element_by_id('movieTitle')
@@ -255,8 +211,8 @@ class MovieSearch(object):
             return {'movie':movie, 'title':title, 'daum_id':daum_id, 'year':tmp_year, 'country':country, 'more':more}
 
         except Exception as e:
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
 
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
@@ -278,8 +234,8 @@ class MovieSearch(object):
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[-2], 'score':score})
         except Exception as e:
             pass
-            #log_error('Exception:%s', e)
-            #log_error(traceback.format_exc())
+            #logger.error('Exception:%s', e)
+            #logger.error(traceback.format_exc())
 
         try:
             if movie_list[0]['score'] >= 85:
@@ -289,7 +245,7 @@ class MovieSearch(object):
                 info = meta_data['data']
 
                 if 'title_En' in info:
-                    movie_list[0].update({'more':{'eng_title':""}})
+                    movie_list[0].update({'more':{'eng_title':[]}})
                     movie_list[0]['more']['eng_title'].append(info['title_En'])
                 movie_list[0].update({'more':{'genre':[]}})
                 for item in info['genres']:
@@ -298,8 +254,8 @@ class MovieSearch(object):
                     condition += 1
         except Exception as e:
             pass
-            #log_error('Exception:%s', e)
-            #log_error(traceback.format_exc())
+            #logger.error('Exception:%s', e)
+            #logger.error(traceback.format_exc())
 
         try:
             url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', urllib.quote(movie_name.encode('utf8')))
@@ -384,8 +340,8 @@ class MovieSearch(object):
                                 logger.debug(item['genreName'])
                                 condition += 1
         except Exception as e:
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
         movie_list = list(reversed(sorted(movie_list, key=lambda k:k['score'])))
         return movie_list
 
@@ -399,5 +355,5 @@ class MovieSearch(object):
             if 'd' in tmp and tmp['d'][0]['y'] == year:
                 return {'id':tmp['d'][0]['id'], 'title':tmp['d'][0]['l'], 'year':year, 'score':100}
         except Exception as e:
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
