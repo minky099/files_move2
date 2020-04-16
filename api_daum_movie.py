@@ -282,15 +282,16 @@ class MovieSearch(object):
             log_error(traceback.format_exc())
 
         try:
-           if movie_list[0]['score'] >= 95:
-               logger.debug('smw - id(95):%s', movie_list[0]['id'])
-               more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-               meta_data = get_json(more_url)
-               info = meta_data['data']
-               for item in info['genres']:
-                   movie_list[0]['more']['genre'].append(item['genreName'])
-                   logger.debug(item['genreName'])
-                   condition += 1
+            if movie_list[0]['score'] >= 95:
+                logger.debug('smw - id(95):%s', movie_list[0]['id'])
+                more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
+                meta_data = get_json(more_url)
+                info = meta_data['data']
+                for item in info['genres']:
+                    tmp_more = movie_list[0]
+                    tmp_more['more']['genre'].append(item['genreName'])
+                    logger.debug(item['genreName'])
+                    condition += 1
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
@@ -373,7 +374,8 @@ class MovieSearch(object):
                         meta_data = get_json(more_url)
                         info = meta_data['data']
                         for item in info['genres']:
-                            movie_list[0]['more']['genre'].append(item['genreName'])
+                            tmp_more = movie_list[0]
+                            tmp_more['more']['genre'].append(item['genreName'])
                             logger.debug(item['genreName'])
                             condition += 1
         except Exception as e:
