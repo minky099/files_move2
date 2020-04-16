@@ -282,14 +282,15 @@ class MovieSearch(object):
             log_error(traceback.format_exc())
 
         try:
-            if int(movie_list['score']) >= 95:
-               logger.debug('smw - id(95):%s', movie_list['id'])
-               meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
-               info = meta_data['data']
-               for item in info['genres']:
-                   movie_list['more']['genre'].append(item['genreName'])
-                   logger.debug(item['genreName'])
-                   condition += 1
+            for entry in movie_list:
+                if movie_list['score'] >= 95:
+                   logger.debug('smw - id(95):%s', movie_list['id'])
+                   meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
+                   info = meta_data['data']
+                   for item in info['genres']:
+                       movie_list['more']['genre'].append(item['genreName'])
+                       logger.debug(item['genreName'])
+                       condition += 1
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
@@ -366,14 +367,15 @@ class MovieSearch(object):
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
                 if condition == 0:
-                    if int(movie_list['score']) >= 90:
-                        logger.debug('smw - id:%s', movie_list['id'])
-                        meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
-                        info = meta_data['data']
-                        for item in info['genres']:
-                            movie_list['more']['genre'].append(item['genreName'])
-                            logger.debug(item['genreName'])
-                            condition += 1
+                    for entry in movie_list:
+                        if int(movie_list['score']) >= 90:
+                            logger.debug('smw - id:%s', movie_list['id'])
+                            meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
+                            info = meta_data['data']
+                            for item in info['genres']:
+                                movie_list['more']['genre'].append(item['genreName'])
+                                logger.debug(item['genreName'])
+                                condition += 1
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
