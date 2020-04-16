@@ -17,6 +17,7 @@ import lxml.html
 from .plugin import logger, package_name
 
 is_plex = False
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 ####################################################
 def get_json(url):
     try:
@@ -27,7 +28,7 @@ def get_json(url):
 
 def get_html(url):
     try:
-        return lxml.html.document_fromstring(requests.get(url).content)
+        return lxml.html.document_fromstring(requests.get(url, headers=headers).content)
     except Exception as e:
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
