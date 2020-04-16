@@ -289,7 +289,7 @@ class MovieSearch(object):
                 info = meta_data['data']
                 #movie_list[0].update({'genre':'more'})
                 movie_list[0].update({'more':'genre'})
-                movie_list['more'].upate({'genre':'default')
+                movie_list['more'].upate({'genre':'default'})
                 for item in info['genres']:
                     movie_list[0]['more']['genre'].append(item['genreName'])
                     logger.debug(item['genreName'])
