@@ -565,13 +565,15 @@ class LogicNormal(object):
             set_genre = ""
             if 'more' in info:
                 if 'genre' in info['more']:
-                    genre = info['more']['genre']
+                    genre = info['more']['genre'][0]
 
             if genre is not None:
                 genre = genre.encode('utf-8')
                 for keywords, values in option.items():
-                    if ani_flag == 1 and u'애니메이션' in info['more']['genre']:
-                        return None
+                    if ani_flag == 1:
+                        for words in info['more']['genre']:
+                            if u'애니메이션' in words:
+                                return None
                     else:
                         encKeywords = keywords.encode('utf-8')
                         gregx = re.compile(encKeywords, re.I)
