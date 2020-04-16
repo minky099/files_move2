@@ -288,8 +288,7 @@ class MovieSearch(object):
                 meta_data = get_json(more_url)
                 info = meta_data['data']
                 for item in info['genres']:
-                    tmp_more = movie_list[0]
-                    tmp_more['more']['genre'].append(item['genreName'])
+                    movie_list[0]['genre'].append(item['genreName'])
                     logger.debug(item['genreName'])
                     condition += 1
         except Exception as e:
@@ -367,17 +366,16 @@ class MovieSearch(object):
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
-                if condition == 0:
-                   if movie_list[0]['score'] >= 95:
-                        logger.debug('smw - id:%s', movie_list[0]['id'])
-                        more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                        meta_data = get_json(more_url)
-                        info = meta_data['data']
-                        for item in info['genres']:
-                            tmp_more = movie_list[0]
-                            tmp_more['more']['genre'].append(item['genreName'])
-                            logger.debug(item['genreName'])
-                            condition += 1
+                    if condition == 0:
+                       if movie_list[0]['score'] >= 95:
+                            logger.debug('smw - id:%s', movie_list[0]['id'])
+                            more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
+                            meta_data = get_json(more_url)
+                            info = meta_data['data']
+                            for item in info['genres']:
+                                movie_list[0]['more']['genre'].append(item['genreName'])
+                                logger.debug(item['genreName'])
+                                condition += 1
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
