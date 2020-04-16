@@ -666,10 +666,9 @@ class LogicNormal(object):
             condition = 0
             if ani_flag == 1:
                 if 'more' in info:
-                    if 'info' in info['more']:
-                        keywords = ''.join(info['more']['info'])
-                        for words in keywords.split('|'):
-                            if u' 애니메이션 외' in words:
+                    if 'genre' in info['more']:
+                        for words in info['more']['genre']:
+                            if u'애니메이션' in words:
                                 condition += 1
                             else:
                                 condition -= 0

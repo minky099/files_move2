@@ -7,6 +7,9 @@ import traceback
 import logging
 import urllib
 import json
+import unicodedata
+
+DAUM_MOVIE_DETAIL = "http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s"
 
 logger = None
 is_sjva = True
@@ -177,6 +180,7 @@ class MovieSearch(object):
                         tmp['country'] = data['country']
                     break
             if not flag_exist:
+                log_debug(data)
                 movie_list.append(data)
         except Exception as e:
             log_error('Exception:%s', e)
@@ -256,6 +260,7 @@ class MovieSearch(object):
 
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
+        movie_id = 0
         try:
             #movie_list = []
             url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
@@ -270,6 +275,9 @@ class MovieSearch(object):
                     score = score + 5
                 if score < 10:
                     score = 10
+
+                if score >= 95
+                    sug_movie_id = tmps[1]
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[-2], 'score':score})
         except Exception as e:
             log_error('Exception:%s', e)
@@ -286,7 +294,7 @@ class MovieSearch(object):
                     score = 100
                 else:
                     score = 90
-                need_another_search = True
+                    need_another_search = True
                 MovieSearch.movie_append(movie_list, {'id':ret['daum_id'], 'title':ret['title'], 'year':ret['year'], 'score':score, 'country':ret['country'], 'more':ret['more']})
 
                 log_debug('need_another_search : %s' % need_another_search)
@@ -313,7 +321,7 @@ class MovieSearch(object):
                                 #results.Append(MetadataSearchResult(id=daum_id, name=match.group(1), year=match.group(2), score=score, lang=lang))
                         log_debug('first_url : %s' % first_url)
                         if need_another_search and first_url is not None:
-                            log_debug('RRRRRRRRRRRRRRRRRRRRRR')
+                            #log_debug('RRRRRRRRRRRRRRRRRRRRRR')
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
@@ -345,6 +353,23 @@ class MovieSearch(object):
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
+                condition = 0
+                if movie_list['score'] == 100:
+                    movie_id = movie_list['daum_id']
+                    condition += 1
+                    log_debug('smw - daumid:%s', movie_id)
+
+                if sug_movie_id:
+                   movie_id = sug_movie_id
+                   condition += 1
+                   log_debug('smw - sug_movie_id:%s', movie_id)
+
+                if condition >= 1:
+                    meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_id)
+                    info = meta_data['data']
+                    for item in info['genres']:
+                      movie_list['more']['genre'].append(item['genreName'])
+                      log_debug(item['genreName'])
 
         except Exception as e:
             log_error('Exception:%s', e)
