@@ -245,8 +245,8 @@ class MovieSearch(object):
                 info = meta_data['data']
                 logger.debug('smw - eng title:%s', info['titleEn'])
                 #movie_list[0].update({'more':{'eng_title':[]}})
-                movie_list[0].update({'more':{'eng_title':[], 'genre':[]}})
-                movie_list[0]['more']['eng_title'].append(info['titleEn'])
+                movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
+                movie_list[0]['more']['eng_title'] = info['titleEn']
                 #movie_list[0].update({'more':{'genre':[]}})
                 for item in info['genres']:
                     movie_list[0]['more']['genre'].append(item['genreName'])
