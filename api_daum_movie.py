@@ -276,7 +276,7 @@ class MovieSearch(object):
                 if score < 10:
                     score = 10
 
-                if score >= 95
+                if score >= 95:
                     sug_movie_id = tmps[1]
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[-2], 'score':score})
         except Exception as e:
