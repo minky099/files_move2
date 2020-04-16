@@ -288,6 +288,7 @@ class MovieSearch(object):
                 meta_data = get_json(more_url)
                 info = meta_data['data']
                 for item in info['genres']:
+                    movie_list[0].setdefault['genre']
                     movie_list[0]['genre'].append(item['genreName'])
                     logger.debug(item['genreName'])
                     condition += 1
