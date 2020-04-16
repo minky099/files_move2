@@ -282,8 +282,8 @@ class MovieSearch(object):
             log_error(traceback.format_exc())
 
         try:
-            for entry in movie_list:
-                if movie_list['score'] >= 95:
+            for number in movie_list['score']:
+               if number >= 95:
                    logger.debug('smw - id(95):%s', movie_list['id'])
                    meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
                    info = meta_data['data']
@@ -367,8 +367,8 @@ class MovieSearch(object):
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
                 if condition == 0:
-                    for entry in movie_list:
-                        if int(movie_list['score']) >= 90:
+                    for number in movie_list['score']:
+                       if number >= 95:
                             logger.debug('smw - id:%s', movie_list['id'])
                             meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
                             info = meta_data['data']
