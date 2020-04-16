@@ -279,7 +279,6 @@ class MovieSearch(object):
                 else:
                     score = 90
                     need_another_search = True
-
                 MovieSearch.movie_append(movie_list, {'id':ret['daum_id'], 'title':ret['title'], 'year':ret['year'], 'score':score, 'country':ret['country'], 'more':ret['more']})
 
                 logger.debug('need_another_search : %s' % need_another_search)
