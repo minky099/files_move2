@@ -287,7 +287,7 @@ class MovieSearch(object):
                 more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
                 meta_data = get_json(more_url)
                 info = meta_data['data']
-                movie_list[0].update('genre':u'default')
+                movie_list[0].update('genre':"genre")
                 for item in info['genres']:
                     movie_list[0]['genre'].append(item['genreName'])
                     logger.debug(item['genreName'])
