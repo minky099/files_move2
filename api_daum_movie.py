@@ -261,7 +261,7 @@ class MovieSearch(object):
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
         movie_id = 0
-        sug_movie_id = 0
+        condition = 0
         try:
             #movie_list = []
             url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
@@ -276,10 +276,20 @@ class MovieSearch(object):
                     score = score + 5
                 if score < 10:
                     score = 10
-
-                if score >= 95:
-                    sug_movie_id = tmps[1]
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[-2], 'score':score})
+        except Exception as e:
+            log_error('Exception:%s', e)
+            log_error(traceback.format_exc())
+
+        try:
+            if movie_list['score'] >= 95:
+               logger.debug('smw - id(95):%s', movie_list['id'])
+               meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
+               info = meta_data['data']
+               for item in info['genres']:
+                   movie_list['more']['genre'].append(item['genreName'])
+                   logger.debug(item['genreName'])
+                   condition += 1
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
@@ -293,6 +303,7 @@ class MovieSearch(object):
                 # 홈에 검색한게 년도도 같다면 score : 100을 주고 다른것은 검색하지 않는다.
                 if ret['year'] == movie_year:
                     score = 100
+                    need_another_search = False
                 else:
                     score = 90
                     need_another_search = True
@@ -354,24 +365,15 @@ class MovieSearch(object):
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
-                condition = 0
-                if movie_list['score'] == 100:
-                    movie_id = movie_list['daum_id']
-                    condition += 1
-                    logger.debug('smw - daumid:%s', movie_id)
-
-                if sug_movie_id:
-                   movie_id = sug_movie_id
-                   condition += 1
-                   logger.debug('smw - sug_movie_id:%s', movie_id)
-
-                if condition >= 1:
-                    meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_id)
-                    info = meta_data['data']
-                    for item in info['genres']:
-                      movie_list['more']['genre'].append(item['genreName'])
-                      logger.debug(item['genreName'])
-
+                if condition == 0:
+                    if movie_list['score'] >= 90:
+                        logger.debug('smw - id:%s', movie_list['id'])
+                        meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_list['id'])
+                        info = meta_data['data']
+                        for item in info['genres']:
+                            movie_list['more']['genre'].append(item['genreName'])
+                            logger.debug(item['genreName'])
+                            condition += 1
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
