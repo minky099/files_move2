@@ -6,10 +6,10 @@ import re
 import traceback
 import logging
 import urllib
-import json
-import unicodedata
+#import json
+#import unicodedata
 
-DAUM_MOVIE_DETAIL = "http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s"
+#DAUM_MOVIE_DETAIL = "http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s"
 
 logger = None
 is_sjva = True
@@ -260,7 +260,6 @@ class MovieSearch(object):
 
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
-        movie_id = 0
         condition = 0
         try:
             #movie_list = []
@@ -278,15 +277,20 @@ class MovieSearch(object):
                     score = 10
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[-2], 'score':score})
         except Exception as e:
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            pass
+            #log_error('Exception:%s', e)
+            #log_error(traceback.format_exc())
 
         try:
-            if movie_list[0]['score'] >= 95:
-                logger.debug('smw - id(95):%s', movie_list[0]['id'])
+            if movie_list[0]['score'] >= 85:
+                logger.debug('smw - id(%s):%s', movie_list[0]['score'], movie_list[0]['id'])
                 more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
                 meta_data = get_json(more_url)
                 info = meta_data['data']
+
+                if 'title_En' in info:
+                    movie_list[0].update({'more':{'eng_title':""}})
+                    movie_list[0]['more']['eng_title'].append(info['title_En'])
                 movie_list[0].update({'more':{'genre':[]}})
                 for item in info['genres']:
                     movie_list[0]['more']['genre'].append(item['genreName'])
@@ -371,7 +375,7 @@ class MovieSearch(object):
 
                     if condition == 0:
                        if movie_list[0]['score'] >= 95:
-                            logger.debug('smw - id:%s', movie_list[0]['id'])
+                            logger.debug('smw another - id:%s', movie_list[0]['id'])
                             more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
                             meta_data = get_json(more_url)
                             info = meta_data['data']
