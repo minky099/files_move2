@@ -287,17 +287,16 @@ class MovieSearch(object):
                 more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
                 meta_data = get_json(more_url)
                 info = meta_data['data']
-                movie_list[0].update({'genre':[]})
-                #movie_list[0].update({'more':'genre'})
-                #movie_list['more'].upate({'genre':'default'})
+                movie_list[0].update({'more':[]})
+                movie_list[0]['more'].update({'genre':[]})
                 for item in info['genres']:
-                    movie_list[0]['genre'].append(item['genreName'])
+                    movie_list[0]['more']['genre'].append(item['genreName'])
                     logger.debug(item['genreName'])
                     condition += 1
         except Exception as e:
-            #pass
-            log_error('Exception:%s', e)
-            log_error(traceback.format_exc())
+            pass
+            #log_error('Exception:%s', e)
+            #log_error(traceback.format_exc())
 
         try:
             url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', urllib.quote(movie_name.encode('utf8')))
