@@ -300,7 +300,7 @@ class MovieSearch(object):
             url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', urllib.quote(movie_name.encode('utf8')))
             ret = MovieSearch.get_movie_info_from_home(url)
             if ret is not None:
-
+                need_another_search = True
                 # 부제목때문에 제목은 체크 하지 않는다.
                 # 홈에 검색한게 년도도 같다면 score : 100을 주고 다른것은 검색하지 않는다.
                 if ret['year'] == movie_year:
@@ -309,6 +309,7 @@ class MovieSearch(object):
                 else:
                     score = 90
                     need_another_search = True
+
                 MovieSearch.movie_append(movie_list, {'id':ret['daum_id'], 'title':ret['title'], 'year':ret['year'], 'score':score, 'country':ret['country'], 'more':ret['more']})
 
                 logger.debug('need_another_search : %s' % need_another_search)
