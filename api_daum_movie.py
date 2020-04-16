@@ -247,6 +247,9 @@ class MovieSearch(object):
                 #movie_list[0].update({'more':{'eng_title':[]}})
                 movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
                 movie_list[0]['more']['eng_title'] = info['titleEn']
+                for item in info['countries']:
+                  movie_list[0]['country'] = item['countryKo']
+                #movie_list[0]['country'] = info['countries']['countryKo']
                 #movie_list[0].update({'more':{'genre':[]}})
                 for item in info['genres']:
                     movie_list[0]['more']['genre'].append(item['genreName'])
