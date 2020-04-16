@@ -107,23 +107,23 @@ class MovieSearch(object):
             else:
                 kor = None
                 eng = None
-            log_debug('SEARCH_MOVIE : [%s] [%s] [%s] [%s]' % (movie_name, is_include_kor, kor, eng))
+            logger.debug('SEARCH_MOVIE : [%s] [%s] [%s] [%s]' % (movie_name, is_include_kor, kor, eng))
 
             movie_list = MovieSearch.search_movie_web(movie_list, movie_name, movie_year)
             if movie_list and movie_list[0]['score'] == 100:
-                log_debug('SEARCH_MOVIE STEP 1 : %s' % movie_list)
+                logger.debug('SEARCH_MOVIE STEP 1 : %s' % movie_list)
                 return is_include_kor, movie_list
 
             if kor is not None:
                 movie_list = MovieSearch.search_movie_web(movie_list, kor, movie_year)
                 if movie_list and movie_list[0]['score'] == 100:
-                    log_debug('SEARCH_MOVIE STEP 2 : %s' % movie_list)
+                    logger.debug('SEARCH_MOVIE STEP 2 : %s' % movie_list)
                     return is_include_kor, movie_list
 
             if eng is not None:
                 movie_list = MovieSearch.search_movie_web(movie_list, eng, movie_year)
                 if movie_list and movie_list[0]['score'] == 100:
-                    log_debug('SEARCH_MOVIE STEP 3 : %s' % movie_list)
+                    logger.debug('SEARCH_MOVIE STEP 3 : %s' % movie_list)
                     return is_include_kor, movie_list
 
             #검찰측의 죄인 検察側の罪人. Kensatsu gawa no zainin. 2018.1080p.KOR.FHDRip.H264.AAC-RTM
@@ -141,7 +141,7 @@ class MovieSearch(object):
                 if index != -1:
                     movie_list = MovieSearch.search_movie_web(movie_list, ' '.join(tmps[:index]), movie_year)
                     if movie_list and movie_list[0]['score'] == 100:
-                        log_debug('SEARCH_MOVIE STEP 4 : %s' % movie_list)
+                        logger.debug('SEARCH_MOVIE STEP 4 : %s' % movie_list)
                         return is_include_kor, movie_list
 
             if is_plex == False:
@@ -149,7 +149,7 @@ class MovieSearch(object):
                 if movie_list and movie_list[0]['score'] == 95:
                     movie_list = MovieSearch.search_movie_web(movie_list, movie_list[0]['title'], movie_year)
                     if movie_list and movie_list[0]['score'] == 100:
-                        log_debug('SEARCH_MOVIE STEP 5 : %s' % movie_list)
+                        logger.debug('SEARCH_MOVIE STEP 5 : %s' % movie_list)
                         return is_include_kor, movie_list
 
             # IMDB
@@ -158,10 +158,10 @@ class MovieSearch(object):
                 if movie is not None:
                     movie_list = MovieSearch.search_movie_web(movie_list, movie['title'], movie_year)
                     if movie_list and movie_list[0]['score'] == 100:
-                        log_debug('SEARCH_MOVIE STEP IMDB : %s' % movie_list)
+                        logger.debug('SEARCH_MOVIE STEP IMDB : %s' % movie_list)
                         return is_include_kor, movie_list
 
-            log_debug('SEARCH_MOVIE STEP LAST : %s' % movie_list)
+            logger.debug('SEARCH_MOVIE STEP LAST : %s' % movie_list)
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
@@ -180,8 +180,8 @@ class MovieSearch(object):
                         tmp['country'] = data['country']
                     break
             if not flag_exist:
-                log_debug(data)
                 movie_list.append(data)
+                logger.debug('ma -  %s', data)
         except Exception as e:
             log_error('Exception:%s', e)
             log_error(traceback.format_exc())
@@ -220,7 +220,7 @@ class MovieSearch(object):
             country = ''
             if country_tag:
                 country = country_tag[0].text_content().split('|')[0].strip()
-                log_debug(country)
+                logger.debug(country)
             more['poster'] = movie.xpath('//*[@id="nmovie_img_0"]/a/img')[0].attrib['src']
             more['title'] = movie.xpath('//*[@id="movieTitle"]/span')[0].text_content()
             tmp = movie.xpath('//*[@id="movieEColl"]/div[3]/div/div[1]/div[2]/dl')
@@ -231,7 +231,7 @@ class MovieSearch(object):
             more['info'].append(country_tag[0].text_content().strip())
 
             #2019-09-07
-            log_debug(more['info'][0])
+            logger.debug(more['info'][0])
             tmp = more['info'][0].split('|')
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'외', '').strip()
@@ -261,6 +261,7 @@ class MovieSearch(object):
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
         movie_id = 0
+        sug_movie_id = 0
         try:
             #movie_list = []
             url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
@@ -297,14 +298,14 @@ class MovieSearch(object):
                     need_another_search = True
                 MovieSearch.movie_append(movie_list, {'id':ret['daum_id'], 'title':ret['title'], 'year':ret['year'], 'score':score, 'country':ret['country'], 'more':ret['more']})
 
-                log_debug('need_another_search : %s' % need_another_search)
+                logger.debug('need_another_search : %s' % need_another_search)
 
                 movie = ret['movie']
 
                 if need_another_search:
                     # 동명영화
                     tmp = movie.find('div[@class="coll_etc"]')
-                    log_debug('coll_etc : %s' % tmp)
+                    logger.debug('coll_etc : %s' % tmp)
                     if tmp is not None:
                         first_url = None
                         tag_list = tmp.findall('.//a')
@@ -319,9 +320,9 @@ class MovieSearch(object):
                                     first_url = 'https://search.daum.net/search?%s' % tag.attrib['href']
                                 MovieSearch.movie_append(movie_list, {'id':daum_id, 'title':match.group(1), 'year':match.group(2), 'score':score})
                                 #results.Append(MetadataSearchResult(id=daum_id, name=match.group(1), year=match.group(2), score=score, lang=lang))
-                        log_debug('first_url : %s' % first_url)
+                        logger.debug('first_url : %s' % first_url)
                         if need_another_search and first_url is not None:
-                            #log_debug('RRRRRRRRRRRRRRRRRRRRRR')
+                            #logger.debug('RRRRRRRRRRRRRRRRRRRRRR')
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
@@ -330,7 +331,7 @@ class MovieSearch(object):
                     if tmp is None:
                         tmp = movie.find('.//ul[@class="list_thumb list_more"]')
 
-                    log_debug('SERIES:%s' % tmp)
+                    logger.debug('SERIES:%s' % tmp)
                     if tmp is not None:
                         tag_list = tmp.findall('.//div[@class="wrap_cont"]')
                         first_url = None
@@ -341,15 +342,15 @@ class MovieSearch(object):
                             daum_name = a_tag.text_content()
                             span_tag = tag.find('span')
                             year = span_tag.text_content()
-                            log_debug('daum_id:%s %s %s' % (daum_id, year, daum_name))
+                            logger.debug('daum_id:%s %s %s' % (daum_id, year, daum_name))
                             if daum_name == movie_name and year == movie_year:
                                 first_url = 'https://search.daum.net/search?%s' % a_tag.attrib['href']
                             elif year == movie_year and first_url is not None:
                                 first_url = 'https://search.daum.net/search?%s' % tag.attrib['href']
                             MovieSearch.movie_append(movie_list, {'id':daum_id, 'title':daum_name, 'year':year, 'score':score})
-                            log_debug('first_url : %s' % first_url)
+                            logger.debug('first_url : %s' % first_url)
                         if need_another_search and first_url is not None:
-                            #log_debug('RRRRRRRRRRRRRRRRRRRRRR')
+                            #logger.debug('RRRRRRRRRRRRRRRRRRRRRR')
                             new_ret = MovieSearch.get_movie_info_from_home(first_url)
                             MovieSearch.movie_append(movie_list, {'id':new_ret['daum_id'], 'title':new_ret['title'], 'year':new_ret['year'], 'score':100, 'country':new_ret['country'], 'more':new_ret['more']})
 
@@ -357,19 +358,19 @@ class MovieSearch(object):
                 if movie_list['score'] == 100:
                     movie_id = movie_list['daum_id']
                     condition += 1
-                    log_debug('smw - daumid:%s', movie_id)
+                    logger.debug('smw - daumid:%s', movie_id)
 
                 if sug_movie_id:
                    movie_id = sug_movie_id
                    condition += 1
-                   log_debug('smw - sug_movie_id:%s', movie_id)
+                   logger.debug('smw - sug_movie_id:%s', movie_id)
 
                 if condition >= 1:
                     meta_data = JSON.ObjectFromURL(url=DAUM_MOVIE_DETAIL % movie_id)
                     info = meta_data['data']
                     for item in info['genres']:
                       movie_list['more']['genre'].append(item['genreName'])
-                      log_debug(item['genreName'])
+                      logger.debug(item['genreName'])
 
         except Exception as e:
             log_error('Exception:%s', e)
