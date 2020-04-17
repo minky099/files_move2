@@ -290,8 +290,8 @@ class MovieSearch(object):
                     #movie_list[0]['country'] = info['countries']['countryKo']
                     #movie_list[0].update({'more':{'genre':[]}})
                     for item in info['genres']:
-						movie_list[idx]['more']['genre'].append(item['genreName'])
-                        logger.debug(item['genreName'])
+                        movie_list[idx]['more']['genre'].append(item['genreName'])
+                        logger.debug('%s', ssitem['genreName'])
                         condition += 1
 				else:
 					continue
