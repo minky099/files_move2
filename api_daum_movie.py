@@ -251,7 +251,7 @@ class MovieSearch(object):
                 score = 85 - (index*5)
                 if tmps[0].find(movie_name) != -1 and tmps[-2] == movie_year:
                     score = 95
-                elif tmps[3] == movie_year:
+                elif tmps[-2] == movie_year:
                     score = score + 5
                 if score < 10:
                     score = 10
@@ -260,29 +260,34 @@ class MovieSearch(object):
             pass
             #logger.error('Exception:%s', e)
             #logger.error(traceback.format_exc())
-        movie_list = list(reversed(sorted(movie_list, key=lambda k:k['score'])))
         try:
-            if movie_list[0]['score'] >= 85:
-                logger.debug('smw - id(%s):%s', movie_list[0]['score'], movie_list[0]['id'])
-                more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                meta_data = get_json(more_url)
-                info = meta_data['data']
-                if int(movie_list[0]['year']) == 0:
-                   movie_list[0]['year'] = unicode(info['prodYear'])
-                movie_list[0]['title'] = info['titleKo']
-                logger.debug('smw - eng title:%s', info['titleEn'])
-                #movie_list[0].update({'more':{'eng_title':[]}})
-                movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
-                movie_list[0]['more']['eng_title'] = info['titleEn']
-                for item in info['countries']:
-                  movie_list[0]['country'] = item['countryKo']
-                  break;
-                #movie_list[0]['country'] = info['countries']['countryKo']
-                #movie_list[0].update({'more':{'genre':[]}})
-                for item in info['genres']:
-                    movie_list[0]['more']['genre'].append(item['genreName'])
-                    logger.debug(item['genreName'])
-                    condition += 1
+            for idx in range(len(movie_list)):
+                if movie_list[idx]['score'] >= 85 and abs(movie_year - int(movie_list[idx]['year'])) <= 1:
+                    logger.debug('smw - id(%s):%s', movie_list[idx]['score'], movie_list[idx]['id'])
+                    more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']
+                    meta_data = get_json(more_url)
+                    info = meta_data['data']
+                    if int(movie_list[idx]['year']) == int(info['prodYear']):
+                        movie_list[idx]['score'] = 100
+                    elif abs(int(movie_list[idx]['year']) - int(info['prodYear'])) <= 1:
+                        movie_list[idx]['score'] = 95
+
+                    if int(movie_list[idx]['year']) == 0:
+                       movie_list[idx]['year'] = unicode(info['prodYear'])
+                    movie_list[idx]['title'] = info['titleKo']
+                    logger.debug('smw - eng title:%s', info['titleEn'])
+                    #movie_list[0].update({'more':{'eng_title':[]}})
+                    movie_list[idx].update({'more':{'eng_title':"", 'genre':[]}})
+                    movie_list[idx]['more']['eng_title'] = info['titleEn']
+                    for item in info['countries']:
+                      movie_list[idx]['country'] = item['countryKo']
+                      break;
+                    #movie_list[0]['country'] = info['countries']['countryKo']
+                    #movie_list[0].update({'more':{'genre':[]}})
+                    for item in info['genres']:
+                        movie_list[idx]['more']['genre'].append(item['genreName'])
+                        logger.debug(item['genreName'])
+                        condition += 1
         except Exception as e:
             pass
             #logger.error('Exception:%s', e)
