@@ -260,7 +260,7 @@ class MovieSearch(object):
             pass
             #logger.error('Exception:%s', e)
             #logger.error(traceback.format_exc())
-
+        movie_list = list(reversed(sorted(movie_list, key=lambda k:k['score'])))
         try:
             if movie_list[0]['score'] >= 85:
                 logger.debug('smw - id(%s):%s', movie_list[0]['score'], movie_list[0]['id'])
