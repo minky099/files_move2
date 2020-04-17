@@ -256,10 +256,10 @@ class MovieSearch(object):
                 if score < 10:
                     score = 10
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[-2], 'score':score})
+                logger.debug('smw - id[%s]%s', index, tmps[1])
         except Exception as e:
-            pass
-            #logger.error('Exception:%s', e)
-            #logger.error(traceback.format_exc())
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
         try:
             for idx in range(len(movie_list)):
                 logger.debug('smw - score:%s, myear:%s, [%s]year:%s', movie_list[idx]['score'], movie_year, idx, movie_list[idx]['year'])
@@ -268,9 +268,9 @@ class MovieSearch(object):
                     more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']
                     meta_data = get_json(more_url)
                     info = meta_data['data']
-                    if int(movie_list[idx]['year']) == int(info['prodYear']):
+                    if int(movie_year == int(info['prodYear']):
                         movie_list[idx]['score'] = 100
-                    elif abs(int(movie_list[idx]['year']) - int(info['prodYear'])) <= 1:
+                    elif abs(movie_year - int(info['prodYear'])) <= 1:
                         movie_list[idx]['score'] = 95
 
                     if int(movie_list[idx]['year']) == 0:
