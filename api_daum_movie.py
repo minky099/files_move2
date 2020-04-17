@@ -160,7 +160,7 @@ class MovieSearch(object):
                     break
             if not flag_exist:
                 movie_list.append(data)
-                logger.debug('ma -  %s', data)
+                #logger.debug('ma -  %s', data)
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
