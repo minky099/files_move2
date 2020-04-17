@@ -42,9 +42,9 @@ def get_html(url):
         'TUID': '5xycgjuHcIcJ_190605142016060',
         'XUID': 'CV22zN3aTua8yJZHOgAaD5m9kKkzCf9jhm4neTfBxWCcWIaLJDLw3I-HStRjOQ-qfd_bPJVulwQrg5xqd7UoJA00'
         }
-        s.cookies.set(**my_cookie)
+        s.cookies.set(my_cookie)
         #return lxml.html.document_fromstring(requests.get(url, headers=headers, cookies=cookies).content)
-        return lxml.html.document_fromstring(requests.get(url).content)
+        return lxml.html.document_fromstring(requests.get(url, cookies=my_cookies).content)
     except Exception as e:
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
