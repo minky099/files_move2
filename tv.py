@@ -138,6 +138,7 @@ class DaumTV:
                     match.group('id')
                 try:
                     items = root.xpath('//*[@id="tv_program"]/div[1]/div[2]/span')
+
             try:
                 match = re.compile('(\\d{4}\\.\\d{1,2}\\.\\d{1,2})~').search(entity['broadcast_term'])
                 if match:
