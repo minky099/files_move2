@@ -267,6 +267,8 @@ class MovieSearch(object):
                 more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
                 meta_data = get_json(more_url)
                 info = meta_data['data']
+                if int(movie_list[0]['year']) == 0:
+                   movie_list[0]['year'] = int(info['prodYear'])
                 movie_list[0]['title'] = info['titleKo']
                 logger.debug('smw - eng title:%s', info['titleEn'])
                 #movie_list[0].update({'more':{'eng_title':[]}})
