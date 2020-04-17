@@ -183,9 +183,8 @@ class DaumTV:
                             elif item.attrib['data-clip'] != '' and today >= int(item.attrib['data-clip']):
                                 entity['last_episode_date'] = item.attrib['data-clip']
                                 entity['last_episode_no'] = span_tag[0].text.strip().replace(u'\xed\x9a\x8c', '')
-                            entity['episode_list'][item.attrib['data-clip']] = [
-                                span_tag[0].text.strip().replace(u'\xed\x9a\x8c', '')]
-                continue
+                                entity['episode_list'][item.attrib['data-clip']] = [span_tag[0].text.strip().replace(u'\xed\x9a\x8c', '')]
+                                continue
                 except Exception:
                     match.group('id')
                     e = None
