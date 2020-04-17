@@ -261,7 +261,7 @@ class MovieSearch(object):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
         try:
-            for idx in range(len(movie_list)):
+            for idx, val in enumerate(movie_list):
                 logger.debug('smw - score:%s, myear:%s, [%s]year:%s', movie_list[idx]['score'], movie_year, idx, movie_list[idx]['year'])
                 if movie_list[idx]['score'] >= 10 and abs(movie_year - int(movie_list[idx]['year'])) <= 1:
                     logger.debug('smw - id(%s):%s', movie_list[idx]['score'], movie_list[idx]['id'])
