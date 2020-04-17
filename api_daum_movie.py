@@ -20,6 +20,13 @@ is_plex = False
 #headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 #headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:15.0) Gecko/20100101 Firefox/15.0.1'}
 #headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'}
+my_cookies = {
+'TIARA':'GFjs3T_NUldfaNq1Wv57AFCm3q6aZ-bKo6ws7e7ijH3Rm5iton5NA9abyBqMlgLp9CgfDfk442XCFKrU8g6p8Qu-n3ShXmtp',
+'UUID': 'ZlDYYJ7b5BHpG2rVZnKk2uSJP6Fuze5wwl.JcQ-vduc0',
+'RUID': 'b7WDhgbQP9P3cpRcszB_x54dgOVZ3Jt8Y68wbhrUDL90',
+'TUID': '5xycgjuHcIcJ_190605142016060',
+'XUID': 'CV22zN3aTua8yJZHOgAaD5m9kKkzCf9jhm4neTfBxWCcWIaLJDLw3I-HStRjOQ-qfd_bPJVulwQrg5xqd7UoJA00'
+}
 
 ####################################################
 def get_json(url):
@@ -32,19 +39,13 @@ def get_json(url):
 def get_html(url):
     #headers = {'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'}
     #cookies = {'TIARA': 'GFjs3T_NUldfaNq1Wv57AFCm3q6aZ-bKo6ws7e7ijH3Rm5iton5NA9abyBqMlgLp9CgfDfk442XCFKrU8g6p8Qu-n3ShXmtp', 'UUID': 'ZlDYYJ7b5BHpG2rVZnKk2uSJP6Fuze5wwl.JcQ-vduc0', 'RUID': 'b7WDhgbQP9P3cpRcszB_x54dgOVZ3Jt8Y68wbhrUDL90', 'TUID': '5xycgjuHcIcJ_190605142016060', 'XUID': 'CV22zN3aTua8yJZHOgAaD5m9kKkzCf9jhm4neTfBxWCcWIaLJDLw3I-HStRjOQ-qfd_bPJVulwQrg5xqd7UoJA00'}
-    my_cookies = {
-    'TIARA':'GFjs3T_NUldfaNq1Wv57AFCm3q6aZ-bKo6ws7e7ijH3Rm5iton5NA9abyBqMlgLp9CgfDfk442XCFKrU8g6p8Qu-n3ShXmtp',
-    'UUID': 'ZlDYYJ7b5BHpG2rVZnKk2uSJP6Fuze5wwl.JcQ-vduc0',
-    'RUID': 'b7WDhgbQP9P3cpRcszB_x54dgOVZ3Jt8Y68wbhrUDL90',
-    'TUID': '5xycgjuHcIcJ_190605142016060',
-    'XUID': 'CV22zN3aTua8yJZHOgAaD5m9kKkzCf9jhm4neTfBxWCcWIaLJDLw3I-HStRjOQ-qfd_bPJVulwQrg5xqd7UoJA00'
-    }
     try:
         with requests.Session() as s:
             s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'})
             s.cookies.set(**my_cookies)
             #return lxml.html.document_fromstring(requests.get(url, headers=headers, cookies=cookies).content)
-            return lxml.html.document_fromstring(s.get(url, cookies=my_cookies).content)
+            ret = lxml.html.document_fromstring(s.get(url, cookies=my_cookies).content)
+        return ret
     except Exception as e:
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
