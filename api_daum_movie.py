@@ -278,19 +278,19 @@ class MovieSearch(object):
                         movie_list[idx]['score'] = 95
 
                     if int(movie_list[idx]['year']) == 0:
-                       movie_list[idx]['year'] = unicode(info['prodYear'])
+						movie_list[idx]['year'] = unicode(info['prodYear'])
                     movie_list[idx]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
                     #movie_list[0].update({'more':{'eng_title':[]}})
                     movie_list[idx].update({'more':{'eng_title':"", 'genre':[]}})
                     movie_list[idx]['more']['eng_title'] = info['titleEn']
                     for item in info['countries']:
-                      movie_list[idx]['country'] = item['countryKo']
-                      break;
+						movie_list[idx]['country'] = item['countryKo']
+						break;
                     #movie_list[0]['country'] = info['countries']['countryKo']
                     #movie_list[0].update({'more':{'genre':[]}})
                     for item in info['genres']:
-                        movie_list[idx]['more']['genre'].append(item['genreName'])
+						movie_list[idx]['more']['genre'].append(item['genreName'])
                         logger.debug(item['genreName'])
                         condition += 1
 				else:
