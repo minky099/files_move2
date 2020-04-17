@@ -262,6 +262,8 @@ class MovieSearch(object):
             logger.error(traceback.format_exc())
 
         try:
+            for idx in range(len(movie_list)):
+				logger.debug('smw - %s', movie_list[idx])
             logger.debug('smw - len:%s', len(movie_list))
             for idx in range(len(movie_list)):
                 logger.debug('smw - score:%s, myear:%s, [%s]year:%s', movie_list[idx]['score'], movie_year, idx, movie_list[idx]['year'])
@@ -291,6 +293,8 @@ class MovieSearch(object):
                         movie_list[idx]['more']['genre'].append(item['genreName'])
                         logger.debug(item['genreName'])
                         condition += 1
+				else:
+					continue
         except Exception as e:
             pass
             #logger.error('Exception:%s', e)
