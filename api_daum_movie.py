@@ -262,6 +262,7 @@ class MovieSearch(object):
             #logger.error(traceback.format_exc())
         try:
             for idx in range(len(movie_list)):
+                logger.debug('smw - score:%s, myear:%s, [%s]year:%s', movie_list[idx]['score'], movie_year, idx, movie_list[idx]['year'])
                 if movie_list[idx]['score'] >= 85 and abs(movie_year - int(movie_list[idx]['year'])) <= 1:
                     logger.debug('smw - id(%s):%s', movie_list[idx]['score'], movie_list[idx]['id'])
                     more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']

@@ -703,6 +703,8 @@ class LogicNormal(object):
             if LogicNormal.isHangul(info['name']) > 0:
                 str = unicode(info['name'])
                 fileName = str
+            else:
+                fileName = info['name']
             fileName = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', fileName)
             logger.debug('cr - fileName: %s', fileName)
             for keywords in rules_uhd:
