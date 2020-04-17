@@ -74,29 +74,15 @@ class DaumTV:
     def get_html(url):
         try:
             logger.debug('URL : %s', url)
-            #with requests.Session() as s:
-            #    s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'})
-                #s.cookies.set(**my_cookies)
-            #    s.cookies.set('TIARA', 'UGW1xtn4YKAmqYXfc_FW.vIqTlqAQ1DPsaWrixwHrVf6BsR..W3Yfm2_fJN7Tr97RepQmpIDDP255dKZNCtRRwYq_LnCkF3G')
-            #    s.cookies.set('UUID', 'I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0')
-            #    s.cookies.set('RUID', 'VPav-azRrrcw.q9f5ohG2DG36dxksb7ez6PZomVVMFU0')
-            #    s.cookies.set('TUID', 'r5mrQF4b5UFo_200215225759853')
-            #    s.cookies.set('XUID', 'AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00')
-                #return lxml.html.document_fromstring(requests.get(url, headers=headers, cookies=cookies).content)
-            #    res = s.get(url).text
-            #return res
-            cookie = 'TIARA=UGW1xtn4YKAmqYXfc_FW.vIqTlqAQ1DPsaWrixwHrVf6BsR..W3Yfm2_fJN7Tr97RepQmpIDDP255dKZNCtRRwYq_LnCkF3G'
-            cookie += 'UUID=I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0'
-            cookie += 'RUID=VPav-azRrrcw.q9f5ohG2DG36dxksb7ez6PZomVVMFU0'
-            cookie += 'UUID=I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0'
-            cookie += 'TUID=r5mrQF4b5UFo_200215225759853'
-            cookie += 'XUID=AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00'
-            request = urllib2.Request(url)
-            request.add_header('user-agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36')
-            request.add_header('cookie', cookie)
-            response = urllib2.urlopen(request)
-            data = response.read()
-            return data
+            with requests.Session() as s:
+                s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'})
+                s.cookies.set('TIARA', 'UGW1xtn4YKAmqYXfc_FW.vIqTlqAQ1DPsaWrixwHrVf6BsR..W3Yfm2_fJN7Tr97RepQmpIDDP255dKZNCtRRwYq_LnCkF3G')
+                s.cookies.set('UUID', 'I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0')
+                s.cookies.set('RUID', 'VPav-azRrrcw.q9f5ohG2DG36dxksb7ez6PZomVVMFU0')
+                s.cookies.set('TUID', 'r5mrQF4b5UFo_200215225759853')
+                s.cookies.set('XUID', 'AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00')
+                res = s.get(url).text
+            return res
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
