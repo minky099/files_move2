@@ -268,7 +268,7 @@ class MovieSearch(object):
                     more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']
                     meta_data = get_json(more_url)
                     info = meta_data['data']
-                    if movie_year == int(info['prodYear']:
+                    if movie_year == int(info['prodYear']):
                         movie_list[idx]['score'] = 100
                     elif abs(movie_year - int(info['prodYear'])) <= 1:
                         movie_list[idx]['score'] = 95
