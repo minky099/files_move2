@@ -42,9 +42,9 @@ def get_html(url):
     try:
         with requests.Session() as s:
             s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'})
-            s.cookies.set(my_cookies)
+            s.cookies.set(**my_cookies)
             #return lxml.html.document_fromstring(requests.get(url, headers=headers, cookies=cookies).content)
-            return lxml.html.document_fromstring(requests.get(url, cookies=my_cookies).content)
+            return lxml.html.document_fromstring(s.get(url, cookies=my_cookies).content)
     except Exception as e:
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
