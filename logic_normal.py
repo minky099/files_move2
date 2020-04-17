@@ -73,6 +73,8 @@ class LogicNormal(object):
             #logger.debug('il2 - %s : %s', item['name'], temp)
             temp = re.sub(u'\d?\d-\d?\d회 ?합?본?', '', temp)
             #logger.debug('il3 - %s : %s', item['name'], temp)
+            temp = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', temp)
+            logger.debug('il4 - fileName: %s', temp)
             item['guessit'] = guessit(temp)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
@@ -88,7 +90,7 @@ class LogicNormal(object):
             if LogicNormal.isHangul(item['search_name']) > 0:
                 str = unicode(item['search_name'])
                 item['search_name'] = str
-            logger.debug('il4 - search_name:%s', item['search_name'])
+            logger.debug('il5 - search_name:%s', item['search_name'])
             return item
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -179,7 +181,7 @@ class LogicNormal(object):
                 #from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
                 if 'year' in item['guessit']:
-                    year = item['guessit']['year']
+                    logger.debug('cml - movie %s year %s', item['name'], item['guessit']['year'])
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if (daum_movie_info and daum_movie_info[0]['score'] >= 100):
                         logger.debug('cml - movie score %s', daum_movie_info[0]['score'])
