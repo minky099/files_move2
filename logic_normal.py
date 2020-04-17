@@ -526,7 +526,7 @@ class LogicNormal(object):
     def movie_path_year(info, option):
         try:
             set_year = ""
-            tmp = ""
+            tmp = 0
             if info['year'] is not None:
                 keywords = sorted(option.keys())
                 for idx in range(len(keywords)):
