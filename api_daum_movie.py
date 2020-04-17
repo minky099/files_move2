@@ -293,8 +293,8 @@ class MovieSearch(object):
                         movie_list[idx]['more']['genre'].append(item['genreName'])
                         logger.debug('%s', ssitem['genreName'])
                         condition += 1
-				else:
-					continue
+                else:
+                    continue
         except Exception as e:
             pass
             #logger.error('Exception:%s', e)
