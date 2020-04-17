@@ -72,22 +72,18 @@ class DaumTV:
 
     @staticmethod
     def get_html(url):
-        #my_cookies = {
-        #'TIARA':'GFjs3T_NUldfaNq1Wv57AFCm3q6aZ-bKo6ws7e7ijH3Rm5iton5NA9abyBqMlgLp9CgfDfk442XCFKrU8g6p8Qu-n3ShXmtp',
-        #'UUID': 'ZlDYYJ7b5BHpG2rVZnKk2uSJP6Fuze5wwl.JcQ-vduc0',
-        #'RUID': 'b7WDhgbQP9P3cpRcszB_x54dgOVZ3Jt8Y68wbhrUDL90',
-        #'TUID': '5xycgjuHcIcJ_190605142016060',
-        #'XUID': 'CV22zN3aTua8yJZHOgAaD5m9kKkzCf9jhm4neTfBxWCcWIaLJDLw3I-HStRjOQ-qfd_bPJVulwQrg5xqd7UoJA00'
-        #}
+        my_cookies = {
+        'TIARA': 'UGW1xtn4YKAmqYXfc_FW.vIqTlqAQ1DPsaWrixwHrVf6BsR..W3Yfm2_fJN7Tr97RepQmpIDDP255dKZNCtRRwYq_LnCkF3G',
+        'UUID': 'I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0',
+        'RUID': 'VPav-azRrrcw.q9f5ohG2DG36dxksb7ez6PZomVVMFU0',
+        'TUID': 'r5mrQF4b5UFo_200215225759853',
+        'XUID': 'AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00'
+        }
         try:
             logger.debug('URL : %s', url)
             request = urllib2.Request(url)
             request.add_header('user-agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36')
-            request.add_header('cookie', 'TIARA=GFjs3T_NUldfaNq1Wv57AFCm3q6aZ-bKo6ws7e7ijH3Rm5iton5NA9abyBqMlgLp9CgfDfk442XCFKrU8g6p8Qu-n3ShXmtp')
-            request.add_header('cookie', 'UUID=ZlDYYJ7b5BHpG2rVZnKk2uSJP6Fuze5wwl.JcQ-vduc0')
-            request.add_header('cookie', 'RUID=b7WDhgbQP9P3cpRcszB_x54dgOVZ3Jt8Y68wbhrUDL90')
-            request.add_header('cookie', 'TUID=5xycgjuHcIcJ_190605142016060')
-            request.add_header('cookie', 'XUID=CV22zN3aTua8yJZHOgAaD5m9kKkzCf9jhm4neTfBxWCcWIaLJDLw3I-HStRjOQ-qfd_bPJVulwQrg5xqd7UoJA00')
+            request.add_header('cookie', my_cookies)
             response = urllib2.urlopen(request)
             data = response.read()
             return data
