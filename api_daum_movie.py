@@ -113,7 +113,7 @@ class MovieSearch(object):
     @staticmethod
     def get_movie_info_from_home(url):
         try:
-            from framework.common.daum import headers, cookies
+            from . import headers, cookies
             res = Logic.session.get(url, headers=headers, cookies=cookies)
             data = res.content
             html = lxml.html.document_fromstring(data)
@@ -185,7 +185,7 @@ class MovieSearch(object):
         condition = 0
         try:
             url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
-            from framework.common.daum import headers, cookies
+            from . import headers, cookies
             res = Logic.session.get(url, headers=headers, cookies=cookies)
             data = res.json()
             for index, item in enumerate(data['items']['movie']):
@@ -213,7 +213,7 @@ class MovieSearch(object):
             movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
             logger.debug('smw - id: %s, score:%s, myear:%s, year:%s', movie_list[0]['id'], movie_list[0]['score'], movie_year, movie_list[0]['year'])
             id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-            from framework.common.daum import headers, cookies
+            from . import headers, cookies
             res = Logic.session.get(id_url, headers=headers, cookies=cookies)
             meta_data = res.json()
             logger.debug('smw - more seach')
@@ -319,7 +319,7 @@ class MovieSearch(object):
                         if movie_list[0]['score'] >= 95:
                             logger.debug('smw another - id:%s', movie_list[0]['id'])
                             id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                            from framework.common.daum import headers, cookies
+                            from . import headers, cookies
                             res = Logic.session.get(id_url, headers=headers, cookies=cookies)
                             meta_data = res.json()
                             if meta_data is not None:
