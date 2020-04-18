@@ -195,7 +195,7 @@ class MovieSearch(object):
                 if tmps[0].find(movie_name) != -1 and tmps[3] == movie_year:
                     score = 95
                 elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
-                    score = score + 5
+                    score = score + 6
                 else:
                     score -= index * 5
 
@@ -212,7 +212,7 @@ class MovieSearch(object):
 
         try:
             movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
-            logger.debug('smw - score:%s, myear:%s, year:%s', movie_list[0]['score'], movie_year, movie_list[0]['year'])
+            logger.debug('smw - id: %s, score:%s, myear:%s, year:%s', movie_list[0]['id'], movie_list[0]['score'], movie_year, movie_list[0]['year'])
             id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
             from framework.common.daum import headers, cookies
             res = Logic.session.get(id_url, headers=headers, cookies=cookies)
@@ -231,7 +231,7 @@ class MovieSearch(object):
 					break
                 for item in info['genres']:
                     movie_list[0]['more']['genre'].append(item['genreName'])
-                    logger.debug('%s', ssitem['genreName'])
+                    logger.debug('%s', item['genreName'])
                     condition += 1
         except Exception as e:
             pass
