@@ -153,8 +153,8 @@ class LogicNormal(object):
             logger.debug('cml - weight:%s', weight_con)
             #TV
             if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode' and weight_con > 0:
-                from tv import DaumTV
-                #from framework.common.daum import DaumTV
+                #from tv import DaumTV
+                from framework.common.daum import DaumTV
                 logger.debug('cml - drama %s, %s', item['name'], item['search_name'])
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 #daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
