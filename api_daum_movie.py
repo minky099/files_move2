@@ -194,7 +194,7 @@ class MovieSearch(object):
                 score = 85
                 if tmps[0].find(movie_name) != -1 and tmps[3] == movie_year:
                     score = 95
-                elif tmps[3] == movie_year and abs(tmps[3] - movie_year) <= 1:
+                elif tmps[3] == movie_year and abs(int(tmps[3]) - movie_year) <= 1:
                     score = score + 5
                 else:
                     score -= index * 5
