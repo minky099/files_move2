@@ -31,7 +31,17 @@ is_plex = False
 ####################################################
 def get_json(url):
     try:
-        return requests.get(url).json()
+        with requests.Session() as s:
+            s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'})
+            #s.cookies.set(**my_cookies)
+            s.cookies.set('TIARA', 'UGW1xtn4YKAmqYXfc_FW.vIqTlqAQ1DPsaWrixwHrVf6BsR..W3Yfm2_fJN7Tr97RepQmpIDDP255dKZNCtRRwYq_LnCkF3G')
+            s.cookies.set('UUID', 'I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0')
+            s.cookies.set('RUID', 'VPav-azRrrcw.q9f5ohG2DG36dxksb7ez6PZomVVMFU0')
+            s.cookies.set('TUID', 'r5mrQF4b5UFo_200215225759853')
+            s.cookies.set('XUID', 'AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00')
+            #return lxml.html.document_fromstring(requests.get(url, headers=headers, cookies=cookies).content)
+            res = s.get(url).json()
+        return ret
     except Exception as e:
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())
@@ -271,28 +281,29 @@ class MovieSearch(object):
                     logger.debug('smw - id(%s):%s', movie_list[idx]['score'], movie_list[idx]['id'])
                     more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']
                     meta_data = get_json(more_url)
-                    info = meta_data['data']
-                    if movie_year == int(info['prodYear']):
-                        movie_list[idx]['score'] = 100
-                    elif abs(movie_year - int(info['prodYear'])) <= 1:
-                        movie_list[idx]['score'] = 95
+                    if meta_data is not None:
+                        info = meta_data['data']
+                        if movie_year == int(info['prodYear']):
+                            movie_list[idx]['score'] = 100
+                        elif abs(movie_year - int(info['prodYear'])) <= 1:
+                            movie_list[idx]['score'] = 95
 
-                    if int(movie_list[idx]['year']) == 0:
-						movie_list[idx]['year'] = unicode(info['prodYear'])
-                    movie_list[idx]['title'] = info['titleKo']
-                    logger.debug('smw - eng title:%s', info['titleEn'])
-                    #movie_list[0].update({'more':{'eng_title':[]}})
-                    movie_list[idx].update({'more':{'eng_title':"", 'genre':[]}})
-                    movie_list[idx]['more']['eng_title'] = info['titleEn']
-                    for item in info['countries']:
-						movie_list[idx]['country'] = item['countryKo']
-						break;
-                    #movie_list[0]['country'] = info['countries']['countryKo']
-                    #movie_list[0].update({'more':{'genre':[]}})
-                    for item in info['genres']:
-                        movie_list[idx]['more']['genre'].append(item['genreName'])
-                        logger.debug('%s', ssitem['genreName'])
-                        condition += 1
+                        if int(movie_list[idx]['year']) == 0:
+    						movie_list[idx]['year'] = unicode(info['prodYear'])
+                        movie_list[idx]['title'] = info['titleKo']
+                        logger.debug('smw - eng title:%s', info['titleEn'])
+                        #movie_list[0].update({'more':{'eng_title':[]}})
+                        movie_list[idx].update({'more':{'eng_title':"", 'genre':[]}})
+                        movie_list[idx]['more']['eng_title'] = info['titleEn']
+                        for item in info['countries']:
+    						movie_list[idx]['country'] = item['countryKo']
+    						break;
+                        #movie_list[0]['country'] = info['countries']['countryKo']
+                        #movie_list[0].update({'more':{'genre':[]}})
+                        for item in info['genres']:
+                            movie_list[idx]['more']['genre'].append(item['genreName'])
+                            logger.debug('%s', ssitem['genreName'])
+                            condition += 1
                 else:
                     continue
         except Exception as e:
