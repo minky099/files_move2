@@ -277,33 +277,31 @@ class MovieSearch(object):
             logger.debug('smw - len:%s', len(movie_list))
             for idx in range(len(movie_list)):
                 logger.debug('smw - score:%s, myear:%s, [%s]year:%s', movie_list[idx]['score'], movie_year, idx, movie_list[idx]['year'])
-                if movie_list[idx]['score'] >= 10 and abs(movie_year - int(movie_list[idx]['year'])) <= 1:
-                    logger.debug('smw - id(%s):%s', movie_list[idx]['score'], movie_list[idx]['id'])
-                    more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']
-                    meta_data = get_json(more_url)
-                    if meta_data is not None:
-                        info = meta_data['data']
-                        if movie_year == int(info['prodYear']):
-                            movie_list[idx]['score'] = 100
-                        elif abs(movie_year - int(info['prodYear'])) <= 1:
-                            movie_list[idx]['score'] = 95
+                more_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[idx]['id']
+                meta_data = get_json(more_url)
+                if meta_data is not None:
+                    info = meta_data['data']
+                    if movie_year == int(info['prodYear']):
+                        movie_list[idx]['score'] = 100
+                    elif abs(movie_year - int(info['prodYear'])) <= 1:
+                        movie_list[idx]['score'] = 95
 
-                        if int(movie_list[idx]['year']) == 0:
-    						movie_list[idx]['year'] = unicode(info['prodYear'])
-                        movie_list[idx]['title'] = info['titleKo']
-                        logger.debug('smw - eng title:%s', info['titleEn'])
-                        #movie_list[0].update({'more':{'eng_title':[]}})
-                        movie_list[idx].update({'more':{'eng_title':"", 'genre':[]}})
-                        movie_list[idx]['more']['eng_title'] = info['titleEn']
-                        for item in info['countries']:
-    						movie_list[idx]['country'] = item['countryKo']
-    						break;
-                        #movie_list[0]['country'] = info['countries']['countryKo']
-                        #movie_list[0].update({'more':{'genre':[]}})
-                        for item in info['genres']:
-                            movie_list[idx]['more']['genre'].append(item['genreName'])
-                            logger.debug('%s', ssitem['genreName'])
-                            condition += 1
+                    if int(movie_list[idx]['year']) == 0:
+						movie_list[idx]['year'] = unicode(info['prodYear'])
+                    movie_list[idx]['title'] = info['titleKo']
+                    logger.debug('smw - eng title:%s', info['titleEn'])
+                    #movie_list[0].update({'more':{'eng_title':[]}})
+                    movie_list[idx].update({'more':{'eng_title':"", 'genre':[]}})
+                    movie_list[idx]['more']['eng_title'] = info['titleEn']
+                    for item in info['countries']:
+						movie_list[idx]['country'] = item['countryKo']
+						break;
+                    #movie_list[0]['country'] = info['countries']['countryKo']
+                    #movie_list[0].update({'more':{'genre':[]}})
+                    for item in info['genres']:
+                        movie_list[idx]['more']['genre'].append(item['genreName'])
+                        logger.debug('%s', ssitem['genreName'])
+                        condition += 1
                 else:
                     continue
         except Exception as e:
