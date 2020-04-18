@@ -194,7 +194,7 @@ class MovieSearch(object):
                 score = 85
                 if tmps[0].find(movie_name) != -1 and tmps[3] == movie_year:
                     score = 95
-                elif tmps[3] == movie_year and abs(int(tmps[3]) - movie_year) <= 1:
+                elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
                     score = score + 5
                 else:
                     score -= index * 5
@@ -217,6 +217,7 @@ class MovieSearch(object):
             from framework.common.daum import headers, cookies
             res = Logic.session.get(id_url, headers=headers, cookies=cookies)
             meta_data = res.json()
+            logger.debug('smw - more seach')
             if meta_data is not None:
                 info = meta_data['data']
                 if int(movie_list[0]['year']) == 0:
