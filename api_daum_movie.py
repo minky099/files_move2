@@ -101,9 +101,8 @@ class MovieSearch(object):
                 if tmp['id'] == data['id']:
                     exist_data = tmp
                     break
-
-            if exist_data is not None:
-                movie_list.remove(exist_data)
+            #if exist_data is not None:
+                #movie_list.remove(exist_data)
             movie_list.append(data)
         except Exception as e:
             logger.error('Exception:%s', e)
