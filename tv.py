@@ -73,16 +73,10 @@ class DaumTV:
     @staticmethod
     def get_html(url):
         try:
-            logger.debug('URL : %s', url)
-            with requests.Session() as s:
-                s.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2919.83 Safari/537.36'})
-                s.cookies.set('TIARA', 'UGW1xtn4YKAmqYXfc_FW.vIqTlqAQ1DPsaWrixwHrVf6BsR..W3Yfm2_fJN7Tr97RepQmpIDDP255dKZNCtRRwYq_LnCkF3G')
-                s.cookies.set('UUID', 'I41mWZivIqIc2.gQmLm2E_TLoaDsof1zYyFdoLTC_hU0')
-                s.cookies.set('RUID', 'VPav-azRrrcw.q9f5ohG2DG36dxksb7ez6PZomVVMFU0')
-                s.cookies.set('TUID', 'r5mrQF4b5UFo_200215225759853')
-                s.cookies.set('XUID', 'AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00')
-                res = s.get(url).text
-            return res
+            from framework.common.daum import headers, cookies
+            res = Logic.session.get(url, headers=headers, cookies=cookies)
+            data = res.content
+            return data
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -220,7 +214,8 @@ class DaumTV:
             root = lxml.html.fromstring(data)
             home_info = DaumTV.get_show_info_on_home(root)
             tv = DaumTV.get_daum_tv_info(title)
-            ret = {'home': home_info, 'tv': tv}
+            ret = {'home': home_info,
+             'tv': tv}
             return ret
         except Exception as e:
             logger.error('Exception:%s', e)
@@ -323,3 +318,4 @@ class DaumTV:
             logger.debug('Exception get_show_info_by_html : %s', e)
             logger.debug(traceback.format_exc())
 
+        return
