@@ -40,7 +40,7 @@ def get_json(url):
             s.cookies.set('TUID', 'r5mrQF4b5UFo_200215225759853')
             s.cookies.set('XUID', 'AGRX5MKvvwl2h.K.-jQIXcI5dRCc-XSeSmWxEdggU9X_ft3HJWDn2Ji3BHnFVlrK2-l_fUikj6LNMcjXt6kFDw00')
             #return lxml.html.document_fromstring(requests.get(url, headers=headers, cookies=cookies).content)
-            res = s.get(url).json()
+            ret = s.get(url).json()
         return ret
     except Exception as e:
         logger.error('Exception:%s', e)
