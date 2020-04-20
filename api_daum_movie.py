@@ -182,7 +182,6 @@ class MovieSearch(object):
 
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
-        condition = 0
         try:
             url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
             from . import headers, cookies
@@ -231,7 +230,6 @@ class MovieSearch(object):
                 for item in info['genres']:
                     movie_list[0]['more']['genre'].append(item['genreName'])
                     logger.debug('%s', item['genreName'])
-                    condition += 1
         except Exception as e:
             pass
             #logger.error('Exception:%s', e)
@@ -315,22 +313,21 @@ class MovieSearch(object):
                              'country': new_ret['country'],
                              'more': new_ret['more']})
 
-                        try:
-                            movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
-                            if movie_list[0]['score'] >= 91:
-                                logger.debug('smw another - id:%s', movie_list[0]['id'])
-                                id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                                from . import headers, cookies
-                                res = Logic.session.get(id_url, headers=headers, cookies=cookies)
-                                meta_data = res.json()
-                                if meta_data is not None:
-                                    info = meta_data['data']
-                                    for item in info['genres']:
-                                        movie_list[0]['more']['genre'].append(item['genreName'])
-                                        logger.debug(item['genreName'])
-                                        condition += 1
-                        except Exception as e:
-                            pass
+                try:
+                    movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
+                    if movie_list[0]['score'] >= 91:
+                        logger.debug('smw another - id:%s', movie_list[0]['id'])
+                        id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
+                        from . import headers, cookies
+                        res = Logic.session.get(id_url, headers=headers, cookies=cookies)
+                        meta_data = res.json()
+                        if meta_data is not None:
+                            info = meta_data['data']
+                            for item in info['genres']:
+                                movie_list[0]['more']['genre'].append(item['genreName'])
+                                logger.debug(item['genreName'])
+                except Exception as e:
+                    pass
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
