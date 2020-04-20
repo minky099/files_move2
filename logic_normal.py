@@ -569,7 +569,11 @@ class LogicNormal(object):
             set_genre = ""
             if 'more' in info:
                 if 'genre' in info['more']:
-                    genre = info['more']['genre'][0]
+                    number_gen = len(info['more']['genre'])
+                    if number_gen == 1:
+                        genre = info['more']['genre']
+                    else:
+                        genre = info['more']['genre'][0]
 
             if genre is not None:
                 genre = genre.encode('utf-8')
@@ -685,6 +689,7 @@ class LogicNormal(object):
                             condition += 1
                         else:
                             condition -= 0
+            logger.debug('check_ani count:%s', condition)
             return condition
         except Exception as e:
             logger.error('Exxception:%s', e)
