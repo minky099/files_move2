@@ -674,7 +674,7 @@ class LogicNormal(object):
             if ani_flag == 1:
                 if 'more' in info:
                     if 'genre' in info['more']:
-                        if u'애니메이션" in info['more']['genre']:
+                        if u'애니메이션' in info['more']['genre']:
 		                    condition += 1
                         else:
                             condition -= 0
