@@ -315,7 +315,7 @@ class MovieSearch(object):
 
                 try:
                     movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
-                    if movie_list[0]['score'] >= 91:
+                    if movie_list[0]['score'] >= 100:
                         logger.debug('smw another - id:%s', movie_list[0]['id'])
                         id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
                         from . import headers, cookies
@@ -325,7 +325,7 @@ class MovieSearch(object):
                             info = meta_data['data']
                             for item in info['genres']:
                                 movie_list[0]['more']['genre'].append(item['genreName'])
-                                logger.debug(item['genreName'])
+                                logger.debug('smw another - genre:%s', item['genreName'])
                 except Exception as e:
                     pass
         except Exception as e:
