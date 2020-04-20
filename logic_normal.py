@@ -73,8 +73,6 @@ class LogicNormal(object):
             #logger.debug('il2 - %s : %s', item['name'], temp)
             temp = re.sub(u'\d?\d-\d?\d회 ?합?본?', '', temp)
             #logger.debug('il3 - %s : %s', item['name'], temp)
-            #temp = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', temp)
-            #logger.debug('il4 - fileName: %s', temp)
             item['guessit'] = guessit(temp)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
@@ -579,11 +577,10 @@ class LogicNormal(object):
                 genre = genre.encode('utf-8')
                 for keywords, values in option.items():
                     if ani_flag == 1:
-                        for words in info['more']['genre']:
-                            encWords = words.encode('utf-8')
-                            gregxAni = re.compile(encWords, re.I)
-                            if (gregxAni.search(u'애니메이션')) is not None:
-                                return None
+						if u'애니메이션' in info['more']['genre']:
+                        	return None
+						else:
+							continue
                     else:
                         encKeywords = keywords.encode('utf-8')
                         gregx = re.compile(encKeywords, re.I)
@@ -679,20 +676,14 @@ class LogicNormal(object):
             if ani_flag == 1:
                 if 'more' in info:
                     if 'genre' in info['more']:
-                        for words in info['more']['genre']:
-                            encWords = words.encode('utf-8')
-                            gregx = re.compile(encWords, re.I)
-                            if (gregx.search(u'애니메이션')) is not None:
-                                condition += 1
-                            else:
-                                condition -= 0
+                        if u'애니메이션" in info['more']['genre']:
+		                    condition += 1
+                        else:
+                            condition -= 0
 
                 if condition == 0:
                     if 'genre' in info:
-                        str = info['genre']
-                        encStr = str.encode('utf-8')
-                        gregx = re.compile(encStr, re.I)
-                        if (gregx.search(u'애니메이션'))   is not None:
+                        if u'애니메이션' in info['genre']:
                             condition += 1
                         else:
                             condition -= 0
