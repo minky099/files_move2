@@ -580,7 +580,9 @@ class LogicNormal(object):
                 for keywords, values in option.items():
                     if ani_flag == 1:
                         for words in info['more']['genre']:
-                            if u'애니메이션' in words:
+                            encWords = words.encode('utf-8')
+                            gregxAni = re.compile(encWords, re.I)
+                            if (gregxAni.search(u'애니메이션')) is not None:
                                 return None
                     else:
                         encKeywords = keywords.encode('utf-8')
@@ -678,14 +680,19 @@ class LogicNormal(object):
                 if 'more' in info:
                     if 'genre' in info['more']:
                         for words in info['more']['genre']:
-                            if u'애니메이션' in words:
+                            encWords = words.encode('utf-8')
+                            gregx = re.compile(encWords, re.I)
+                            if (gregx.search(u'애니메이션')) is not None:
                                 condition += 1
                             else:
                                 condition -= 0
 
                 if condition == 0:
                     if 'genre' in info:
-                        if u'애니메이션' in info['genre']:
+                        str = info['genre']
+                        encStr = str.encode('utf-8')
+                        gregx = re.compile(encStr, re.I)
+                        if (gregx.search(u'애니메이션'))   is not None:
                             condition += 1
                         else:
                             condition -= 0
