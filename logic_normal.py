@@ -579,8 +579,6 @@ class LogicNormal(object):
                     if ani_flag == 1:
 						if u'애니메이션' in info['more']['genre']:
                         	return None
-						else:
-							continue
                     else:
                         encKeywords = keywords.encode('utf-8')
                         gregx = re.compile(encKeywords, re.I)
