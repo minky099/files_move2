@@ -312,22 +312,21 @@ class MovieSearch(object):
                              'score': 100,
                              'country': new_ret['country'],
                              'more': new_ret['more']})
-
-                try:
-                    movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
-                    if movie_list[0]['score'] >= 100:
-                        logger.debug('smw another - id:%s', movie_list[0]['id'])
-                        id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                        from . import headers, cookies
-                        res = Logic.session.get(id_url, headers=headers, cookies=cookies)
-                        meta_data = res.json()
-                        if meta_data is not None:
-                            info = meta_data['data']
-                            for item in info['genres']:
-                                movie_list[0]['more']['genre'].append(item['genreName'])
-                                logger.debug('smw another - genre:%s', item['genreName'])
-                except Exception as e:
-                    pass
+            try:
+                movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
+                if movie_list[0]['score'] >= 100:
+                    logger.debug('smw another - id:%s', movie_list[0]['id'])
+                    id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
+                    from . import headers, cookies
+                    res = Logic.session.get(id_url, headers=headers, cookies=cookies)
+                    meta_data = res.json()
+                    if meta_data is not None:
+                        info = meta_data['data']
+                        for item in info['genres']:
+                            movie_list[0]['more']['genre'].append(item['genreName'])
+                            logger.debug('smw another - genre:%s', item['genreName'])
+            except Exception as e:
+                pass
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
