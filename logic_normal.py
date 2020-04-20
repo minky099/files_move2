@@ -674,16 +674,16 @@ class LogicNormal(object):
             if ani_flag == 1:
                 if 'more' in info:
                     if 'genre' in info['more']:
+                        logger.debug('ca - genre:%s', info['more']['genre'])
                         for word in info['more']['genre']:
-                            logger.debug('ca - genre:%s', info['more']['genre'])
                             if u'애니메이션' in word:
 	    	                    condition += 1
                             else:
                                 condition -= 0
                 if condition == 0:
                     if 'genre' in info:
+                        logger.debug('ca - genre:%s', info['genre'])
                         for word in info['genre']:
-                            logger.debug('ca - genre:%s', info['genre'])
                             if u'애니메이션' in word:
                                 condition += 1
                             else:
