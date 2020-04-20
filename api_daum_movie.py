@@ -209,33 +209,6 @@ class MovieSearch(object):
             logger.error(traceback.format_exc())
 
         try:
-            movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
-            logger.debug('smw - id: %s, score:%s, myear:%s, year:%s', movie_list[0]['id'], movie_list[0]['score'], movie_year, movie_list[0]['year'])
-            id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-            from . import headers, cookies
-            res = Logic.session.get(id_url, headers=headers, cookies=cookies)
-            meta_data = res.json()
-            logger.debug('smw - more seach')
-            if meta_data is not None:
-                info = meta_data['data']
-                if int(movie_list[0]['year']) == 0:
-					movie_list[0]['year'] = unicode(info['prodYear'])
-                movie_list[0]['title'] = info['titleKo']
-                logger.debug('smw - eng title:%s', info['titleEn'])
-                movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
-                movie_list[0]['more']['eng_title'] = info['titleEn']
-                for item in info['countries']:
-					movie_list[0]['country'] = item['countryKo']
-					break
-                for item in info['genres']:
-                    movie_list[0]['more']['genre'].append(item['genreName'])
-                    logger.debug('%s', item['genreName'])
-        except Exception as e:
-            pass
-            #logger.error('Exception:%s', e)
-            #logger.error(traceback.format_exc())
-
-        try:
             url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', urllib.quote(movie_name.encode('utf8')))
             ret = MovieSearch.get_movie_info_from_home(url)
             if ret is not None:
@@ -314,19 +287,30 @@ class MovieSearch(object):
                              'more': new_ret['more']})
             try:
                 movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
-                if movie_list[0]['score'] >= 100:
-                    logger.debug('smw another - id:%s', movie_list[0]['id'])
-                    id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                    from . import headers, cookies
-                    res = Logic.session.get(id_url, headers=headers, cookies=cookies)
-                    meta_data = res.json()
-                    if meta_data is not None:
-                        info = meta_data['data']
-                        for item in info['genres']:
-                            movie_list[0]['more']['genre'].append(item['genreName'])
-                            logger.debug('smw another - genre:%s', item['genreName'])
+                logger.debug('smw - id: %s, score:%s, myear:%s, year:%s', movie_list[0]['id'], movie_list[0]['score'], movie_year, movie_list[0]['year'])
+                id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
+                from . import headers, cookies
+                res = Logic.session.get(id_url, headers=headers, cookies=cookies)
+                meta_data = res.json()
+                logger.debug('smw - more seach')
+                if meta_data is not None:
+                    info = meta_data['data']
+                    if int(movie_list[0]['year']) == 0:
+                        movie_list[0]['year'] = unicode(info['prodYear'])
+                    movie_list[0]['title'] = info['titleKo']
+                    logger.debug('smw - eng title:%s', info['titleEn'])
+                    movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
+                    movie_list[0]['more']['eng_title'] = info['titleEn']
+                    for item in info['countries']:
+                        movie_list[0]['country'] = item['countryKo']
+                        break
+                    for item in info['genres']:
+                        movie_list[0]['more']['genre'].append(item['genreName'])
+                        logger.debug('%s', item['genreName'])
             except Exception as e:
                 pass
+                #logger.error('Exception:%s', e)
+                #logger.error(traceback.format_exc())
         except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
