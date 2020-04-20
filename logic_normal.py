@@ -577,8 +577,8 @@ class LogicNormal(object):
                 genre = genre.encode('utf-8')
                 for keywords, values in option.items():
                     if ani_flag == 1:
-						if u'애니메이션' in info['more']['genre']:
-                        	return None
+                        if u'애니메이션' in values:
+                            return None
                     else:
                         encKeywords = keywords.encode('utf-8')
                         gregx = re.compile(encKeywords, re.I)
