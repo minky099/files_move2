@@ -564,23 +564,20 @@ class LogicNormal(object):
         ani_flag = ModelSetting.get_bool('ani_flag')
         etc_name = ModelSetting.get('etc_movie_genre')
         try:
-            genre = []
+            num_genre = 0
             set_genre = ""
             if 'more' in info:
                 if 'genre' in info['more']:
-                    number_gen = len(info['more']['genre'])
-                    if number_gen == 1:
-                        genre = info['more']['genre']
-                    else:
-                        genre = info['more']['genre'][0]
-
-            if genre is not None:
-                for keywords, values in option.items():
-                    if ani_flag == 1:
-                        if u'애니메이션' in values:
-                            return None
-                    else:
-                        for gen in genre:
+                    for word in info['more']['genre']:
+                        num_genre += 1
+            #num_genre = len(info['more']['genre'])
+            if num_genre > 0:
+                for gen in info['more']['genre']:
+                    for keywords, values in option.items():
+                        if ani_flag == 1:
+                            if u'애니메이션' in values:
+                                return None
+                        else:
                             gen = gen.encode('utf-8')
                             encKeywords = keywords.encode('utf-8')
                             gregx = re.compile(encKeywords, re.I)
@@ -588,13 +585,12 @@ class LogicNormal(object):
                                 encValues = values.encode('utf-8')
                                 set_genre = encValues
                                 logger.debug('mpg search - genre:%s, encValues:%s', gen, encValues)
-                                break
+                                return set_genre
                             else:
                                 if LogicNormal.isHangul(etc_name) > 0:
                                     str = unicode(etc_name)
                                     etc_name = str
                                 set_genre = etc_name
-                return set_genre
             else:
                 return None
         except Exception as e:
