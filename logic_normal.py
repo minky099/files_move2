@@ -54,6 +54,8 @@ class LogicNormal(object):
             try:
                 for source_path in source_base_path:
                     LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
+                    if ModelSetting.get_bool('emptyFolderDelete'):
+                        LogicNormal.empty_folder_remove(source_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -95,6 +97,18 @@ class LogicNormal(object):
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def empty_folder_remove(base_path):
+        try:
+            logger.debug('efr - base_path:%s', base_path)
+            for dir, subdirs, files in os.walk(base_path, topdown=False):
+                for name in files:
+                    if len(os.listdir(dir)) == 0:
+                        logger.debug('efr - rmdir:%s', dir)
+                        os.rmdir(dir)
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
 
     @staticmethod
     def make_list(source_path, ktv_drama_path, ktv_show_path, movie_path, err_path):
