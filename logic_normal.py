@@ -574,24 +574,26 @@ class LogicNormal(object):
                         genre = info['more']['genre'][0]
 
             if genre is not None:
-                genre = genre.encode('utf-8')
                 for keywords, values in option.items():
                     if ani_flag == 1:
                         if u'애니메이션' in values:
                             return None
                     else:
-                        encKeywords = keywords.encode('utf-8')
-                        gregx = re.compile(encKeywords, re.I)
-                        if (gregx.search(genre)) is not None:
-                            encValues = values.encode('utf-8')
-                            set_genre = encValues
-                            logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
-                            break
-                        else:
-                            if LogicNormal.isHangul(etc_name) > 0:
-                                str = unicode(etc_name)
-                                etc_name = str
-                            set_genre = etc_name
+                        for gen in genre
+                            gen = gen.encode('utf-8')
+                            encKeywords = keywords.encode('utf-8')
+                            gregx = re.compile(encKeywords, re.I)
+                            if (gregx.search(gen)) is not None:
+                                encValues = values.encode('utf-8')
+                                set_genre = encValues
+                                logger.debug('mpg search - genre:%s, encValues:%s', gen, encValues)
+                                break
+                            else:
+                                if LogicNormal.isHangul(etc_name) > 0:
+                                    str = unicode(etc_name)
+                                    etc_name = str
+                                set_genre = etc_name
+                                break
                 return set_genre
             else:
                 return None
