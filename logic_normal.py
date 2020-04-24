@@ -113,7 +113,7 @@ class LogicNormal(object):
                     if os.path.isdir(p):
                         LogicNormal.make_list(p, ktv_drama_path, ktv_show_path, movie_path, err_path)
                     elif os.path.isfile(p):
-                        item = LogicNormal.item_list(path, f)
+                        item = LogicNormal.item_list(source_path, f)
                         if item is not None:
                             item = LogicNormal.check_resolution(item)
                             LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
