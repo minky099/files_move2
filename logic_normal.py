@@ -52,7 +52,8 @@ class LogicNormal(object):
             if None == '':
                 return None
             try:
-                LogicNormal.make_list(source_base_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
+                for source_path in sourch_base_path:
+                    LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -99,39 +100,26 @@ class LogicNormal(object):
     def make_list(source_path, ktv_drama_path, ktv_show_path, movie_path, err_path):
         interval = ModelSetting.get('interval')
         try:
-            for path in source_path:
-                logger.debug('path:%s', path)
-                lists = os.listdir(path.strip())
-                for f in lists:
-                    try:
-                        if LogicNormal.isHangul(str(f)) > 0:
-                            f = f.encode('utf-8')
-                        #f = str(f).strip()
-                        p = os.path.join(path.strip(), f)
-                        logger.debug('p:%s', p)
+            logger.debug('path:%s', source_path)
+            lists = os.listdir(source_path.strip())
+            for f in lists:
+                try:
+                    if LogicNormal.isHangul(str(f)) > 0:
+                        f = f.encode('utf-8')
+                    #f = str(f).strip()
+                    p = os.path.join(path.strip(), f)
+                    logger.debug('p:%s', p)
 
-                        if os.path.isfile(p):
-                            item = LogicNormal.item_list(path, f)
-                            if item is not None:
-                                item = LogicNormal.check_resolution(item)
-                                LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
-                        elif os.path.isdir(p):
-                            sub_lists = os.listdir(p)
-                            for fs in sub_lists:
-                                try:
-                                    if LogicNormal.isHangul(str(fs)) > 0:
-                                        fs = fs.encode('utf-8')
-                                    #fs = str(fs).strip()
-                                    if os.path.isfile(os.path.join(p.strip(), fs)):
-                                        item = LogicNormal.item_list(p, fs)
-                                        if item is not None:
-                                            LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
-                                except Exception as e:
-                                    logger.error('Exxception:%s', e)
-                                    logger.error(traceback.format_exc())
-                    except Exception as e:
-                        logger.error('Exxception:%s', e)
-                        logger.error(traceback.format_exc())
+                    if os.path.isdir(p):
+                        LogicNormal.make_list(p, ktv_drama_path, ktv_show_path, movie_path, err_path)
+                    elif os.path.isfile(p):
+                        item = LogicNormal.item_list(path, f)
+                        if item is not None:
+                            item = LogicNormal.check_resolution(item)
+                            LogicNormal.check_move_list(item, ktv_drama_path, ktv_show_path, movie_path, err_path)
+                except Exception as e:
+                    logger.error('Exxception:%s', e)
+                    logger.error(traceback.format_exc())
             time.sleep(int(interval))
         except Exception as e:
             logger.error('Exxception:%s', e)
