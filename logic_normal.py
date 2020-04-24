@@ -564,7 +564,7 @@ class LogicNormal(object):
         ani_flag = ModelSetting.get_bool('ani_flag')
         etc_name = ModelSetting.get('etc_movie_genre')
         try:
-            set_genre = ""
+            set_genre = None
             if 'more' in info:
                 if 'genre' in info['more']:
                     for word in info['more']['genre']:
@@ -573,27 +573,21 @@ class LogicNormal(object):
                                 return None
             #num_genre = len(info['more']['genre'])
             logger.debug('mpg check')
-            genre = info['more']['genre'][0]
+            genre = str(info['more']['genre'])
             for keywords, values in option.items():
-                if ani_flag == 1:
-                    if u'애니메이션' in values:
-                        return None
+                genre = genre.encode('utf-8')
+                encKeywords = keywords.encode('utf-8')
+                gregx = re.compile(encKeywords, re.I)
+                if (gregx.search(genre)) is not None:
+                    encValues = values.encode('utf-8')
+                    set_genre = encValues
+                    logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
+                    break
                 else:
-                    genre = genre.encode('utf-8')
-                    encKeywords = keywords.encode('utf-8')
-                    gregx = re.compile(encKeywords, re.I)
-                    if (gregx.search(genre)) is not None:
-                        encValues = values.encode('utf-8')
-                        set_genre = encValues
-                        logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
-                        break
-                    else:
-                        if LogicNormal.isHangul(etc_name) > 0:
-                            str = unicode(etc_name)
-                            etc_name = str
-                        set_genre = etc_name
-            else:
-                return None
+                    if LogicNormal.isHangul(etc_name) > 0:
+                        str = unicode(etc_name)
+                        etc_name = str
+                    set_genre = etc_name
             logger.debug('mpg ret genre:%s', set_genre)
             return set_genre
         except Exception as e:
