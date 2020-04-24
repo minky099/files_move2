@@ -579,7 +579,7 @@ class LogicNormal(object):
                         if u'애니메이션' in values:
                             return None
                     else:
-                        for gen in genre
+                        for gen in genre:
                             gen = gen.encode('utf-8')
                             encKeywords = keywords.encode('utf-8')
                             gregx = re.compile(encKeywords, re.I)
