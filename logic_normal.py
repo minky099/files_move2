@@ -594,7 +594,6 @@ class LogicNormal(object):
                                     str = unicode(etc_name)
                                     etc_name = str
                                 set_genre = etc_name
-                                break
                 return set_genre
             else:
                 return None
