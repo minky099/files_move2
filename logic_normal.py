@@ -457,6 +457,7 @@ class LogicNormal(object):
                     dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
                 elif arg1:
                     dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
+            logger.debug('mm - dest_path:%s', dest_path)
             if not os.path.exists(dest_path):
                 os.makedirs(dest_path)
             fileCheck = os.path.join(dest_path, data['name'])
