@@ -381,7 +381,7 @@ class LogicNormal(object):
         dest_path = ''
         try:
             for k, v in sort.items():
-                #logger.debug('mm - k:%s, v:%s', k, v)
+                logger.debug('mm - k:%s, v:%s', k, v)
                 if k == u'국가':
                     if v == 0:
                         arg1 = LogicNormal.movie_path_country(info, movie_country_option)
