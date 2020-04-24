@@ -572,8 +572,9 @@ class LogicNormal(object):
                             if u'애니메이션' in word :
                                 return None
             #num_genre = len(info['more']['genre'])
-            logger.debug('mpg check')
-            genre = str(info['more']['genre'])
+            logger.debug('mpg check %s', info['more']['genre'])
+            genre_list = info['more']['genre']
+            genre = genre_list[0]
             for keywords, values in option.items():
                 genre = genre.encode('utf-8')
                 encKeywords = keywords.encode('utf-8')
