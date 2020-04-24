@@ -107,7 +107,7 @@ class LogicNormal(object):
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
                     #f = str(f).strip()
-                    p = os.path.join(path.strip(), f)
+                    p = os.path.join(source_path.strip(), f)
                     logger.debug('p:%s', p)
 
                     if os.path.isdir(p):
