@@ -52,7 +52,7 @@ class LogicNormal(object):
             if None == '':
                 return None
             try:
-                for source_path in sourch_base_path:
+                for source_path in source_base_path:
                     LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
             except Exception as e:
                 logger.error('Exception:%s', e)
