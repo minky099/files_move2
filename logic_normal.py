@@ -569,16 +569,14 @@ class LogicNormal(object):
             if 'more' in info:
                 if 'genre' in info['more']:
                     for word in info['more']['genre']:
-                        num_genre += 1
+                        if ani_flag == 1:
+                            if u'애니메이션' in word :
+                                return None
+                        else:
+                            num_genre += 1
             #num_genre = len(info['more']['genre'])
             if num_genre > 0:
-                for item in info['more']['genre']
-                    if ani_flag == 1:
-                        if u'애니메이션' in item:
-                            return None
-                    else:
-                        genre = info['more']['genre'][0]
-
+                genre = info['more']['genre'][0]
                 for keywords, values in option.items():
                     if ani_flag == 1:
                         if u'애니메이션' in values:
