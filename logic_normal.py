@@ -101,11 +101,18 @@ class LogicNormal(object):
     def empty_folder_remove(base_path):
         try:
             logger.debug('efr - base_path:%s', base_path)
-            for dir, subdirs, files in os.walk(base_path, topdown=False):
-                for name in files:
-                    if len(os.listdir(dir)) == 0:
-                        logger.debug('efr - rmdir:%s', dir)
-                        os.rmdir(dir)
+            for root, dirs, files in os.walk(base_path, topdown=False):
+                for name in dirs:
+                    try:
+                        if len(os.listdir(os.path.join(root, name))) == 0:
+                            logger.debug('efr - Deleting:%s', os.path.join(root, name))
+                            try:
+                                os.rmdir(os.path.join(root, name))
+                            except:
+                                logger.debug('efr - FAILED:%s', os.path.join(root, name))
+                                pass
+                    except:
+                        pass
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
