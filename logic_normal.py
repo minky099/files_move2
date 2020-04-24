@@ -572,27 +572,29 @@ class LogicNormal(object):
                         num_genre += 1
             #num_genre = len(info['more']['genre'])
             if num_genre > 0:
-                for gen in info['more']['genre']:
-                    for keywords, values in option.items():
-                        if ani_flag == 1:
-                            if u'애니메이션' in values:
-                                return None
+                genre = info['more']['genre'][0]
+                for keywords, values in option.items():
+                    if ani_flag == 1:
+                        if u'애니메이션' in values:
+                            return None
+                    else:
+                        genre = genre.encode('utf-8')
+                        encKeywords = keywords.encode('utf-8')
+                        gregx = re.compile(encKeywords, re.I)
+                        if (gregx.search(genre)) is not None:
+                            encValues = values.encode('utf-8')
+                            set_genre = encValues
+                            logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
+                            break
                         else:
-                            gen = gen.encode('utf-8')
-                            encKeywords = keywords.encode('utf-8')
-                            gregx = re.compile(encKeywords, re.I)
-                            if (gregx.search(gen)) is not None:
-                                encValues = values.encode('utf-8')
-                                set_genre = encValues
-                                logger.debug('mpg search - genre:%s, encValues:%s', gen, encValues)
-                                return set_genre
-                            else:
-                                if LogicNormal.isHangul(etc_name) > 0:
-                                    str = unicode(etc_name)
-                                    etc_name = str
-                                set_genre = etc_name
+                            if LogicNormal.isHangul(etc_name) > 0:
+                                str = unicode(etc_name)
+                                etc_name = str
+                            set_genre = etc_name
             else:
                 return None
+            logger.debug('mpg ret genre:%s', set_genre)
+            return set_genre
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
