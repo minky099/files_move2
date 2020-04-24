@@ -575,7 +575,8 @@ class LogicNormal(object):
                         else:
                             num_genre += 1
             #num_genre = len(info['more']['genre'])
-            if num_genre > 0:
+            logger.debug('mpg num genre:%s', num_genre)
+            if num_genre >= 0:
                 genre = info['more']['genre'][0]
                 for keywords, values in option.items():
                     if ani_flag == 1:
