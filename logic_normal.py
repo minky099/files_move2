@@ -133,35 +133,16 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        #name = ModelItem.get_by_name(f)
-                        #dirName = ModelItem.get_by_dirName(f)
-                        #targetPath = ModelItem.get_by_targetPath(f)
-                        #targetPath = ModelItem.get_by_targetPath('targetPath')
-                        #logger.debug('em - name:%s dirName:%s targetPath:%s path:%s', name, dirName, targetPath, p)
                         all = ModelItem.get_by_all()
                         logger.debug('em [query]')
                         for item in all:
                             #logger.debug(item)
                             if p in item.dirName:
                                 logger.debug('[query] %s - %s == %s', p, item.dirName, item.targetPath)
-                                dest_check = os.path.join(item.targetPath, f)
-                                if not os.path.isdir(dest_check):
-                                    #shutil.move(p, item.targetPath)
-                                    logger.debug('[extra move] %s => %s', p ,item.targetPath)
-                        #for dir in dirName:
-                            #logger.debug('em - dir:%s', dir)
-                        #for target in targetPath:
-                            #logger.debug('em - target:%s', target)
-                        LogicNormal.extra_move(p)
-                        #items = ret['list']
-                        #for item in items:
-                            #if item['dirName'] in p:
-                                #logger.debug('em - extra move %s - %s', p, dest_folder_path)
-                                #dest_check = os.path.join(dest_folder_path, f)
-                                #if not os.path.isdir(dest_check):
-                                    #shutil.move(p, dest_folder_path)
-                        #else:
-                            #LogicNormal.extra_move(p)
+                                shutil.move(p, item.targetPath)
+                                logger.debug('[extra move] %s => %s', p ,item.targetPath)
+                            else:
+                                LogicNormal.extra_move(p)
                 except Exception as e:
                     logger.error('Exxception:%s', e)
                     logger.error(traceback.format_exc())
