@@ -132,13 +132,15 @@ class LogicNormal(object):
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         ret = LogicNormal.db_search(p)
-                        logger.debug('em - db:%s - path:%s', ret['list']['dirName'], p)
-                        if ret['list']['dirName'] in p:
-                            dest_folder_path = ret['list']['targetPath']
-                            logger.debug('em - extra move %s' , p)
-                            dest_check = os.path.join(dest_folder_path, f)
-                            if not os.path.isdir(dest_check):
-                                shutil.move(p, dest_folder_path)
+                        logger.debug('em - db:%s - path:%s', ret['list'], p)
+                        items = ret['list']
+                        for item in items:
+                            if item['dirName'] in p:
+                                dest_folder_path = item['targetPath']
+                                logger.debug('em - extra move %s - %s', p, dest_folder_path)
+                                dest_check = os.path.join(dest_folder_path, f)
+                                if not os.path.isdir(dest_check):
+                                    shutil.move(p, dest_folder_path)
                         else:
                             LogicNormal.extra_move(p)
                 except Exception as e:
