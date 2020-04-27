@@ -809,8 +809,10 @@ class LogicNormal(object):
         all = ModelItem.get_by_all()
         for item in all:
             #logger.debug(item)
-            checkDir = os.path.split(item.dirName)
-            if path in item.dirName and path != checkDir[0]:
+            checkDbDir = os.path.split(item.dirName)
+            checkPathDir = os.path.split(path)
+            logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
+            if path[0] == checkDir[0]:
                 logger.debug('[cfd] %s', path)
                 return path
         return None
