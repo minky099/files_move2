@@ -124,6 +124,28 @@ class LogicNormal(object):
     @staticmethod
     def extra_move(base_path):
         try:
+            logger.debug('em - base_path:%s', base_path)
+            for root, dirs, files in os.walk(base_path, topdown=False):
+                for name in dirs:
+                    path = os.path.join(root, name)
+                    if os.path.isdir(path):
+                        all = ModelItem.get_by_all()
+                        logger.debug('em [query]')
+                        for item in all:
+                            #logger.debug(item)
+                            if path in item.dirName:
+                                logger.debug('[query] %s - %s ~ %s', path, item.dirName, item.targetPath)
+                                try:
+                                    shutil.move(p, item.targetPath)
+                                    logger.debug('[extra move] %s => %s', path, item.targetPath)
+                                except:
+                                    logger.debug('[extra move FAILED] %s => %s', path, item.targetPath)
+                                    pass
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+    def extra_move(base_path):
+        try:
             logger.debug('path:%s', base_path)
             lists = os.listdir(base_path.strip())
             for f in lists:
