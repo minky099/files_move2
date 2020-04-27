@@ -268,7 +268,6 @@ class ModelItem(db.Model):
                         if tt != '': query = query.filter(ModelItem.fileName.like('%'+tt.strip()+'%'))
                 else:
                     query = query.filter(ModelItem.fileName.like('%'+search+'%'))
-                query.all()
             return query
         except Exception, e:
             logger.error('Exception:%s', e)
