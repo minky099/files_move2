@@ -124,6 +124,7 @@ class LogicNormal(object):
 
     @staticmethod
     def extra_move(base_path):
+        error_path = ModelSetting.get('error_path')
         try:
             logger.debug('em - path:%s', base_path)
             lists = os.listdir(base_path.strip())
@@ -135,7 +136,7 @@ class LogicNormal(object):
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p)
-                        if check:
+                        if check and dest != error_path:
                             shutil.move(p, dest)
                             logger.debug('[extra move] %s => %s', p, dest)
                         else:
@@ -275,13 +276,13 @@ class LogicNormal(object):
                         movie['more']['country'] = movie['country']
                 folder_rule = ModelSetting.get_setting_value('folder_rule')
 
-                if movie['title'] and movie['year'] and movie['more']['eng_title'] and movie['more']['genre'] and movie['more']['country'] and movie['more']['rate']:
+                if movie['title'] is not None and movie['year'] is not None and movie['more']['eng_title'] is not None and movie['more']['genre'] is not None and movie['more']['country'] is not None and movie['more']['rate'] is not None:
                     tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%RATE%', movie['more']['rate'])
-                elif movie['title'] and movie['year'] and movie['more']['eng_title'] and movie['more']['genre'] and movie['more']['country']:
+                elif movie['title'] is not None and movie['year'] is not None and movie['more']['eng_title'] is not None and movie['more']['genre'] is not None and movie['more']['country'] is not None:
                     tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre'])
-                elif movie['title'] and movie['year'] and movie['more']['eng_title'] and movie['more']['genre']:
+                elif movie['title'] is not None and movie['year'] is not None and movie['more']['eng_title'] is not None and movie['more']['genre'] is not None:
                     tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%GENRE%', movie['more']['genre'])
-                elif movie['title'] and movie['year'] and movie['more']['eng_title']:
+                elif movie['title'] is not None and movie['year'] is not None and movie['more']['eng_title'] is not None:
                     tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
                 else:
                     tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
