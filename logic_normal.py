@@ -124,30 +124,24 @@ class LogicNormal(object):
     @staticmethod
     def extra_move(base_path):
         try:
-            logger.debug('em - base_path:%s', base_path)
-            for root, dirs, files in os.walk(base_path, topdown=False):
-                for name in dirs:
-                    try:
-                        path = os.path.join(root, name)
-                        if os.path.isdir(path):
-                            all = ModelItem.get_by_all()
-                            logger.debug('em [query]')
-                            for item in all:
-                                #logger.debug(item)
-                                checkDir = os.path.split(item.dirName)
-                                if path in item.dirName:
-                                    logger.debug('[query] %s - %s ~ %s', path, item.dirName, item.targetPath)
-                                    try:
-                                        if path != checkDir[0]:
-                                            shutil.move(p, item.targetPath)
-                                            logger.debug('[extra move] %s => %s', path, item.targetPath)
-                                        else:
-                                            continue
-                                    except:
-                                        logger.debug('[extra move FAILED] %s => %s', path, item.targetPath)
-                                        pass
-                    except:
-                        pass
+            logger.debug('em - path:%s', base_path)
+            lists = os.listdir(base_path.strip())
+            for f in lists:
+                try:
+                    if LogicNormal.isHangul(str(f)) > 0:
+                        f = f.encode('utf-8')
+                    p = os.path.join(base_path.strip(), f)
+                    logger.debug('p:%s', p)
+                    if os.path.isdir(p):
+                        check = LogicNormal.check_from_db(p)
+                        if check:
+                            shutil.move(p, item.targetPath)
+                            logger.debug('[extra move] %s => %s', p, item.targetPath)
+                        else:
+                            LogicNormal.extra_move(p)
+                except Exception as e:
+                    logger.error('Exxception:%s', e)
+                    logger.error(traceback.format_exc())
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -807,6 +801,18 @@ class LogicNormal(object):
             for v in values[k]:
                 if searchFor in v:
                     return k
+        return None
+
+    @staticemethod
+    def check_from_db(path):
+        logger.debug('check_from_db [query]')
+        all = ModelItem.get_by_all()
+        for item in all:
+            #logger.debug(item)
+            checkDir = os.path.split(item.dirName)
+            if path in item.dirName and path != checkDir[0]:
+                logger.debug('[cfd] %s', path)
+                return path
         return None
 
     @staticmethod
