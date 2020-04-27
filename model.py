@@ -268,6 +268,16 @@ class ModelItem(db.Model):
                         if tt != '': query = query.filter(ModelItem.fileName.like('%'+tt.strip()+'%'))
                 else:
                     query = query.filter(ModelItem.fileName.like('%'+search+'%'))
+            if match_type == 'match':
+                query = query.filter(ModelItem.match_type == u'일치')
+            elif match_type == 'notMatch':
+                query = query.filter(ModelItem.match_type == u'불일치')
+
+            if order == 'desc':
+                query = query.order_by(desc(ModelItem.id))
+            else:
+                query = query.order_by(ModelItem.id)
+
             return query
         except Exception, e:
             logger.error('Exception:%s', e)
