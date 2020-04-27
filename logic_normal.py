@@ -845,7 +845,7 @@ class LogicNormal(object):
             checkPathDir = os.path.split(path)
             if checkDbDir[0] in path:
                 if checkPathDir[0] == checkDbDir[0]:
-                    logger.debug('[cfd] %s - %s', cnt, path)
+                    logger.debug('[cfd] %s', path)
                     return (path, item.targetPath)
         return (None, None)
 
