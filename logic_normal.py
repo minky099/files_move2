@@ -134,8 +134,8 @@ class LogicNormal(object):
                         dirName = ModelItem.get_by_dirName(base_path)
                         #targetPath = ModelItem.get_by_targetPath('targetPath')
                         logger.debug('em - dirName:%s - path:%s', dirName, p)
-                        #for dir in dirName:
-                            #logger.debug('em - dir:%s', dir)
+                        for dir in dirName:
+                            logger.debug('em - dir:%s', dir)
                         #for target in targetPath:
                             #logger.debug('em - target:%s', target)
                         LogicNormal.extra_move(p)
