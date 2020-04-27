@@ -253,3 +253,24 @@ class ModelItem(db.Model):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def search(search):
+        try:
+            query = db.session.query(ModelItem)
+            if search is not None and search != '':
+                if search.find('|') != -1:
+                    conditions = []
+                    for tt in search.split('|'):
+                        if tt != '': conditions.append(ModelItem.fileName.like('%'+tt.strip()+'%'))
+                    query = query.filter(or_(*conditions))
+                elif search.find(',') != -1:
+                    for tt in search.split('|'):
+                        if tt != '': query = query.filter(ModelItem.fileName.like('%'+tt.strip()+'%'))
+                else:
+                    query = query.filter(ModelItem.fileName.like('%'+search+'%'))
+                query.all()
+            return query
+        except Exception, e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+
