@@ -837,7 +837,8 @@ class LogicNormal(object):
     def check_from_db(path):
         logger.debug('check_from_db [query]')
         all = ModelItem.get_by_all()
-        for item in all:
+        lists = (reversed(sorted(all)))
+        for item in lists:
             #logger.debug(item)
             checkDbDir = os.path.split(item.dirName)
             checkPathDir = os.path.split(path)
