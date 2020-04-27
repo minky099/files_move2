@@ -238,9 +238,17 @@ class ModelItem(db.Model):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def get_by_key(key):
+    def get_by_dirName(dirName):
         try:
-            return db.session.query(ModelItem).filter_by(key=key).with_for_update().first()
+            return db.session.query(ModelItem).filter_by(dirName=dirName).with_for_update().first()
+        except Exception, e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def get_by_targetPath(targetPath):
+        try:
+            return db.session.query(ModelItem).filter_by(targetPath=targetPath).with_for_update().first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
