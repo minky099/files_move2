@@ -815,7 +815,7 @@ class LogicNormal(object):
             if checkPathDir[0] == checkDbDir[0]:
                 logger.debug('[cfd] %s', path)
                 return (path, item.targetPath)
-        return None
+        return (None, None)
 
     @staticmethod
     def isHangul(text):
