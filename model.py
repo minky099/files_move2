@@ -254,7 +254,7 @@ class ModelItem(db.Model):
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def search(search):
+    def search(search='', match_type='all', order='desc'):
         try:
             query = db.session.query(ModelItem)
             if search is not None and search != '':
