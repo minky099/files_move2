@@ -240,7 +240,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_name(name):
         try:
-            return db.session.query(ModelItem).like(name).first()
+            return db.session.query(ModelItem).filter(ModelItem.name.like(name)).first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -248,7 +248,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_dirName(dirName):
         try:
-            return db.session.query(ModelItem).like(dirName).first()
+            return db.session.query(ModelItem).filter(ModelItem.dirName.like(dirName)).first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -256,7 +256,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_targetPath(targetPath):
         try:
-            return db.session.query(ModelItem).like(targetPath).first()
+            return db.session.query(ModelItem).filter(ModelItem.targetPath.like(targetPath)).first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
