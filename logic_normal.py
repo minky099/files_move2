@@ -134,11 +134,15 @@ class LogicNormal(object):
                             logger.debug('em [query]')
                             for item in all:
                                 #logger.debug(item)
+                                checkDir = os.path.split(item.dirName)
                                 if path in item.dirName:
                                     logger.debug('[query] %s - %s ~ %s', path, item.dirName, item.targetPath)
                                     try:
-                                        shutil.move(p, item.targetPath)
-                                        logger.debug('[extra move] %s => %s', path, item.targetPath)
+                                        if path != checkDir[0]:
+                                            shutil.move(p, item.targetPath)
+                                            logger.debug('[extra move] %s => %s', path, item.targetPath)
+                                        else:
+                                            continue
                                     except:
                                         logger.debug('[extra move FAILED] %s => %s', path, item.targetPath)
                                         pass
