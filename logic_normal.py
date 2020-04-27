@@ -71,6 +71,8 @@ class LogicNormal(object):
             item = {}
             item['path'] = path
             item['name'] = f
+            if 'Trailer' in f:
+                return None
             item['fullPath'] = os.path.join(path, f)
             temp = re.sub('(s|S)+\d\d', '', f)
             #logger.debug('il1 - %s : %s', item['name'], temp)
