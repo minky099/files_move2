@@ -803,7 +803,7 @@ class LogicNormal(object):
                     return k
         return None
 
-    @staticemethod
+    @staticmethod
     def check_from_db(path):
         logger.debug('check_from_db [query]')
         all = ModelItem.get_by_all()
