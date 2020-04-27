@@ -146,7 +146,7 @@ class LogicNormal(object):
                                 logger.debug('[query] %s - %s == %s', p, item.dirName, item.targetPath)
                                 dest_check = os.path.join(item.targetPath, f)
                                 if not os.path.isdir(dest_check):
-                                    shutil.move(p, item.targetPath)
+                                    #shutil.move(p, item.targetPath)
                                     logger.debug('[extra move] %s => %s', p ,item.targetPath)
                         #for dir in dirName:
                             #logger.debug('em - dir:%s', dir)
