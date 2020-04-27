@@ -240,7 +240,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_name(name):
         try:
-            return db.session.query(ModelItem).filter_by(name=name).all()
+            return db.session.query(ModelItem).like(name).first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -248,7 +248,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_dirName(dirName):
         try:
-            return db.session.query(ModelItem).filter_by(dirName=dirName).all()
+            return db.session.query(ModelItem).like(dirName).first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
@@ -256,37 +256,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_targetPath(targetPath):
         try:
-            return db.session.query(ModelItem).filter_by(targetPath=targetPath).all()
-        except Exception, e:
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
-
-    @staticmethod
-    def search(search='', match_type='all', order='desc'):
-        try:
-            query = db.session.query(ModelItem)
-            if search is not None and search != '':
-                if search.find('|') != -1:
-                    conditions = []
-                    for tt in search.split('|'):
-                        if tt != '': conditions.append(ModelItem.fileName.like('%'+tt.strip()+'%'))
-                    query = query.filter(or_(*conditions))
-                elif search.find(',') != -1:
-                    for tt in search.split('|'):
-                        if tt != '': query = query.filter(ModelItem.fileName.like('%'+tt.strip()+'%'))
-                else:
-                    query = query.filter(ModelItem.fileName.like('%'+search+'%'))
-            if match_type == 'match':
-                query = query.filter(ModelItem.match_type == u'일치')
-            elif match_type == 'notMatch':
-                query = query.filter(ModelItem.match_type == u'불일치')
-
-            if order == 'desc':
-                query = query.order_by(desc(ModelItem.id))
-            else:
-                query = query.order_by(ModelItem.id)
-
-            return query
+            return db.session.query(ModelItem).like(targetPath).first()
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
