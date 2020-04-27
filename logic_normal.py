@@ -125,7 +125,7 @@ class LogicNormal(object):
     def extra_move(base_path):
         try:
             logger.debug('em - base_path:%s', base_path)
-            for root, dirs, files in os.walk(base_path, topdown=True):
+            for root, dirs, files in os.walk(base_path, topdown=False):
                 for name in dirs:
                     try:
                         path = os.path.join(root, name)
