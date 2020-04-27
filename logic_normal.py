@@ -131,8 +131,8 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        dirName = ModelSetting.get_by_key('dirName')
-                        targetPath = ModelSetting.get_by_key('targetPath')
+                        dirName = ModelItem.get_by_key('dirName')
+                        targetPath = ModelItem.get_by_key('targetPath')
                         logger.debug('em - dirName:%s - path:%s', dirName, p)
                         for dir in dirName:
                             logger.debug('em - dir:%s', dir)
