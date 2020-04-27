@@ -133,7 +133,7 @@ class LogicNormal(object):
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
-                    logger.debug('p:%s', p)
+                    #logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p, base_path)
                         if check and dest != error_path:
@@ -842,7 +842,7 @@ class LogicNormal(object):
             #logger.debug(item)
             checkDbDir = os.path.split(item.dirName)
             checkPathDir = os.path.split(path)
-            logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
+            #logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
             if checkPathDir[0] == checkDbDir[0] and checkPathDir[0] != base_path:
                 logger.debug('[cfd] %s', path)
                 return (path, item.targetPath)
