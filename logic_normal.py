@@ -55,8 +55,8 @@ class LogicNormal(object):
                 for source_path in source_base_path:
                     LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
                     if ModelSetting.get_bool('emptyFolderDelete'):
-                        LogicNormal.empty_folder_remove(source_path)
                         LogicNormal.extra_move(source_path)
+                        LogicNormal.empty_folder_remove(source_path)
 
             except Exception as e:
                 logger.error('Exception:%s', e)
