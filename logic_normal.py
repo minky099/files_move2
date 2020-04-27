@@ -131,11 +131,15 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        name = ModelItem.get_by_name(f)
-                        dirName = ModelItem.get_by_dirName(f)
-                        targetPath = ModelItem.get_by_targetPath(f)
+                        #name = ModelItem.get_by_name(f)
+                        #dirName = ModelItem.get_by_dirName(f)
+                        #targetPath = ModelItem.get_by_targetPath(f)
                         #targetPath = ModelItem.get_by_targetPath('targetPath')
-                        logger.debug('em - name:%s dirName:%s targetPath:%s path:%s', name, dirName, targetPath, p)
+                        #logger.debug('em - name:%s dirName:%s targetPath:%s path:%s', name, dirName, targetPath, p)
+                        all = ModelItem.get_by_all()
+                        logger.debug('em [query]')
+                        for item in all:
+                            logger.debug(item)
                         #for dir in dirName:
                             #logger.debug('em - dir:%s', dir)
                         #for target in targetPath:

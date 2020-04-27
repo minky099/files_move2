@@ -264,3 +264,13 @@ class ModelItem(db.Model):
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def get_by_all():
+        try:
+            query = db.session.query(ModelItem)
+            items = query.all()
+            return items
+        except Exception, e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+
