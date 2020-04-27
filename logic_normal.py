@@ -140,7 +140,7 @@ class LogicNormal(object):
                         logger.debug('em [query]')
                         for item in all:
                             #logger.debug(item)
-                            if p in item.dirName:
+                            if p in item.dirName and f in item.targetPath:
                                 logger.debug('[query] %s - %s', p, item.dirName)
                         #for dir in dirName:
                             #logger.debug('em - dir:%s', dir)
