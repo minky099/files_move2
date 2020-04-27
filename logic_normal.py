@@ -56,6 +56,8 @@ class LogicNormal(object):
                     LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
                     if ModelSetting.get_bool('emptyFolderDelete'):
                         LogicNormal.empty_folder_remove(source_path)
+                        LogicNormal.extra_move(source_path)
+
             except Exception as e:
                 logger.error('Exception:%s', e)
                 logger.error(traceback.format_exc())
@@ -113,6 +115,36 @@ class LogicNormal(object):
                                 pass
                     except:
                         pass
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def extra_move(base_path):
+        try:
+            logger.debug('path:%s', base_path)
+            lists = os.listdir(base_path.strip())
+            for f in lists:
+                try:
+                    if LogicNormal.isHangul(str(f)) > 0:
+                        f = f.encode('utf-8')
+                    p = os.path.join(base_path.strip(), f)
+                    logger.debug('p:%s', p)
+                    if os.path.isdir(p):
+                        ret = LogicNormal.db_search(p)
+                        logger.debug('em - db:%s - path:%s', ret['dirName'], p)
+                        if ret['dirName'] in p:
+                            dest_folder_path = ret['targetPath']
+                            logger.debug('em - extra move %s' , p)
+                            dest_check = os.path.join(dest_folder_path, f)
+                            if not os.path.isdir(dest_check):
+                                shutil.move(p, dest_folder_path)
+                        else:
+                            LogicNormal.extra_move(p)
+                except Exception as e:
+                    logger.error('Exxception:%s', e)
+                    logger.error(traceback.format_exc())
+            time.sleep(int(interval))
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -762,6 +794,15 @@ class LogicNormal(object):
             else:
                 entity['is_moved'] = 0
             ModelItem.save_as_dict(entity)
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+
+    @staticmethod
+    def db_search(search):
+        try:
+            return ModelItem.make_query(search)
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
