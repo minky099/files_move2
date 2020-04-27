@@ -144,7 +144,6 @@ class LogicNormal(object):
                 except Exception as e:
                     logger.error('Exxception:%s', e)
                     logger.error(traceback.format_exc())
-            time.sleep(int(interval))
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
@@ -802,7 +801,11 @@ class LogicNormal(object):
     @staticmethod
     def db_search(search):
         try:
-            return ModelItem.make_query(search)
+            ret = {}
+            query = ModelItem.make_query(search)
+            lists = query.all()
+            ret['list'] = [item.as_dict() for item in lists]
+            return ret
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
