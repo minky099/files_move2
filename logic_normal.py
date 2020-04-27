@@ -841,12 +841,12 @@ class LogicNormal(object):
         for item in lists:
             #logger.debug(item)
             checkDbDir = os.path.split(item.dirName)
-            #logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
+            targetCheckDbDir = os.path.split(item.targetPath)
             checkPathDir = os.path.split(path)
-            if checkDbDir[0] in path:
-                if checkPathDir[0] == checkDbDir[0]:
-                    logger.debug('[cfd] %s', path)
-                    return (path, item.targetPath)
+            #logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
+            if checkPathDir[1] == targetCheckDbDir[1] and checkDbDir[0] in path:
+                logger.debug('[cfd] %s', path)
+                return (path, item.targetPath)
         return (None, None)
 
     @staticmethod
