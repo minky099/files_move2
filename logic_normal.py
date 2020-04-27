@@ -135,7 +135,7 @@ class LogicNormal(object):
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p)
                         if check:
-                            shutil.move(p, item.targetPath)
+                            shutil.move(p, dest)
                             logger.debug('[extra move] %s => %s', p, dest)
                         else:
                             LogicNormal.extra_move(p)
