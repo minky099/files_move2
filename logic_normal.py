@@ -144,39 +144,12 @@ class LogicNormal(object):
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
-    def extra_move(base_path):
-        try:
-            logger.debug('path:%s', base_path)
-            lists = os.listdir(base_path.strip())
-            for f in lists:
-                try:
-                    if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
-                    p = os.path.join(base_path.strip(), f)
-                    logger.debug('p:%s', p)
-                    if os.path.isdir(p):
-                        all = ModelItem.get_by_all()
-                        logger.debug('em [query]')
-                        for item in all:
-                            #logger.debug(item)
-                            if p in item.dirName:
-                                logger.debug('[query] %s - %s == %s', p, item.dirName, item.targetPath)
-                                shutil.move(p, item.targetPath)
-                                logger.debug('[extra move] %s => %s', p ,item.targetPath)
-                            else:
-                                LogicNormal.extra_move(p)
-                except Exception as e:
-                    logger.error('Exxception:%s', e)
-                    logger.error(traceback.format_exc())
-        except Exception as e:
-            logger.error('Exxception:%s', e)
-            logger.error(traceback.format_exc())
 
     @staticmethod
     def make_list(source_path, ktv_drama_path, ktv_show_path, movie_path, err_path):
         interval = ModelSetting.get('interval')
         try:
-            logger.debug('path:%s', source_path)
+            #logger.debug('path:%s', source_path)
             lists = os.listdir(source_path.strip())
             for f in lists:
                 try:
@@ -184,8 +157,7 @@ class LogicNormal(object):
                         f = f.encode('utf-8')
                     #f = str(f).strip()
                     p = os.path.join(source_path.strip(), f)
-                    logger.debug('p:%s', p)
-
+                    #logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         LogicNormal.make_list(p, ktv_drama_path, ktv_show_path, movie_path, err_path)
                     elif os.path.isfile(p):
