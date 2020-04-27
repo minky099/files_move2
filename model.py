@@ -240,7 +240,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_name(name):
         try:
-            entity = db.session.query(ModelItem).filter_by(name=name).first().value.strip()
+            entity = db.session.query(ModelItem).filter_by(name=name).first().name.strip()
             return entity
         except Exception, e:
             logger.error('Exception:%s', e)
@@ -249,7 +249,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_dirName(dirName):
         try:
-            entity = db.session.query(ModelItem).filter_by(dirName=dirName).first().value.strip()
+            entity = db.session.query(ModelItem).filter_by(dirName=dirName).first().dirName.strip()
             return entity
         except Exception, e:
             logger.error('Exception:%s', e)
@@ -258,7 +258,7 @@ class ModelItem(db.Model):
     @staticmethod
     def get_by_targetPath(targetPath):
         try:
-            entity = db.session.query(ModelItem).filter_by(targetPath=targetPath).first().value.strip()
+            entity = db.session.query(ModelItem).filter_by(targetPath=targetPath).first().targetPath.strip()
             return entity
         except Exception, e:
             logger.error('Exception:%s', e)
