@@ -238,6 +238,14 @@ class ModelItem(db.Model):
             logger.error(traceback.format_exc())
 
     @staticmethod
+    def get_by_name(name):
+        try:
+            return db.session.query(ModelItem).filter_by(name=name).all()
+        except Exception, e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
     def get_by_dirName(dirName):
         try:
             return db.session.query(ModelItem).filter_by(dirName=dirName).all()
