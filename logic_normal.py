@@ -289,7 +289,7 @@ class LogicNormal(object):
                     rate_en += 1
                 if 'genre' in movie['more']:
                     genre_en += 1
-                    genre_list = info['more']['genre']
+                    genre_list = movie['more']['genre']
                     genre = genre_list[0]
 
                 if eng_en > 0 and genre_en > 0 and country_en > 0 and rate_en > 0:
