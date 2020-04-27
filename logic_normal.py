@@ -267,6 +267,11 @@ class LogicNormal(object):
 
     @staticmethod
     def set_movie(data, movie):
+        eng_en = 0
+        genre_en = 0
+        country_en = 0
+        rate_en = 0
+        tmp = ""
         try:
             data['movie'] = movie
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', movie['title']).replace('  ', ' '))
