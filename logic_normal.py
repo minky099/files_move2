@@ -54,8 +54,9 @@ class LogicNormal(object):
             try:
                 for source_path in source_base_path:
                     LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
-                    if ModelSetting.get_bool('emptyFolderDelete'):
+                    if ModelSetting.get_bool('extraMove'):
                         LogicNormal.extra_move(source_path)
+                    if ModelSetting.get_bool('emptyFolderDelete'):
                         LogicNormal.empty_folder_remove(source_path)
 
             except Exception as e:
@@ -273,7 +274,18 @@ class LogicNormal(object):
                     if movie['country'] is not None:
                         movie['more']['country'] = movie['country']
                 folder_rule = ModelSetting.get_setting_value('folder_rule')
-                tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
+
+                if movie['title'] and movie['year'] and movie['more']['eng_title'] and movie['more']['genre'] and movie['more']['country'] and movie['more']['rate']:
+                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%RATE%', movie['more']['rate'])
+                elif movie['title'] and movie['year'] and movie['more']['eng_title'] and movie['more']['genre'] and movie['more']['country']:
+                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre'])
+                elif movie['title'] and movie['year'] and movie['more']['eng_title'] and movie['more']['genre']:
+                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%GENRE%', movie['more']['genre'])
+                elif movie['title'] and movie['year'] and movie['more']['eng_title']:
+                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
+                else:
+                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
+                #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
                 #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
                 tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
                 data['dest_folder_name'] = tmp

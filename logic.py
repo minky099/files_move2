@@ -53,6 +53,7 @@ class Logic(object):
         'schedulerInterval' : '60',
         'interval' : '3',
         'emptyFolderDelete' : 'False',
+        'extraMove' : 'False',
         'auto_start' : 'False',
         'folder_rule': '%TITLE%'
     }
