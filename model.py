@@ -236,3 +236,12 @@ class ModelItem(db.Model):
         except Exception, e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def get_by_key(key):
+        try:
+            return db.session.query(ModelItem).filter_by(key=key).with_for_update().first()
+        except Exception, e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+

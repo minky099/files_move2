@@ -131,18 +131,23 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        ret = LogicNormal.db_search(p)
-                        logger.debug('em - db:%s - path:%s', ret['list'], p)
-                        items = ret['list']
-                        for item in items:
-                            if item['dirName'] in p:
-                                dest_folder_path = item['targetPath']
-                                logger.debug('em - extra move %s - %s', p, dest_folder_path)
-                                dest_check = os.path.join(dest_folder_path, f)
-                                if not os.path.isdir(dest_check):
-                                    shutil.move(p, dest_folder_path)
-                        else:
-                            LogicNormal.extra_move(p)
+                        dirName = ModelSetting.get_by_key('dirName')
+                        targetPath = ModelSetting.get_by_key('targetPath')
+                        logger.debug('em - dirName:%s - path:%s', dirName, p)
+                        for dir in dirName:
+                            logger.debug('em - dir:%s', dir)
+                        for target in targetPath:
+                            logger.debug('em - target:%s', target)
+                        LogicNormal.extra_move(p)
+                        #items = ret['list']
+                        #for item in items:
+                            #if item['dirName'] in p:
+                                #logger.debug('em - extra move %s - %s', p, dest_folder_path)
+                                #dest_check = os.path.join(dest_folder_path, f)
+                                #if not os.path.isdir(dest_check):
+                                    #shutil.move(p, dest_folder_path)
+                        #else:
+                            #LogicNormal.extra_move(p)
                 except Exception as e:
                     logger.error('Exxception:%s', e)
                     logger.error(traceback.format_exc())
@@ -795,19 +800,6 @@ class LogicNormal(object):
             else:
                 entity['is_moved'] = 0
             ModelItem.save_as_dict(entity)
-        except Exception as e:
-            logger.error('Exxception:%s', e)
-            logger.error(traceback.format_exc())
-
-
-    @staticmethod
-    def db_search(search):
-        try:
-            ret = {}
-            query = ModelItem.make_query(search)
-            lists = query.all()
-            ret['list'] = [item.as_dict() for item in lists]
-            return ret
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
