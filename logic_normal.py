@@ -133,10 +133,10 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        check = LogicNormal.check_from_db(p)
+                        check, dest = LogicNormal.check_from_db(p)
                         if check:
                             shutil.move(p, item.targetPath)
-                            logger.debug('[extra move] %s => %s', p, item.targetPath)
+                            logger.debug('[extra move] %s => %s', p, dest)
                         else:
                             LogicNormal.extra_move(p)
                 except Exception as e:
@@ -814,7 +814,7 @@ class LogicNormal(object):
             logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
             if checkPathDir[0] == checkDbDir[0]:
                 logger.debug('[cfd] %s', path)
-                return path
+                return path, item.targetPath
         return None
 
     @staticmethod
