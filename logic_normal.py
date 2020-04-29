@@ -279,15 +279,15 @@ class LogicNormal(object):
 
                 tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
                 if 'eng_title' in movie['more']:
-                    tmp = folder_rule.replace('%ENG_TITLE%', movie['more']['eng_title'])
+                    tmp = tmp.replace('%ENG_TITLE%', movie['more']['eng_title'])
                 if 'country' in movie['more']:
-                    tmp = folder_rule.replace('%COUNTRY%', movie['more']['country'])
+                    tmp = tmp.replace('%COUNTRY%', movie['more']['country'])
                 if 'rate' in movie['more']:
-                    tmp = folder_rule.replace('%RATE%', movie['more']['rate'])
+                    tmp = tmp.replace('%RATE%', movie['more']['rate'])
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
                     genre = genre_list[0]
-                    tmp = folder_rule.replace('%GENRE%', genre)
+                    tmp = tmp.replace('%GENRE%', genre)
 
                 tmp = re.sub('%ENG_TITLE%', '', tmp)
                 tmp = re.sub('%COUNTRY%', '', tmp)
