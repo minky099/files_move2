@@ -267,10 +267,6 @@ class LogicNormal(object):
 
     @staticmethod
     def set_movie(data, movie):
-        eng_en = 0
-        genre_en = 0
-        country_en = 0
-        rate_en = 0
         tmp = ""
         try:
             data['movie'] = movie
@@ -281,28 +277,22 @@ class LogicNormal(object):
                         movie['more']['country'] = movie['country']
                 folder_rule = ModelSetting.get_setting_value('folder_rule')
 
+                tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
                 if 'eng_title' in movie['more']:
-                    eng_en += 1
+                    tmp = folder_rule.replace('%ENG_TITLE%', movie['more']['eng_title'])
                 if 'country' in movie['more']:
-                    country_en += 1
+                    tmp = folder_rule.replace('%COUNTRY%', movie['more']['country'])
                 if 'rate' in movie['more']:
-                    rate_en += 1
+                    tmp = folder_rule.replace('%RATE%', movie['more']['rate'])
                 if 'genre' in movie['more']:
-                    genre_en += 1
                     genre_list = movie['more']['genre']
                     genre = genre_list[0]
+                    tmp = folder_rule.replace('%GENRE%', genre)
 
-                if eng_en > 0 and genre_en > 0 and country_en > 0 and rate_en > 0:
-                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', genre).replace('%RATE%', movie['more']['rate'])
-                elif eng_en > 0 and genre_en > 0 and country_en > 0:
-                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', genre)
-                elif eng_en > 0 and genre_en > 0:
-                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%GENRE%', genre)
-                elif eng_en > 0:
-                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
-                else:
-                    tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
-
+                tmp = re.sub('%ENG_TITLE%', '', tmp)
+                tmp = re.sub('%COUNTRY%', '', tmp)
+                tmp = re.sub('%GENRE%', '', tmp)
+                tmp = re.sub('%RATE%', '', tmp)
                 #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
                 #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
                 tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
