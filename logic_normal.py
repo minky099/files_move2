@@ -135,7 +135,7 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        (check, dest) = LogicNormal.check_from_db(p, base)
+                        (check, dest) = LogicNormal.check_from_db(p, base_path)
                         if check and dest != error_path:
                             shutil.move(p, dest)
                             logger.debug('[extra move] %s => %s', p, dest)
