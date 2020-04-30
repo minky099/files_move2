@@ -833,9 +833,11 @@ class LogicNormal(object):
             checkDbDir = os.path.split(item.dirName)
             #targetCheckDbDir = os.path.split(item.targetPath)
             checkPathDir = os.path.split(path)
-            logger.debug('[cfd] %s : %s', checkPathDir, checkDbDir)
-            if checkPathDir[0] == checkDbDir[0]:
-                if checkPathDir[1] in item.dirName:
+            if checkDbDir[0] in path:
+                subCheckDbDir = os.path.split(checkDbDir[0])
+                subCheckPathDir = os.path.split(checkPathDir[0])
+                logger.debug('[cfd] %s : %s', checkPathDir, checkDbDir)
+                if subCheckDbDir[1] == subCheckPathDir[1]:
                     logger.debug('[cfd] %s', path)
                     return (path, item.targetPath)
         return (None, None)
