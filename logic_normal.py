@@ -137,7 +137,13 @@ class LogicNormal(object):
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p, base_path)
                         if check and dest != error_path:
-                            shutil.move(p, dest)
+                            sub_list = os.listdir(p.strip())
+                            for sub_f in sub_list:
+                                if LogicNormal.isHangul(str(sub_f)) > 0:
+                                    sub_f = sub_f.encode('utf-8')
+                                sub_p = os.path.join(p.strip(), sub_f)
+                                if os.path.isdir(sub_p):
+                                    shutil.move(sub_p, dest)
                             logger.debug('[extra move] %s => %s', p, dest)
                         else:
                             LogicNormal.extra_move(p)
