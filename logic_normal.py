@@ -135,7 +135,7 @@ class LogicNormal(object):
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
-                        (check, dest) = LogicNormal.check_from_db(p)
+                        (check, dest) = LogicNormal.check_from_db(p, base_path)
                         if check and dest != error_path:
                             shutil.move(p, dest)
                             logger.debug('[extra move] %s => %s', p, dest)
@@ -824,7 +824,7 @@ class LogicNormal(object):
         return None
 
     @staticmethod
-    def check_from_db(path):
+    def check_from_db(path, base_path):
         logger.debug('check_from_db [query]')
         all = ModelItem.get_by_all()
         lists = (reversed(sorted(all)))
@@ -833,8 +833,8 @@ class LogicNormal(object):
             checkDbDir = os.path.split(item.dirName)
             #targetCheckDbDir = os.path.split(item.targetPath)
             checkPathDir = os.path.split(path)
-            logger.debug('[cfb] %s : %s', checkPathDir, checkDbDir)
-            if checkDbDir[0] == path and checkPathDir[0] == checkDbDir[0]:
+            logger.debug('[cfd] %s : %s', checkPathDir, checkDbDir)
+            if path != base_path and checkPathDir[0] == checkDbDir[0]:
                 logger.debug('[cfd] %s', path)
                 return (path, item.targetPath)
         return (None, None)
