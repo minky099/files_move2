@@ -149,7 +149,7 @@ class MovieSearch(object):
             more['info'].append(country_tag[0].text_content().strip())
             logger.debug(more['info'][0])
             tmp = more['info'][0].split('|')
-            logger.debug('len tmp=%s', tmp)
+            logger.debug('len tmp=%s', len(tmp))
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'\uc678', '').strip()
                 more['genre'] = tmp[1].replace(u'\uc678', '').strip()
@@ -221,6 +221,7 @@ class MovieSearch(object):
                 else:
                     score = 90
                     need_another_search = True
+                need_another_search = True
                 MovieSearch.movie_append(movie_list, {'id': ret['daum_id'],
                  'title': ret['title'],
                  'year': ret['year'],
