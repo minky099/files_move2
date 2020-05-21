@@ -302,6 +302,7 @@ class MovieSearch(object):
                         movie_list[0]['year'] = unicode(info['prodYear'])
                     if info['admissionDesc']:
                         movie_list[0]['more']['rate'] = info['admissionDesc']
+                    logger.debug('smw - rate %s', movie_list[0]['more']['rate'])
                     movie_list[0]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
                     movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
