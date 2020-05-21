@@ -149,11 +149,14 @@ class MovieSearch(object):
             more['info'].append(country_tag[0].text_content().strip())
             logger.debug(more['info'][0])
             tmp = more['info'][0].split('|')
+            logger.debug('len tmp=%s', tmp)
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'\uc678', '').strip()
                 more['genre'] = tmp[1].replace(u'\uc678', '').strip()
                 more['date'] = tmp[2].replace(u'\uac1c\ubd09', '').strip()
+                logger.debug('b tmp[3] = %s', tmp[3])
                 more['rate'] = tmp[3].strip()
+                logger.debug('a tmp[3] = %s', more['rate'])
                 more['during'] = tmp[4].strip()
             elif len(tmp) == 4:
                 more['country'] = tmp[0].replace(u'\uc678', '').strip()
