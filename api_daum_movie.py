@@ -300,6 +300,8 @@ class MovieSearch(object):
                     info = meta_data['data']
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = unicode(info['prodYear'])
+                    if info['admissionDesc']:
+                        movie_list[0]['more']['rate'] = info['admissionDesc']
                     movie_list[0]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
                     movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
@@ -310,8 +312,6 @@ class MovieSearch(object):
                     for item in info['genres']:
                         movie_list[0]['more']['genre'].append(item['genreName'])
                         logger.debug('%s', item['genreName'])
-                    if info['admissionDesc']:
-                        movie_list[0]['more']['rate'] = item['admissionDesc']
 
             except Exception as e:
                 pass
