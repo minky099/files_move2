@@ -310,6 +310,9 @@ class MovieSearch(object):
                     for item in info['genres']:
                         movie_list[0]['more']['genre'].append(item['genreName'])
                         logger.debug('%s', item['genreName'])
+                    if info['admissionDesc']:
+                        movie_list[0]['more']['rate'] = item['admissionDesc']
+
             except Exception as e:
                 pass
                 #logger.error('Exception:%s', e)
