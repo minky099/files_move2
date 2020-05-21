@@ -297,12 +297,12 @@ class MovieSearch(object):
                     info = meta_data['data']
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = unicode(info['prodYear'])
+                    movie_list[0]['title'] = info['titleKo']
+                    logger.debug('smw - eng title:%s', info['titleEn'])
+                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'genre':[]}})
                     if info['admissionDesc']:
                         movie_list[0]['more']['rate'] = info['admissionDesc']
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                    movie_list[0]['title'] = info['titleKo']
-                    logger.debug('smw - eng title:%s', info['titleEn'])
-                    movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
                     movie_list[0]['more']['eng_title'] = info['titleEn']
                     for item in info['countries']:
                         movie_list[0]['country'] = item['countryKo']
