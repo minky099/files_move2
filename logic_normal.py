@@ -228,6 +228,7 @@ class LogicNormal(object):
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
                     if (daum_movie_info and daum_movie_info[0]['score'] >= 100):
                         logger.debug('cml - movie score %s', daum_movie_info[0]['score'])
+                        logger.debug('cml - rate : %s', daum_movie_info[0]['more']['rate'])
                         LogicNormal.set_movie(item, daum_movie_info[0])
                         LogicNormal.move_movie(item, daum_movie_info[0], movie_target_path)
                     elif daum_movie_info and daum_movie_info[0]['score'] >= 90:
@@ -290,7 +291,6 @@ class LogicNormal(object):
                     tmp = tmp.replace('%COUNTRY%', movie['more']['country'])
                 if 'rate' in movie['more']:
                     tmp = tmp.replace('%RATE%', movie['more']['rate'])
-                    logger.debug('sm - rate : %s', movie['more']['rate'])
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
                     genre = genre_list[0]

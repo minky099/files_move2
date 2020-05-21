@@ -149,14 +149,11 @@ class MovieSearch(object):
             more['info'].append(country_tag[0].text_content().strip())
             logger.debug(more['info'][0])
             tmp = more['info'][0].split('|')
-            logger.debug('len tmp=%s', len(tmp))
             if len(tmp) == 5:
                 more['country'] = tmp[0].replace(u'\uc678', '').strip()
                 more['genre'] = tmp[1].replace(u'\uc678', '').strip()
                 more['date'] = tmp[2].replace(u'\uac1c\ubd09', '').strip()
-                logger.debug('b tmp[3] = %s', tmp[3])
                 more['rate'] = tmp[3].strip()
-                logger.debug('a tmp[3] = %s', more['rate'])
                 more['during'] = tmp[4].strip()
             elif len(tmp) == 4:
                 more['country'] = tmp[0].replace(u'\uc678', '').strip()
@@ -302,7 +299,7 @@ class MovieSearch(object):
                         movie_list[0]['year'] = unicode(info['prodYear'])
                     if info['admissionDesc']:
                         movie_list[0]['more']['rate'] = info['admissionDesc']
-                    logger.debug('smw - rate %s', movie_list[0]['more']['rate'])
+                        logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                     movie_list[0]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
                     movie_list[0].update({'more':{'eng_title':"", 'genre':[]}})
