@@ -290,6 +290,7 @@ class LogicNormal(object):
                     tmp = tmp.replace('%COUNTRY%', movie['more']['country'])
                 if 'rate' in movie['more']:
                     tmp = tmp.replace('%RATE%', movie['more']['rate'])
+                    logger.debug('sm - rate : %s', movie['more']['rate'])
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
                     genre = genre_list[0]
