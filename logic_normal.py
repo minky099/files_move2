@@ -88,7 +88,8 @@ class LogicNormal(object):
             item['uhd'] = 0
             item['hd'] = 0
             item['fhd'] = 0
-            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+            #match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(item['name'])
+            match = re.compile('^(?P<name>.*?)[\\s\\.\\[\\_\\(]\\d{4}').match(temp)
             if match:
                 item['search_name'] = match.group('name').replace('.', ' ').strip()
                 item['search_name'] = re.sub('\\[(.*?)\\]', '', item['search_name'])
