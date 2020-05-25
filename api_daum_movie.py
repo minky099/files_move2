@@ -190,7 +190,7 @@ class MovieSearch(object):
             for index, item in enumerate(data['items']['movie']):
                 tmps = item.split('|')
                 score = 85
-                if tmps[0].find(movie_name) != -1 and tmps[3] == movie_year:
+                if tmps[0].find(movie_name) != -1 and int(tmps[3]) == int(movie_year):
                     score = 95
                 elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
                     score = score + 6
