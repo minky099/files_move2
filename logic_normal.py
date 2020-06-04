@@ -808,6 +808,7 @@ class LogicNormal(object):
 
     @staticmethod
     def db_save(data, dest, match_type, is_moved):
+        telegram_flag = ModelSetting.get_bool('telegram')
         try:
             entity = {}
             entity['name'] = data['search_name']
@@ -820,6 +821,10 @@ class LogicNormal(object):
             else:
                 entity['is_moved'] = 0
             ModelItem.save_as_dict(entity)
+            if telegram_flag == 1:
+                text = u'파일처리 [%s] %s -> %s\n' % (match_type, data['fullPath'], dest)
+                import framework.common.notify as Notify
+                Notify.send_message(text, message_id = 'files_move_result')
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())

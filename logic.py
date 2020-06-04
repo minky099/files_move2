@@ -55,7 +55,8 @@ class Logic(object):
         'emptyFolderDelete' : 'False',
         'extraMove' : 'False',
         'auto_start' : 'False',
-        'folder_rule': '%TITLE%'
+        'folder_rule': '%TITLE%',
+        'telegram' : ''
     }
     session = requests.Session()
 
