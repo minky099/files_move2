@@ -822,7 +822,7 @@ class LogicNormal(object):
                 entity['is_moved'] = 0
             ModelItem.save_as_dict(entity)
             if telegram_flag == 1:
-                text = u'파일이동\n [%s] %s -> %s\n' % (match_type, data['fullPath'], dest)
+                text = u'파일정리\n [%s] %s -> %s\n' % (match_type, data['fullPath'], dest)
                 import framework.common.notify as Notify
                 Notify.send_message(text, message_id = 'files_move_result')
         except Exception as e:
