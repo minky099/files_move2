@@ -690,7 +690,7 @@ class LogicNormal(object):
                         set_rate = etc_name
                 return set_rate
             else:
-                return None
+                return 'no_rate'
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
