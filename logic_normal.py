@@ -138,14 +138,14 @@ class LogicNormal(object):
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
-                    logger.debug('efm - f:%s p:%s', f, p)
+                    #logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
                     if os.path.isfile(p):
                         if u'poster.jpg' in f or u'poster.png' in f or u'movie.nfo' in f or u'fanart.jpg' in f or u'fanart.png' in f:
                             extraFilesPath = os.path.split(p)
-                            logger.debug('efm - eFP:%s base:%s', extraFilesPath[0], base_path)
+                            #logger.debug('efm - eFP:%s base:%s', extraFilesPath[0], base_path)
                             (check, dest) = LogicNormal.check_from_db_for_extra_files(extraFilesPath[0])
-                            logger.debug('efm - check:%s dest:%s', check, dest)
+                            #logger.debug('efm - check:%s dest:%s', check, dest)
                             if check and dest != error_path:
                                 shutil.move(p, dest)
                                 logger.debug('[extra files move] %s => %s', p, dest)
