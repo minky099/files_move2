@@ -272,12 +272,10 @@ class LogicNormal(object):
                         if 'more' in daum_movie_info[0]:
                             if'eng_title' in daum_movie_info[0]['more']:
                                 logger.debug('cml - movie %s:%s', item['guessit']['title'], daum_movie_info[0]['more']['eng_title'])
-                                str_cmp_0 = item['guessit']['title']
-                                str_cmp_0 = unicode(str_cmp_0)
                                 #if LogicNormal.isHangul(str_cmp_0) > 0:
                                     #korean = re.compile('[\u3130-\u318F\uAC00-\uD7A3]+')
-                                str_cmp_0 = re.sub('[\u3130-\u318F\uAC00-\uD7A3]', '', str_cmp_0)
-                                str_cmp_0 = str_cmp_0.strip()
+                                str_cmp_0 = re.sub('[\u3130-\u318F\uAC00-\uD7A3]', '', item['guessit']['title'])
+                                str_cmp_0 = unicode(str_cmp_0.strip())
                                 str_cmp_1 = daum_movie_info[0]['more']['eng_title']
                                 str_cmp_1 = unicode(str_cmp_1)
                                 logger.debug('cml - movie cmp %s:%s', str_cmp_0.lower(), str_cmp_1.lower())
