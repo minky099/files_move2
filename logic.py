@@ -54,6 +54,7 @@ class Logic(object):
         'interval' : '3',
         'emptyFolderDelete' : 'False',
         'extraMove' : 'False',
+        'extraFilesMove' : 'False',
         'auto_start' : 'False',
         'folder_rule': '%TITLE%',
         'telegram' : ''

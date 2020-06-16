@@ -54,6 +54,8 @@ class LogicNormal(object):
             try:
                 for source_path in source_base_path:
                     LogicNormal.make_list(source_path, ktv_drama_base_path, ktv_show_base_path, movie_base_path, error_path)
+                    if ModelSetting.get_bool('extraFilesMove'):
+                        LogicNormal.extra_files_move(source_path)
                     if ModelSetting.get_bool('extraMove'):
                         LogicNormal.extra_move(source_path)
                     if ModelSetting.get_bool('emptyFolderDelete'):
@@ -121,6 +123,33 @@ class LogicNormal(object):
                                 pass
                     except:
                         pass
+        except Exception as e:
+            logger.error('Exxception:%s', e)
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def extra_files_move(base_path):
+        error_path = ModelSetting.get('error_path')
+        try:
+            logger.debug('em - path:%s', base_path)
+            lists = os.listdir(base_path.strip())
+            for f in lists:
+                try:
+                    if LogicNormal.isHangul(str(f)) > 0:
+                        f = f.encode('utf-8')
+                    p = os.path.join(base_path.strip(), f)
+                    #logger.debug('p:%s', p)
+                    if os.path.isfile(p):
+                        if f == 'poster.jpg' or f == 'poster.png' or f == 'movie.nfo' or f == 'fanart.jpg' or f == 'fanart.png':
+                            (check, dest) = LogicNormal.check_from_db(p, base_path)
+                            if check and dest != error_path:
+                                shutil.move(p, dest)
+                                logger.debug('[extra files move] %s => %s', p, dest)
+                   elif os.path.isdir(p):
+                        LogicNormal.extra_files_move(p)
+                except Exception as e:
+                    logger.error('Exxception:%s', e)
+                    logger.error(traceback.format_exc())
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
