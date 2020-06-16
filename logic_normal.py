@@ -144,7 +144,7 @@ class LogicNormal(object):
                         if u'poster.jpg' in f or u'poster.png' in f or u'movie.nfo' in f or u'fanart.jpg' in f or u'fanart.png' in f:
                             extraFilesPath = os.path.split(p)
                             logger.debug('efm - eFP:%s base:%s', extraFilesPath[0], base_path)
-                            (check, dest) = LogicNormal.check_from_db(extraFilesPath[0], base_path)
+                            (check, dest) = LogicNormal.check_from_db_for_extra_files(extraFilesPath[0])
                             logger.debug('efm - check:%s dest:%s', check, dest)
                             if check and dest != error_path:
                                 shutil.move(p, dest)
@@ -870,6 +870,24 @@ class LogicNormal(object):
                 if searchFor in v:
                     return k
         return None
+
+    @staticmethod
+    def check_from_db_for_extra_files(path):
+        logger.debug('check_from_db [query]')
+        all = ModelItem.get_by_all()
+        lists = (reversed(sorted(all)))
+        for item in lists:
+            #logger.debug(item)
+            checkDbDir = os.path.split(item.dirName)
+            #targetCheckDbDir = os.path.split(item.targetPath)
+            checkPathDir = os.path.split(path)
+            if checkDbDir[0] == path:
+                subCheckDbDir = os.path.split(checkDbDir[0])
+                logger.debug('[cfd] %s : %s', checkPathDir, checkDbDir)
+                if subCheckDbDir[1] == checkPathDir[1]:
+                    logger.debug('[cfd] %s', path)
+                    return (path, item.targetPath)
+        return (None, None)
 
     @staticmethod
     def check_from_db(path, base):
