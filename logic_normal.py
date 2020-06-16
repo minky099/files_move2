@@ -275,7 +275,7 @@ class LogicNormal(object):
                                 str_cmp_0 = item['guessit']['title']
                                 if LogicNormal.isHangul(str_cmp_0) > 0:
                                     korean = re.compile('[\u3131-\u3163\uac00-\ud7a3]+')
-                                    str_cmp_0 = re.sub(korean, '',str_cmp_0)
+                                    str_cmp_0 = re.sub(korean, '', str_cmp_0)
                                 str_cmp_0 = unicode(str_cmp_0.strip())
                                 str_cmp_1 = daum_movie_info[0]['more']['eng_title']
                                 str_cmp_1 = unicode(str_cmp_1.strip())
