@@ -131,16 +131,17 @@ class LogicNormal(object):
     def extra_files_move(base_path):
         error_path = ModelSetting.get('error_path')
         try:
-            logger.debug('em - path:%s', base_path)
+            logger.debug('efm - path:%s', base_path)
             lists = os.listdir(base_path.strip())
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
+                    logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
                     if os.path.isfile(p):
-                        if f == 'poster.jpg' or f == 'poster.png' or f == 'movie.nfo' or f == 'fanart.jpg' or f == 'fanart.png':
+                        if 'poster.jpg' in f or 'poster.png' in f or 'movie.nfo' in f or 'fanart.jpg' in f or 'fanart.png' in f:
                             (check, dest) = LogicNormal.check_from_db(p, base_path)
                             if check and dest != error_path:
                                 shutil.move(p, dest)
