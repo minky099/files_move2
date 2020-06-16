@@ -141,8 +141,9 @@ class LogicNormal(object):
                     logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
                     if os.path.isfile(p):
-                        if 'poster.jpg' in f or 'poster.png' in f or 'movie.nfo' in f or 'fanart.jpg' in f or 'fanart.png' in f:
+                        if u'poster.jpg' in f or u'poster.png' in f or u'movie.nfo' in f or u'fanart.jpg' in f or u'fanart.png' in f:
                             extraFilesPath = os.path.split(p)
+                            logger.debug('efm - eFP:%s base:%s', extraFilesPath[0], base_path)
                             (check, dest) = LogicNormal.check_from_db(extraFilesPath[0], base_path)
                             logger.debug('efm - check:%s dest:%s', check, dest)
                             if check and dest != error_path:
