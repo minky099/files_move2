@@ -143,6 +143,7 @@ class LogicNormal(object):
                     if os.path.isfile(p):
                         if 'poster.jpg' in f or 'poster.png' in f or 'movie.nfo' in f or 'fanart.jpg' in f or 'fanart.png' in f:
                             (check, dest) = LogicNormal.check_from_db(p, base_path)
+                            logger.debug('efm - check:%s dest:%s', check, dest)
                             if check and dest != error_path:
                                 shutil.move(p, dest)
                                 logger.debug('[extra files move] %s => %s', p, dest)
