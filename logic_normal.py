@@ -276,9 +276,10 @@ class LogicNormal(object):
                                 if LogicNormal.isHangul(str_cmp_0) > 0:
                                     korean = re.compile('[\u3131-\u3163\uac00-\ud7a3]+')
                                     str_cmp_0 = re.sub(korean, '',str_cmp_0)
-                                str_cmp_0 = unicode(str_cmp_0)
+                                str_cmp_0 = unicode(str_cmp_0.strip())
                                 str_cmp_1 = daum_movie_info[0]['more']['eng_title']
-                                str_cmp_1 = unicode(str_cmp_1)
+                                str_cmp_1 = unicode(str_cmp_1.strip())
+                                logger.debug('cml - movie cmp %s:%s', str_cmp_0.lower(), str_cmp_1.lower())
                                 if str_cmp_0.lower() == str_cmp_1.lower():
                                     logger.debug('cml - movie file name checked!')
                                     LogicNormal.set_movie(item, daum_movie_info[0])
