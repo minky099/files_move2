@@ -145,7 +145,7 @@ class LogicNormal(object):
                             if check and dest != error_path:
                                 shutil.move(p, dest)
                                 logger.debug('[extra files move] %s => %s', p, dest)
-                   elif os.path.isdir(p):
+                    elif os.path.isdir(p):
                         LogicNormal.extra_files_move(p)
                 except Exception as e:
                     logger.error('Exxception:%s', e)
