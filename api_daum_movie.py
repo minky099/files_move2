@@ -297,6 +297,9 @@ class MovieSearch(object):
                     info = meta_data['data']
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = unicode(info['prodYear'])
+                    elif int(movie_year) == int(info['prodYear']):
+                        movie_list[0]['year'] = unicode(info['prodYear'])
+                        movie_list[0]['score'] = movie_list[0]['score'] + 5
                     movie_list[0]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'genre':[]}})
