@@ -6,11 +6,13 @@ import re
 import traceback
 import logging
 import urllib
+import lxml
 import requests
-import lxml.html
+from framework import logger
+
 # SJVA
-from .plugin import logger, package_name
-from .logic import Logic
+#from .plugin import logger, package_name
+#from .logic import Logic
 #DAUM_MOVIE_DETAIL = "http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s"
 
 class MovieSearch(object):

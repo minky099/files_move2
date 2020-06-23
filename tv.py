@@ -14,7 +14,7 @@ import urllib2
 import lxml.html
 from enum import Enum
 from framework.common.daum import logger
-from .logic import Logic
+#from .logic import Logic
 _REGEX_FILENAME = '^(?P<name>.*?)\\.E(?P<no>\\d+)(\\-E\\d{1,4})?\\.?(END\\.)?(?P<date>\\d{6})\\.(?P<etc>.*?)(?P<quality>\\d+)[p|P](\\-?(?P<release>.*?))?(\\.(.*?))?$'
 _REGEX_FILENAME_NO_EPISODE_NUMBER = '^(?P<name>.*?)\\.(E(?P<no>\\d+)\\.?)?(END\\.)?(?P<date>\\d{6})\\.(?P<etc>.*?)(?P<quality>\\d+)[p|P](\\-?(?P<release>.*?))?(\\.(.*?))?$'
 _REGEX_FILENAME_RENAME = '(?P<title>.*?)[\\s\\.]E?(?P<no>\\d{1,2})[\\-\\~\\s\\.]?E?\\d{1,2}'
@@ -86,7 +86,7 @@ class DaumTV:
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def get_daum_tv_info(search_name, daum_id = None):
+    def get_daum_tv_info(search_name, daum_id = None, on_home = False):
         try:
             entity = {}
             logger.debug('get_daum_tv_info 1 %s', search_name)
@@ -133,6 +133,14 @@ class DaumTV:
                 except:
                     pass
 
+            elif on_home:
+                logger.debug('on_home : %s', search_name)
+                xml_root = DaumTV.get_show_info_on_home_title(search_name, daum_id=daum_id)
+                home_ret = DaumTV.get_show_info_on_home(xml_root)
+                if home_ret:
+                    entity['studio'] = home_ret['studio']
+                    entity['broadcast_info'] = home_ret['broadcast_info']
+                    entity['broadcast_term'] = home_ret['broadcast_term']
             try:
                 match = re.compile('(\\d{4}\\.\\d{1,2}\\.\\d{1,2})~').search(entity['broadcast_term'])
                 if match:
@@ -191,7 +199,7 @@ class DaumTV:
             except:
                 entity['episode_count_one_day'] = 1
 
-            entity['episode_list_json'] = json.dumps(entity['episode_list'])
+            #entity['episode_list_json'] = json.dumps(entity['episode_list'])
             logger.debug('daum tv len(entity.episode_list) : %s %s %s', len(items), len(entity['episode_list']), entity['episode_count_one_day'])
             return entity
         except Exception as e:
@@ -323,3 +331,31 @@ class DaumTV:
             logger.debug(traceback.format_exc())
 
         return
+
+    @staticmethod
+    def get_show_info_on_home_title(title, daum_id = None):
+        try:
+            title = title.replace(u'[\uc885\uc601]', '')
+            if daum_id is None:
+                url = 'https://search.daum.net/search?q=%s' % urllib.quote(title.encode('utf8'))
+            else:
+                url = 'https://search.daum.net/search?q=%s&irk=%s&irt=tv-program&DA=TVP' % (urllib.quote(title.encode('utf8')), daum_id)
+            return DaumTV.get_lxml_by_url(url)
+        except Exception as e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
+
+        return
+
+    @staticmethod
+    def get_lxml_by_url(url):
+        try:
+            from framework.common.daum import headers, session
+            from system.logic_site import SystemLogicSite
+            res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
+            data = res.content
+            root = lxml.html.fromstring(data)
+            return root
+        except Exception as e:
+            logger.error('Exception:%s', e)
+            logger.error(traceback.format_exc())
