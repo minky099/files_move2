@@ -113,8 +113,11 @@ class MovieSearch(object):
     @staticmethod
     def get_movie_info_from_home(url):
         try:
-            from . import headers, cookies
-            res = Logic.session.get(url, headers=headers, cookies=cookies)
+            #from . import headers, cookies
+            #res = Logic.session.get(url, headers=headers, cookies=cookies)
+            from framework.common.daum import headers, session
+            from system.logic_site import SystemLogicSite
+            res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
             data = res.content
             html = lxml.html.document_fromstring(data)
             movie = None
@@ -184,8 +187,11 @@ class MovieSearch(object):
     def search_movie_web(movie_list, movie_name, movie_year):
         try:
             url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
-            from . import headers, cookies
-            res = Logic.session.get(url, headers=headers, cookies=cookies)
+            #from . import headers, cookies
+            #res = Logic.session.get(url, headers=headers, cookies=cookies)
+            from framework.common.daum import headers, session
+            from system.logic_site import SystemLogicSite
+            res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
             data = res.json()
             for index, item in enumerate(data['items']['movie']):
                 tmps = item.split('|')
@@ -289,8 +295,11 @@ class MovieSearch(object):
                 movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
                 logger.debug('smw - id: %s, score:%s, myear:%s, year:%s', movie_list[0]['id'], movie_list[0]['score'], movie_year, movie_list[0]['year'])
                 id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
-                from . import headers, cookies
-                res = Logic.session.get(id_url, headers=headers, cookies=cookies)
+                #from . import headers, cookies
+                #res = Logic.session.get(id_url, headers=headers, cookies=cookies)
+                from framework.common.daum import headers, session
+                from system.logic_site import SystemLogicSite
+                res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 meta_data = res.json()
                 logger.debug('smw - more seach')
                 if meta_data is not None:

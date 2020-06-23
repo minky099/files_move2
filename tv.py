@@ -74,8 +74,11 @@ class DaumTV:
     @staticmethod
     def get_html(url):
         try:
-            from . import headers, cookies
-            res = Logic.session.get(url, headers=headers, cookies=cookies)
+            #from . import headers, cookies
+            #res = Logic.session.get(url, headers=headers, cookies=cookies)
+            from framework.common.daum import headers, session
+            from system.logic_site import SystemLogicSite
+            res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
             data = res.content
             return data
         except Exception as e:
