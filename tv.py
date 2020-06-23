@@ -14,7 +14,7 @@ import urllib2
 import lxml.html
 from enum import Enum
 from framework.common.daum import logger
-#from .logic import Logic
+from .logic import Logic
 _REGEX_FILENAME = '^(?P<name>.*?)\\.E(?P<no>\\d+)(\\-E\\d{1,4})?\\.?(END\\.)?(?P<date>\\d{6})\\.(?P<etc>.*?)(?P<quality>\\d+)[p|P](\\-?(?P<release>.*?))?(\\.(.*?))?$'
 _REGEX_FILENAME_NO_EPISODE_NUMBER = '^(?P<name>.*?)\\.(E(?P<no>\\d+)\\.?)?(END\\.)?(?P<date>\\d{6})\\.(?P<etc>.*?)(?P<quality>\\d+)[p|P](\\-?(?P<release>.*?))?(\\.(.*?))?$'
 _REGEX_FILENAME_RENAME = '(?P<title>.*?)[\\s\\.]E?(?P<no>\\d{1,2})[\\-\\~\\s\\.]?E?\\d{1,2}'
@@ -74,11 +74,11 @@ class DaumTV:
     @staticmethod
     def get_html(url):
         try:
-            #from . import headers, cookies
-            #res = Logic.session.get(url, headers=headers, cookies=cookies)
-            from framework.common.daum import headers, session
-            from system.logic_site import SystemLogicSite
-            res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
+            from . import headers, cookies
+            res = Logic.session.get(url, headers=headers, cookies=cookies)
+            #from framework.common.daum import headers, session
+            #from system.logic_site import SystemLogicSite
+            #res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
             data = res.content
             return data
         except Exception as e:

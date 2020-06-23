@@ -59,7 +59,7 @@ class Logic(object):
         'folder_rule': '%TITLE%',
         'telegram' : ''
     }
-    #session = requests.Session()
+    session = requests.Session()
 
     @staticmethod
     def db_init():
