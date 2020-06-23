@@ -224,7 +224,7 @@ class MovieSearch(object):
                     score = 100
                     need_another_search = False
                 else:
-                    score = 90
+                    score >= 90
                     need_another_search = True
                 MovieSearch.movie_append(movie_list, {'id': ret['daum_id'],
                  'title': ret['title'],
