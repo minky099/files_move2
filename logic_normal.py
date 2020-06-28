@@ -306,11 +306,30 @@ class LogicNormal(object):
 
     @staticmethod
     def set_ktv(data, ktv):
+        tmp = ""
         try:
             data['ktv'] = ktv
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv['title']).replace('  ', ' '))
             folder_rule = ModelSetting.get_setting_value('folder_rule')
-            tmp = folder_rule.replace('%TITLE%', ktv['title']).replace('%GENRE%', ktv['genre'])
+            tmp = folder_rule.replace('%TITLE%', ktv['title']).replace('%YEAR%', ktv['year'])
+            if 'more' in ktv:
+                if 'eng_title' in ktv['more']:
+                    tmp = tmp.replace('%ENG_TITLE%', ktv['more']['eng_title'])
+                if 'country' in ktv['more']:
+                    tmp = tmp.replace('%COUNTRY%', ktv['more']['country'])
+                if 'rate' in ktv['more']:
+                    tmp = tmp.replace('%RATE%', ktv['more']['rate'])
+                if 'genre' in ktv['more']:
+                    genre_list = ktv['more']['genre']
+                    genre = genre_list[0]
+                    tmp = tmp.replace('%GENRE%', genre)
+
+            tmp = re.sub('%ENG_TITLE%', '', tmp)
+            tmp = re.sub('%COUNTRY%', '', tmp)
+            tmp = re.sub('%GENRE%', '', tmp)
+            tmp = re.sub('%RATE%', '', tmp)
+            #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
+            #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
             tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
             data['dest_folder_name'] = tmp
         except Exception as e:
@@ -323,13 +342,13 @@ class LogicNormal(object):
         try:
             data['movie'] = movie
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', movie['title']).replace('  ', ' '))
+            folder_rule = ModelSetting.get_setting_value('folder_rule')
+            tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
             if 'more' in movie:
                 if not 'country' in movie['more']:
                     if movie['country'] is not None:
                         movie['more']['country'] = movie['country']
-                folder_rule = ModelSetting.get_setting_value('folder_rule')
 
-                tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year'])
                 if 'eng_title' in movie['more']:
                     tmp = tmp.replace('%ENG_TITLE%', movie['more']['eng_title'])
                 if 'country' in movie['more']:
@@ -341,14 +360,14 @@ class LogicNormal(object):
                     genre = genre_list[0]
                     tmp = tmp.replace('%GENRE%', genre)
 
-                tmp = re.sub('%ENG_TITLE%', '', tmp)
-                tmp = re.sub('%COUNTRY%', '', tmp)
-                tmp = re.sub('%GENRE%', '', tmp)
-                tmp = re.sub('%RATE%', '', tmp)
-                #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
-                #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
-                tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
-                data['dest_folder_name'] = tmp
+            tmp = re.sub('%ENG_TITLE%', '', tmp)
+            tmp = re.sub('%COUNTRY%', '', tmp)
+            tmp = re.sub('%GENRE%', '', tmp)
+            tmp = re.sub('%RATE%', '', tmp)
+            #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
+            #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
+            tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
+            data['dest_folder_name'] = tmp
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
