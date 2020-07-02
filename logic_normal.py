@@ -312,7 +312,9 @@ class LogicNormal(object):
             data['ktv'] = ktv
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv['title']).replace('  ', ' '))
             folder_rule = ModelSetting.get_setting_value('folder_rule')
-            tmp = folder_rule.replace('%TITLE%', ktv['title']).replace('%YEAR%', ktv['year'])
+            tmp = folder_rule.replace('%TITLE%', ktv['title'])
+            if 'year' in ktv:
+                tmp = tmp.replace('%YEAR%', ktv['year'])
             if 'more' in ktv:
                 if 'eng_title' in ktv['more']:
                     tmp = tmp.replace('%ENG_TITLE%', ktv['more']['eng_title'])
