@@ -313,25 +313,27 @@ class LogicNormal(object):
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv['title']).replace('  ', ' '))
             folder_rule = ModelSetting.get_setting_value('folder_rule')
             tmp = folder_rule.replace('%TITLE%', ktv['title'])
-            if 'year' in ktv:
-                tmp = tmp.replace('%YEAR%', ktv['year'])
-            if 'more' in ktv:
-                if 'eng_title' in ktv['more']:
-                    tmp = tmp.replace('%ENG_TITLE%', ktv['more']['eng_title'])
-                if 'country' in ktv['more']:
-                    tmp = tmp.replace('%COUNTRY%', ktv['more']['country'])
-                if 'rate' in ktv['more']:
-                    tmp = tmp.replace('%RATE%', ktv['more']['rate'])
-                if 'genre' in ktv['more']:
-                    genre_list = ktv['more']['genre']
-                    genre = genre_list[0]
-                    tmp = tmp.replace('%GENRE%', genre)
+
+            #if 'year' in ktv:
+                #tmp = tmp.replace('%YEAR%', ktv['year'])
+            #if 'more' in ktv:
+                #if 'eng_title' in ktv['more']:
+                    #tmp = tmp.replace('%ENG_TITLE%', ktv['more']['eng_title'])
+                #if 'country' in ktv['more']:
+                    #tmp = tmp.replace('%COUNTRY%', ktv['more']['country'])
+                #if 'rate' in ktv['more']:
+                    #tmp = tmp.replace('%RATE%', ktv['more']['rate'])
+                #if 'genre' in ktv['more']:
+                    #genre_list = ktv['more']['genre']
+                    #genre = genre_list[0]
+                    #tmp = tmp.replace('%GENRE%', genre)
 
             tmp = re.sub('%YEAR%', '', tmp)
             tmp = re.sub('%ENG_TITLE%', '', tmp)
             tmp = re.sub('%COUNTRY%', '', tmp)
             tmp = re.sub('%GENRE%', '', tmp)
             tmp = re.sub('%RATE%', '', tmp)
+            tmp = re.sub('[-=+,#/\?:^$.@*\"※~&ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', ' ', tmp)
             #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
             #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
             tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
