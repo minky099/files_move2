@@ -301,7 +301,7 @@ class MovieSearch(object):
                 #res = Logic.session.get(id_url, headers=headers, cookies=cookies)
                 from framework.common.daum import headers, session
                 from system.logic_site import SystemLogicSite
-                res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
+                res = session.get(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 meta_data = res.json()
                 logger.debug('smw - more seach')
                 if meta_data is not None:

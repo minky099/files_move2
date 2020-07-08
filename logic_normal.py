@@ -341,7 +341,10 @@ class LogicNormal(object):
                     tmp = tmp.replace('%DURING%', movie['more']['during'])
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
-                    genre = genre_list[0]
+                    if is isinstance(genre_list, list):
+                        genre = genre_list[0]
+                    else:
+                        genre = genre_list
                     tmp = tmp.replace('%GENRE%', genre)
 
             tmp = re.sub('%ENG_TITLE%', '', tmp)
@@ -688,7 +691,10 @@ class LogicNormal(object):
             #num_genre = len(info['more']['genre'])
             logger.debug('mpg check %s', info['more']['genre'])
             genre_list = info['more']['genre']
-            genre = genre_list[0]
+            if is isinstance(genre_list, list):
+                genre = genre_list[0]
+            else:
+                genre = genre_list
             for keywords, values in option.items():
                 genre = genre.encode('utf-8')
                 encKeywords = keywords.encode('utf-8')
