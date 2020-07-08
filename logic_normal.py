@@ -676,6 +676,7 @@ class LogicNormal(object):
     def movie_path_genre(info, option):
         ani_flag = ModelSetting.get_bool('ani_flag')
         etc_name = ModelSetting.get('etc_movie_genre')
+        genre_list = []
         try:
             set_genre = None
             if 'more' in info:
