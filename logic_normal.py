@@ -341,7 +341,7 @@ class LogicNormal(object):
                     tmp = tmp.replace('%DURING%', movie['more']['during'])
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
-                    if is isinstance(genre_list, list):
+                    if isinstance(genre_list, list):
                         genre = genre_list[0]
                     else:
                         genre = genre_list
@@ -691,7 +691,7 @@ class LogicNormal(object):
             #num_genre = len(info['more']['genre'])
             logger.debug('mpg check %s', info['more']['genre'])
             genre_list = info['more']['genre']
-            if is isinstance(genre_list, list):
+            if isinstance(genre_list, list):
                 genre = genre_list[0]
             else:
                 genre = genre_list
