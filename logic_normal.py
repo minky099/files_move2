@@ -310,7 +310,8 @@ class LogicNormal(object):
         try:
             data['ktv'] = ktv
             data['dest_folder_name'] = '%s' % (re.sub('[\\/:*?"<>|]', '', ktv['title']).replace('  ', ' '))
-            folder_rule = ModelSetting.get_setting_value('folder_rule')
+            #folder_rule = ModelSetting.get_setting_value('folder_rule')
+            folder_rule = '%TITLE%'
             tmp = folder_rule.replace('%TITLE%', ktv['title'])
             tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
             data['dest_folder_name'] = tmp
