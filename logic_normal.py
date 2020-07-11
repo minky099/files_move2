@@ -14,6 +14,7 @@ import ast
 import time
 import urllib
 import rclone
+import platform
 #import daum_tv
 
 # third-party
@@ -372,12 +373,15 @@ class LogicNormal(object):
             if data['uhd'] > 0 and uhd_ktv_drama_flag == 1:
                 LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
                 return
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            if platform.system() != "Windows":
+                title = title.encode('utf-8')
+                fullPath = fullPath.encode('utf-8')
+            dest_folder_path = os.path.join(base_path.strip(), title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -390,12 +394,15 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            if platform.system() != "Windows":
+                title = title.encode('utf-8')
+                fullPath = fullPath.encode('utf-8')
+            dest_folder_path = os.path.join(base_path.strip(), title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -408,12 +415,15 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            if platform.system() != "Windows":
+                title = title.encode('utf-8')
+                fullPath = fullPath.encode('utf-8')
+            dest_folder_path = os.path.join(base_path.strip(), title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -435,12 +445,16 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), set_genre.encode('utf-8'), title.encode('utf-8'))
+            if platform.system() != "Windows":
+                title = title.encode('utf-8')
+                set_genre = set_genre.encode('utf-8')
+                fullPath = fullPath.encode('utf-8')
+            dest_folder_path = os.path.join(base_path.strip(), set_genre, title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -564,16 +578,22 @@ class LogicNormal(object):
                 target = u'극장판'
                 dest_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
+                if platform.system() != "Windows":
+                    arg1 = arg1.encode('utf-8')
+                    arg2 = arg2.encode('utf-8')
+                    arg3 = arg3.encode('utf-8')
+                    arg4 = arg4.encode('utf-8')
+                    arg5 = arg5.encode('utf-8')
                 if arg1 and arg2 and arg3 and arg4 and arg5:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, arg4, arg5, data['dest_folder_name'])
                 elif arg1 and arg2 and arg3 and arg4:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, arg4, data['dest_folder_name'])
                 elif arg1 and arg2 and arg3:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, data['dest_folder_name'])
                 elif arg1 and arg2:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, data['dest_folder_name'])
                 elif arg1:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1, data['dest_folder_name'])
             logger.debug('mm - dest_path:%s', dest_path)
             if not os.path.exists(dest_path):
                 os.makedirs(dest_path)
