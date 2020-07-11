@@ -137,7 +137,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
+                        if platform.system() != "Windows":
+                            f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
@@ -168,7 +169,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
+                        if platform.system() != "Windows":
+                            f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
@@ -177,7 +179,8 @@ class LogicNormal(object):
                             sub_list = os.listdir(p.strip())
                             for sub_f in sub_list:
                                 if LogicNormal.isHangul(str(sub_f)) > 0:
-                                    sub_f = sub_f.encode('utf-8')
+                                    if platform.system() != "Windows":
+                                        sub_f = sub_f.encode('utf-8')
                                 sub_p = os.path.join(p.strip(), sub_f)
                                 if os.path.isdir(sub_p):
                                     shutil.move(sub_p, dest)
@@ -200,7 +203,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
+                        if platform.system() != "Windows":
+                            f = f.encode('utf-8')
                     #f = str(f).strip()
                     p = os.path.join(source_path.strip(), f)
                     #logger.debug('p:%s', p)
@@ -639,13 +643,20 @@ class LogicNormal(object):
                     country = info['country']
 
             if country is not None:
-                country = country.encode('utf-8')
+                if platform.system() != "Windows":
+                    country = country.encode('utf-8')
                 for keywords, values in option.items():
-                    encKeywords = keywords.encode('utf-8')
+                    if platform.system() == "Windows":
+                        encKeywords = keywords
+                    else:
+                        encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     #logger.debug('mpc - country:%s, values:%s', country, values)
                     if (gregx.search(country)) is not None:
-                        encValues = values.encode('utf-8')
+                        if platform.system() == "Windows":
+                            encValues = values
+                        else:
+                            encValues = values.encode('utf-8')
                         set_country = encValues
                         logger.debug('mpc search - country:%s, encValues:%s', country, encValues)
                         break
@@ -687,7 +698,10 @@ class LogicNormal(object):
                         logger.debug('mpy not match and searching... year:%s, keywords:%s', info['year'], keywords[idx])
                         continue
                 values = option.get(tmp)
-                encValues = values.encode('utf-8')
+                if platform.system() == "Windows":
+                    encValues = values
+                else:
+                    encValues = values.encode('utf-8')
                 set_year = encValues
                 return set_year
             else:
@@ -717,11 +731,18 @@ class LogicNormal(object):
             else:
                 genre = genre_list
             for keywords, values in option.items():
-                genre = genre.encode('utf-8')
-                encKeywords = keywords.encode('utf-8')
+                if platform.system() != "Windows":
+                    genre = genre.encode('utf-8')
+                if platform.system() == "Windows":
+                    encKeywords = keywords
+                else:
+                    encKeywords = keywords.encode('utf-8')
                 gregx = re.compile(encKeywords, re.I)
                 if (gregx.search(genre)) is not None:
-                    encValues = values.encode('utf-8')
+                    if platform.system() == "Windows":
+                        encValues = values
+                    else:
+                        encValues = values.encode('utf-8')
                     set_genre = encValues
                     logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
                     break
@@ -747,13 +768,20 @@ class LogicNormal(object):
                     rate = info['more']['rate']
 
             if rate is not None:
-                rate = rate.encode('utf-8')
+                if platform.system() != "Windows":
+                    rate = rate.encode('utf-8')
                 for keywords, values in option.items():
-                    encKeywords = keywords.encode('utf-8')
+                    if platform.system() == "Windows":
+                        encKeywords = keywords
+                    else:
+                        encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     #logger.debug('mpr - rate:%s, values:%s', rate, values)
                     if (gregx.search(rate)) is not None:
-                        encValues = values.encode('utf-8')
+                        if platform.system() == "Windows":
+                            encValues = values
+                        else:
+                            encValues = values.encode('utf-8')
                         set_rate = encValues
                         logger.debug('mpr search - rate:%s, encValues:%s', rate, encValues)
                         break
@@ -795,7 +823,11 @@ class LogicNormal(object):
                     values = option.get(720)
                 else:
                     values = u'기타'
-            encValues = values.encode('utf-8')
+
+            if platform.system() == "Windows":
+                encValues = values
+            else:
+                encValues = values.encode('utf-8')
             set_resolution = encValues
             logger.debug('mpre search - encValues:%s', encValues)
             return set_resolution
@@ -905,7 +937,8 @@ class LogicNormal(object):
 
     @staticmethod
     def search(values, searchFor):
-        searchFor.encode('utf-8')
+        if platform.system() != "Windows":
+            searchFor.encode('utf-8')
         for k in values:
             for v in values[k]:
                 if searchFor in v:
