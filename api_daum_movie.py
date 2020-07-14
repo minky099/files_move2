@@ -307,8 +307,9 @@ class MovieSearch(object):
                 from system.logic_site import SystemLogicSite
                 res = session.get(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 meta_data = res.json()
-                logger.debug('smw - more seach')
+                logger.debug('smw - more search')
                 if meta_data is not None:
+                    logger.debug('smw - more search....ing')
                     info = meta_data['data']
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = unicode(info['prodYear'])
