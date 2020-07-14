@@ -353,7 +353,7 @@ class LogicNormal(object):
             tmp = re.sub('%COUNTRY%', '', tmp)
             tmp = re.sub('%GENRE%', '', tmp)
             tmp = re.sub('%RATE%', '', tmp)
-            tmp = re.sub('%DURING%', '', tmp)
+            tmp = re.sub('%DURING%', '', int(tmp))
             #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
             #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
             tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
