@@ -195,10 +195,14 @@ class MovieSearch(object):
             from system.logic_site import SystemLogicSite
             res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
             data = res.json()
+            movie_name = re.sub('[\\/:*?"<>|]', '', movie_name)
             for index, item in enumerate(data['items']['movie']):
                 tmps = item.split('|')
                 score = 85
-                if tmps[0].find(movie_name) != -1 and int(tmps[3]) == int(movie_year):
+                tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
+                if tmps[0] == movie_name and int(tmp[3]) == int(movie_year):
+                    score = 97
+                elif tmps[0].find(movie_name) != -1 and int(tmps[3]) == int(movie_year):
                     score = 95
                 elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
                     score = score + 6
