@@ -318,8 +318,8 @@ class MovieSearch(object):
                         movie_list[0]['score'] = movie_list[0]['score'] + 5
                     movie_list[0]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
-                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"",'genre':[]}})
-                    movie_list[0]['more']['during'] = info['showtime']
+                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
+                    movie_list[0]['more']['during'] = unicode(info['showtime'])
                     if info['admissionDesc']:
                         movie_list[0]['more']['rate'] = info['admissionDesc']
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])

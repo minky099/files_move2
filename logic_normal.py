@@ -340,7 +340,7 @@ class LogicNormal(object):
                 if 'rate' in movie['more']:
                     tmp = tmp.replace('%RATE%', movie['more']['rate'])
                 if 'during' in movie['more']:
-                    tmp = tmp.replace('%DURING%', int(movie['more']['during']))
+                    tmp = tmp.replace('%DURING%', movie['more']['during'])
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
                     if isinstance(genre_list, list):
