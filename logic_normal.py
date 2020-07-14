@@ -340,7 +340,7 @@ class LogicNormal(object):
                 if 'rate' in movie['more']:
                     tmp = tmp.replace('%RATE%', movie['more']['rate'])
                 if 'during' in movie['more']:
-                    tmp = tmp.replace('%DURING%', movie['more']['during'])
+                    tmp = tmp.replace('%DURING%', int(movie['more']['during']))
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
                     if isinstance(genre_list, list):
@@ -353,7 +353,7 @@ class LogicNormal(object):
             tmp = re.sub('%COUNTRY%', '', tmp)
             tmp = re.sub('%GENRE%', '', tmp)
             tmp = re.sub('%RATE%', '', tmp)
-            tmp = re.sub('%DURING%', '', int(tmp))
+            tmp = re.sub('%DURING%', '', tmp)
             #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title'])
             #tmp = folder_rule.replace('%TITLE%', movie['title']).replace('%YEAR%', movie['year']).replace('%ENG_TITLE%', movie['more']['eng_title']).replace('%COUNTRY%', movie['more']['country']).replace('%GENRE%', movie['more']['genre']).replace('%DATE%', movie['more']['date']).replace('%RATE%', movie['more']['rate']).replace('%DURING%', movie['more']['during'])
             tmp = re.sub('[\\/:*?"<>|]', '', tmp).replace('  ', ' ').replace('[]', '')
