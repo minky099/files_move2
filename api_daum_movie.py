@@ -201,9 +201,9 @@ class MovieSearch(object):
                 score = 85
                 tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
                 if tmps[0] == movie_cmp and int(tmps[3]) == int(movie_year):
-                    score = 97
-                elif tmps[0].find(movie_cmp) != -1 and int(tmps[3]) == int(movie_year):
                     score = 95
+                ##elif tmps[0].find(movie_cmp) != -1 and int(tmps[3]) == int(movie_year):
+                    ##score = 95
                 elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
                     score = score + 6
                 else:
