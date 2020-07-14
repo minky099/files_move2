@@ -200,7 +200,7 @@ class MovieSearch(object):
                 tmps = item.split('|')
                 score = 85
                 tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
-                if tmps[0] == movie_name and int(tmp[3]) == int(movie_year):
+                if tmps[0] == movie_name and int(tmps[3]) == int(movie_year):
                     score = 97
                 elif tmps[0].find(movie_name) != -1 and int(tmps[3]) == int(movie_year):
                     score = 95
