@@ -137,7 +137,7 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = unicode(f)
+                        f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
@@ -168,7 +168,7 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = unicode(f)
+                        f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
@@ -177,7 +177,7 @@ class LogicNormal(object):
                             sub_list = os.listdir(p.strip())
                             for sub_f in sub_list:
                                 if LogicNormal.isHangul(str(sub_f)) > 0:
-                                    sub_f = unicode(sub_f)
+                                    sub_f = sub_f.encode('utf-8')
                                 sub_p = os.path.join(p.strip(), sub_f)
                                 if os.path.isdir(sub_p):
                                     shutil.move(sub_p, dest)
@@ -200,7 +200,7 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = unicode(f)
+                        f = f.encode('utf-8')
                     #f = str(f).strip()
                     p = os.path.join(source_path.strip(), f)
                     #logger.debug('p:%s', p)
@@ -373,12 +373,12 @@ class LogicNormal(object):
             if data['uhd'] > 0 and uhd_ktv_drama_flag == 1:
                 LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
                 return
-            dest_folder_path = os.path.join(base_path.strip(), title)
+            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath, dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -391,12 +391,12 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title)
+            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath, dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -409,12 +409,12 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title)
+            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath, dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -436,12 +436,12 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), set_genre, title)
+            dest_folder_path = os.path.join(base_path.strip(), set_genre.encode('utf-8'), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath, dest_folder_path)
+                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -566,15 +566,15 @@ class LogicNormal(object):
                 dest_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
                 if arg1 and arg2 and arg3 and arg4 and arg5:
-                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, arg4, arg5, data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2 and arg3 and arg4:
-                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, arg4, data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2 and arg3:
-                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2:
-                    dest_path = os.path.join(base_path.strip(), arg1, arg2, data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
                 elif arg1:
-                    dest_path = os.path.join(base_path.strip(), arg1, data['dest_folder_name'])
+                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
             logger.debug('mm - dest_path:%s', dest_path)
             if not os.path.exists(dest_path):
                 os.makedirs(dest_path)
@@ -620,13 +620,13 @@ class LogicNormal(object):
                     country = info['country']
 
             if country is not None:
-                country = unicode(country)
+                country = country.encode('utf-8')
                 for keywords, values in option.items():
-                    encKeywords = unicode(keywords)
+                    encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     #logger.debug('mpc - country:%s, values:%s', country, values)
                     if (gregx.search(country)) is not None:
-                        encValues = unicode(values)
+                        encValues = values.encode('utf-8')
                         set_country = encValues
                         logger.debug('mpc search - country:%s, encValues:%s', country, encValues)
                         break
@@ -668,7 +668,7 @@ class LogicNormal(object):
                         logger.debug('mpy not match and searching... year:%s, keywords:%s', info['year'], keywords[idx])
                         continue
                 values = option.get(tmp)
-                encValues = unicode(values)
+                encValues = values.encode('utf-8')
                 set_year = encValues
                 return set_year
             else:
@@ -698,11 +698,11 @@ class LogicNormal(object):
             else:
                 genre = genre_list
             for keywords, values in option.items():
-                genre = unicode(genre)
-                encKeywords = unicode(keywords)
+                genre = genre.encode('utf-8')
+                encKeywords = keywords.encode('utf-8')
                 gregx = re.compile(encKeywords, re.I)
                 if (gregx.search(genre)) is not None:
-                    encValues = unicode(values)
+                    encValues = values.encode('utf-8')
                     set_genre = encValues
                     logger.debug('mpg search - genre:%s, encValues:%s', genre, encValues)
                     break
@@ -728,13 +728,13 @@ class LogicNormal(object):
                     rate = info['more']['rate']
 
             if rate is not None:
-                rate = unicode(rate)
+                rate = rate.encode('utf-8')
                 for keywords, values in option.items():
-                    encKeywords = unicode(keywords)
+                    encKeywords = keywords.encode('utf-8')
                     gregx = re.compile(encKeywords, re.I)
                     #logger.debug('mpr - rate:%s, values:%s', rate, values)
                     if (gregx.search(rate)) is not None:
-                        encValues = unicode(values)
+                        encValues = values.encode('utf-8')
                         set_rate = encValues
                         logger.debug('mpr search - rate:%s, encValues:%s', rate, encValues)
                         break
@@ -776,7 +776,7 @@ class LogicNormal(object):
                     values = option.get(720)
                 else:
                     values = u'기타'
-            encValues = unicode(values)
+            encValues = values.encode('utf-8')
             set_resolution = encValues
             logger.debug('mpre search - encValues:%s', encValues)
             return set_resolution
@@ -886,7 +886,7 @@ class LogicNormal(object):
 
     @staticmethod
     def search(values, searchFor):
-        searchFor = unicode(searchFor)
+        searchFor.encode('utf-8')
         for k in values:
             for v in values[k]:
                 if searchFor in v:
