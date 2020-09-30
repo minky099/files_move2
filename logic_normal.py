@@ -261,7 +261,7 @@ class LogicNormal(object):
                         LogicNormal.move_ktv_show_genre(item, daum_tv_info, ktv_show_target_path)
                     elif ktv_show_target_path is not None and ktv_show_genre_flag == 0:
                         logger.debug('cml - korea show %s', daum_tv_info['genre'])
-                        LogicNormal.set_ktv(item, daum_tv.info)
+                        LogicNormal.set_ktv(item, daum_tv_info)
                         LogicNormal.move_ktv_show(item, daum_tv_info, ktv_show_target_path)
                     else:
                         LogicNormal.move_except(item, error_target_path)
