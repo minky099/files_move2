@@ -238,7 +238,7 @@ class LogicNormal(object):
                 logger.debug('cml - drama %s, %s', item['name'], item['search_name'])
                 title_check = item['guessit']['title']
                 if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
-                    if title_check[0:2].isdigit() > 0
+                    if title_check[0:2].isdigit() > 0:
                       title_tmp = re.sub('[A-Za-z0-9._]', '', title_check)
                     else
                       title_tmp = re.sub('[A-Za-z._]', '', title_check)
