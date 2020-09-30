@@ -231,7 +231,7 @@ class LogicNormal(object):
             if episode_con.search(item['name']):
                 weight_con += 1
             logger.debug('cml - weight:%s', weight_con)
-            #TV
+            #TV Show
             if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode' and weight_con > 0:
                 from tv import DaumTV
                 #from framework.common.daum import DaumTV
