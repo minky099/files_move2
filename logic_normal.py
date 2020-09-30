@@ -240,7 +240,7 @@ class LogicNormal(object):
                 if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
                     if title_check[0:2].isdigit() > 0:
                       title_tmp = re.sub('[A-Za-z0-9._]', '', title_check)
-                    else
+                    else:
                       title_tmp = re.sub('[A-Za-z._]', '', title_check)
                     title_tmp = unicode(title_tmp.strip())
                     item['guessit']['title'] = title_tmp
