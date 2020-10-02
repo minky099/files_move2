@@ -236,7 +236,11 @@ class LogicNormal(object):
                 from tv import DaumTV
                 #from framework.common.daum import DaumTV
                 logger.debug('cml - drama %s, %s, %s', item['name'], item['search_name'], item['guessit']['title'])
-                title_check = item['guessit']['title']
+                tmp_title_0 = item['guessit']['title']
+                tmp_title_1 = item['search_name']
+                tmp_title_1 = re.sub('(e|E)+\d\d?', '', tmp_title_1)
+                if tmp_title_0 != tmp_title_1:
+                  title_check = tmp_title_1
                 if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
                   #title_tmp = re.sub('[A-Za-z0-9._]', '', title_check)
                   title_tmp = re.sub(r'\[[^)]*\]', '', title_check)
