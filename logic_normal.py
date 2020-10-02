@@ -235,7 +235,7 @@ class LogicNormal(object):
             if 'episode' in item['guessit'] > 0 and item['guessit']['type'] == 'episode' and weight_con > 0:
                 from tv import DaumTV
                 #from framework.common.daum import DaumTV
-                logger.debug('cml - drama %s, %s', item['name'], item['search_name'])
+                logger.debug('cml - drama %s, %s, %s', item['name'], item['search_name'], item['guessit']['title'])
                 title_check = item['guessit']['title']
                 if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
                   #title_tmp = re.sub('[A-Za-z0-9._]', '', title_check)
