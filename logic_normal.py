@@ -239,14 +239,10 @@ class LogicNormal(object):
                 title_check = item['guessit']['title']
                 if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
                   #title_tmp = re.sub('[A-Za-z0-9._]', '', title_check)
-                    tmp_search_name = item['search_name']
-                    if tmp_search_name[0:2].isdigit() > 0:
-                      title_tmp = re.sub('[A-Za-z._]', '', tmp_search_name)
-                    else:
-                      title_tmp = re.sub('[A-Za-z._]', '', title_check)
-                    title_tmp = unicode(title_tmp.strip())
-                    item['guessit']['title'] = title_tmp
-                    logger.debug('cml - title_check:%s', title_tmp)
+                  title_tmp = re.sub(r'\[[^)]*\]', '', title_check)
+                  title_tmp = unicode(title_tmp.strip())
+                  item['guessit']['title'] = title_tmp
+                  logger.debug('cml - title_check:%s', title_tmp)
 
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 #daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
