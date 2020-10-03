@@ -239,6 +239,7 @@ class LogicNormal(object):
                 tmp_title_0 = item['guessit']['title']
                 tmp_title_1 = item['search_name']
                 tmp_title_1 = re.sub('(e|E)+\d\d?', '', tmp_title_1)
+                tmp_title_1 = re.sub('(e|E)+(n|N)+(d|D)', '', tmp_title_1)
                 if tmp_title_0 != tmp_title_1:
                   title_check = tmp_title_1
                 if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
