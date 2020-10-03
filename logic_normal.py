@@ -240,16 +240,24 @@ class LogicNormal(object):
                 tmp_title_1 = item['search_name']
                 tmp_title_1 = re.sub('(e|E)+\d\d?', '', tmp_title_1)
                 tmp_title_1 = re.sub('(e|E)+(n|N)+(d|D)', '', tmp_title_1)
-                if tmp_title_0 != tmp_title_1:
-                  title_check = tmp_title_1
-                if title_check.isalpha and LogicNormal.isHangul(title_check) > 0:
-                  #title_tmp = re.sub('[A-Za-z0-9._]', '', title_check)
-                  title_tmp = re.sub(r'\[[^)]*\]', '', title_check)
+                if tmp_title_0.isalpha and LogicNormal.isHangul(tmp_title_0) > 0:
+                  #title_tmp = re.sub('[A-Za-z0-9._]', '', tmp_title_0)
+                  title_tmp = re.sub(r'\[[^)]*\]', '', tmp_title_0)
                   title_tmp = unicode(title_tmp.strip())
                   item['guessit']['title'] = title_tmp
                   logger.debug('cml - title_check:%s', title_tmp)
 
                 daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
+                if daum_tv_info is not None:
+                  LogicNormal.set_ktv(item, daum_tv_info)
+                  if item['dest_folder_name'] != item['guessit']['title']:
+                    if tmp_title_1.isalpha and LogicNormal.isHangul(tmp_title_1) > 0:
+                      #title_tmp = re.sub('[A-Za-z0-9._]', '', tmp_title_0)
+                      title_tmp = re.sub(r'\[[^)]*\]', '', tmp_title_1)
+                      title_tmp = unicode(title_tmp.strip())
+                      item['guessit']['title'] = title_tmp
+                      logger.debug('cml - title_check:%s', title_tmp)
+                      daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])  
                 #daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
                 if daum_tv_info is not None:
                     if daum_tv_info['genre'] == u'드라마':
