@@ -86,7 +86,7 @@ class LogicNormal(object):
             #temp = re.sub('\d\d-\d\d회 합본', '', temp)
             #logger.debug('il3 - %s : %s', item['name'], temp)
             logger.debug('il4 - temp:%s', temp)
-            item['guessit'] = guessit(temp)
+            item['guessit'] = guessit(temp, '--date-day-first')
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
             item['uhd'] = 0
@@ -257,7 +257,7 @@ class LogicNormal(object):
                       title_tmp = unicode(title_tmp.strip())
                       item['guessit']['title'] = title_tmp
                       logger.debug('cml - title_check:%s', title_tmp)
-                      daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])  
+                      daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
                 #daum_tv_info = DaumTV.get_daum_tv_info(item['search_name'])
                 if daum_tv_info is not None:
                     if daum_tv_info['genre'] == u'드라마':
