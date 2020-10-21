@@ -86,7 +86,7 @@ class LogicNormal(object):
             #temp = re.sub('\d\d-\d\d회 합본', '', temp)
             #logger.debug('il3 - %s : %s', item['name'], temp)
             logger.debug('il4 - temp:%s', temp)
-            item['guessit'] = guessit(temp, option={'date-day-first': TRUE})
+            item['guessit'] = guessit(temp, option={'date-day-first': True})
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
             item['uhd'] = 0
