@@ -86,7 +86,8 @@ class LogicNormal(object):
             #temp = re.sub('\d\d-\d\d회 합본', '', temp)
             #logger.debug('il3 - %s : %s', item['name'], temp)
             logger.debug('il4 - temp:%s', temp)
-            item['guessit'] = guessit(temp, options={'date-day-first': True})
+            #item['guessit'] = guessit(temp, options={'date-day-first': True})
+            item['guessit'] = guessit(temp)
             item['ext'] = os.path.splitext(f)[1].lower()
             item['search_name'] = None
             item['uhd'] = 0
@@ -281,6 +282,11 @@ class LogicNormal(object):
                 from api_daum_movie import MovieSearch
                 #from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
+                if 'year' not in item['guessit']:
+                  for cy_name in item['name']:
+                    year = re.search(r"\d{4}", cy_name).group(0)
+                    if year > 1900:
+                      item['guessit']['year'] = year
                 if 'year' in item['guessit']:
                     logger.debug('cml - movie %s year %s', item['name'], item['guessit']['year'])
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
