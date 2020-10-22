@@ -284,9 +284,9 @@ class LogicNormal(object):
                 logger.debug('cml - movie %s', item['name'])
                 if 'year' not in item['guessit']:
                   for cy_name in item['name']:
-                    year = re.search(r"\d{4}", cy_name).group(0)
-                    if year > 1900:
-                      item['guessit']['year'] = year
+                    tmp_year = re.search(r"\d{4}", cy_name).group()
+                    if int(tmp_year) > 1900:
+                      item['guessit']['year'] = tmp_year
                 if 'year' in item['guessit']:
                     logger.debug('cml - movie %s year %s', item['name'], item['guessit']['year'])
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
