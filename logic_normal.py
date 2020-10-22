@@ -283,13 +283,13 @@ class LogicNormal(object):
                 #from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
                 if 'year' not in item['guessit']:
-                  for cy_name in item['name']:
+                  for cy_name in item['name'].splitlines():
                     try:
-                      tmp_year = re.findall('\d{4}', cy_name).group(0)
+                      tmp_year = re.search('\d{4}', cy_name).group(0)
                     except:
-                      tmp_year = re.findall('\d{4}', cy_name)
-                    if int(tmp_year[0]) > 1900:
-                      item['guessit']['year'] = tmp_year[0]
+                      tmp_year = re.search('\d{4}', cy_name)
+                    if int(tmp_year) > 1900:
+                      item['guessit']['year'] = tmp_year
                 if 'year' in item['guessit']:
                     logger.debug('cml - movie %s year %s', item['name'], item['guessit']['year'])
                     (item['is_include_kor'], daum_movie_info) = MovieSearch.search_movie(item['search_name'], item['guessit']['year'])
