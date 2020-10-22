@@ -285,9 +285,9 @@ class LogicNormal(object):
                 if 'year' not in item['guessit']:
                   for cy_name in item['name']:
                     try:
-                      tmp_year = re.search(r"\d{4}", cy_name).group(0)
+                      tmp_year = re.search('\d{4}', cy_name).group(0)
                     except:
-                      tmp_year = re.search(r"\d{4}", cy_name)
+                      tmp_year = re.search('\d{4}', cy_name)
                     if int(tmp_year) > 1900:
                       item['guessit']['year'] = tmp_year
                 if 'year' in item['guessit']:
