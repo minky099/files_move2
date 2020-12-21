@@ -239,7 +239,7 @@ class LogicNormal(object):
                 logger.debug('cml - drama %s, %s, %s', item['name'], item['search_name'], item['guessit']['title'])
                 tmp_title_0 = item['guessit']['title']
                 tmp_title_1 = item['search_name']
-                tmp_title_1 = re.sub('(e|E)+\d\d?', '', tmp_title_1)
+                tmp_title_1 = re.sub('(e|E)+\d\d?\d\d?', '', tmp_title_1)
                 tmp_title_1 = re.sub('(e|E)+(n|N)+(d|D)', '', tmp_title_1)
                 if tmp_title_0.isalpha and LogicNormal.isHangul(tmp_title_0) > 0:
                   #title_tmp = re.sub('[A-Za-z0-9._]', '', tmp_title_0)
