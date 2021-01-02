@@ -901,8 +901,10 @@ class LogicNormal(object):
             ModelItem.save_as_dict(entity)
             if telegram_flag == 1:
                 text = u'파일정리\n [%s] %s -> %s\n' % (match_type, data['fullPath'], dest)
-                import framework.common.notify as Notify
-                Notify.send_message(text, message_id = 'files_move_result')
+                #import framework.common.notify as Notify
+                #Notify.send_message(text, message_id = 'files_move_result')
+                from tool_base import ToolBaseNotify
+                ToolBaseNotify.send_message(text, message_id = 'files_move_result')
         except Exception as e:
             logger.error('Exxception:%s', e)
             logger.error(traceback.format_exc())
