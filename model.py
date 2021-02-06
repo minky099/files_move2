@@ -11,7 +11,7 @@ from sqlalchemy import or_, and_, func, not_, desc
 from sqlalchemy.orm import backref
 
 # sjva 공용
-from framework import app, db, path_app_root
+from framework import app, db, path_app_root, py_unicode
 from framework.util import Util
 
 # 패키지

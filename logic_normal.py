@@ -23,7 +23,7 @@ from sqlalchemy import or_, and_, func, not_
 from guessit import guessit
 
 # sjva 공용
-from framework import app, db, scheduler, path_app_root, celery
+from framework import app, db, scheduler, path_app_root, celery, py_unicode
 from framework.job import Job
 from framework.util import Util
 from system.model import ModelSetting as SystemModelSetting
