@@ -133,11 +133,11 @@ class ModelItem(db.Model):
     def save_as_dict(item):
         try:
             entity = ModelItem()
-            entity.name = unicode(item['name'])
-            entity.fileName = unicode(item['fileName'])
-            entity.dirName = unicode(item['dirName'])
-            entity.targetPath = unicode(item['targetPath'])
-            entity.match_type = unicode(item['match_type'])
+            entity.name = py_unicode(item['name'])
+            entity.fileName = py_unicode(item['fileName'])
+            entity.dirName = py_unicode(item['dirName'])
+            entity.targetPath = py_unicode(item['targetPath'])
+            entity.match_type = py_unicode(item['match_type'])
             entity.is_moved = item['is_moved']
 
             db.session.add(entity)

@@ -12,7 +12,7 @@ import shutil
 import json
 import ast
 import time
-import urllib
+from framework import py_urllib
 import rclone
 #import platform
 #import daum_tv
@@ -101,7 +101,7 @@ class LogicNormal(object):
             else:
                 return None
             if LogicNormal.isHangul(item['search_name']) > 0:
-                str = unicode(item['search_name'])
+                str = py_unicode(item['search_name'])
                 item['search_name'] = str
             logger.debug('il5 - search_name:%s', item['search_name'])
             return item
@@ -244,7 +244,7 @@ class LogicNormal(object):
                 if tmp_title_0.isalpha and LogicNormal.isHangul(tmp_title_0) > 0:
                   #title_tmp = re.sub('[A-Za-z0-9._]', '', tmp_title_0)
                   title_tmp = re.sub(r'\[[^)]*\]', '', tmp_title_0)
-                  title_tmp = unicode(title_tmp.strip())
+                  title_tmp = py_unicode(title_tmp.strip())
                   item['guessit']['title'] = title_tmp
                   logger.debug('cml - title_check:%s', title_tmp)
 
@@ -255,7 +255,7 @@ class LogicNormal(object):
                     if tmp_title_1.isalpha and LogicNormal.isHangul(tmp_title_1) > 0:
                       #title_tmp = re.sub('[A-Za-z0-9._]', '', tmp_title_0)
                       title_tmp = re.sub(r'\[[^)]*\]', '', tmp_title_1)
-                      title_tmp = unicode(title_tmp.strip())
+                      title_tmp = py_unicode(title_tmp.strip())
                       item['guessit']['title'] = title_tmp
                       logger.debug('cml - title_check:%s', title_tmp)
                       daum_tv_info = DaumTV.get_daum_tv_info(item['guessit']['title'])
@@ -306,9 +306,9 @@ class LogicNormal(object):
                                 #if LogicNormal.isHangul(str_cmp_0) > 0:
                                     #korean = re.compile('[\u3130-\u318F\uAC00-\uD7A3]+')
                                 str_cmp_0 = re.sub('[^A-Za-z0-9\s]', '', item['guessit']['title'])
-                                str_cmp_0 = unicode(str_cmp_0.strip())
+                                str_cmp_0 = py_unicode(str_cmp_0.strip())
                                 str_cmp_1 = daum_movie_info[0]['more']['eng_title']
-                                str_cmp_1 = unicode(str_cmp_1)
+                                str_cmp_1 = py_unicode(str_cmp_1)
                                 logger.debug('cml - movie cmp %s:%s', str_cmp_0.lower(), str_cmp_1.lower())
                                 if str_cmp_0.lower() == str_cmp_1.lower():
                                     logger.debug('cml - movie file name checked!')
@@ -453,7 +453,7 @@ class LogicNormal(object):
                 set_genre = info['genre']
             else:
                 if LogicNormal.isHangul(etc_name) > 0:
-                    str = unicode(etc_name)
+                    str = py_unicode(etc_name)
                     etc_name = str
                 set_genre = etc_name
             title = data['dest_folder_name']
@@ -655,7 +655,7 @@ class LogicNormal(object):
                         break
                     else:
                         if LogicNormal.isHangul(etc_name) > 0:
-                            str = unicode(etc_name)
+                            str = py_unicode(etc_name)
                             etc_name = str
                         set_country = etc_name
                 return set_country
@@ -731,7 +731,7 @@ class LogicNormal(object):
                     break
                 else:
                     if LogicNormal.isHangul(etc_name) > 0:
-                        str = unicode(etc_name)
+                        str = py_unicode(etc_name)
                         etc_name = str
                     set_genre = etc_name
             logger.debug('mpg ret genre:%s', set_genre)
@@ -763,7 +763,7 @@ class LogicNormal(object):
                         break
                     else:
                         if LogicNormal.isHangul(etc_name) > 0:
-                            str = unicode(etc_name)
+                            str = py_unicode(etc_name)
                             etc_name = str
                         set_rate = etc_name
                 return set_rate
@@ -846,7 +846,7 @@ class LogicNormal(object):
             #fileName = info['name']
             #fileName = re.sub(r'HDR', '', fileName, flags=re.IGNORECASE)
             if LogicNormal.isHangul(info['name']) > 0:
-                str = unicode(info['name'])
+                str = py_unicode(info['name'])
                 fileName = str
             else:
                 fileName = info['name']
@@ -958,7 +958,7 @@ class LogicNormal(object):
 
     @staticmethod
     def isHangul(text):
-        if type(text) is not unicode:
+        if type(text) is not py_unicode:
             encText = text.decode('utf-8')
         else:
             encText = text
@@ -967,7 +967,7 @@ class LogicNormal(object):
 
     @staticmethod
     def strip_all(x):
-      if isinstance(x, str): # if using python2 replace str with basestring to include unicode type
+      if isinstance(x, str): # if using python2 replace str with basestring to include py_unicode type
         x = x.strip()
       elif isinstance(x, list):
         x = [LogicNormal.strip_all(v) for v in x]

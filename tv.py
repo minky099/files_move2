@@ -9,8 +9,8 @@ import re
 import threading
 import json
 import requests
-import urllib
-import urllib2
+from framework import py_urllib
+from framework import py_urllib2
 import lxml.html
 from enum import Enum
 from framework.common.daum import logger
@@ -93,9 +93,9 @@ class DaumTV:
             search_name = DaumTV.get_search_name_from_original(search_name)
             logger.debug('get_daum_tv_info 2 %s', search_name)
             if daum_id is not None:
-                url = 'https://search.daum.net/search?w=tv&q=%s&irk=%s&irt=tv-program&DA=TVP' % (urllib.quote(search_name.encode('utf8')), daum_id)
+                url = 'https://search.daum.net/search?w=tv&q=%s&irk=%s&irt=tv-program&DA=TVP' % (py_urllib.quote(search_name.encode('utf8')), daum_id)
             else:
-                url = 'https://search.daum.net/search?w=tv&q=%s' % urllib.quote(search_name.encode('utf8'))
+                url = 'https://search.daum.net/search?w=tv&q=%s' % py_urllib.quote(search_name.encode('utf8'))
             data = DaumTV.get_html(url)
             match = re.compile('irk\\=(?P<id>\\d+)').search(data)
             root = lxml.html.fromstring(data)
@@ -221,7 +221,7 @@ class DaumTV:
     def get_show_info(title, no = None, date = None):
         try:
             title = DaumTV.get_search_name_from_original(title)
-            url = 'https://search.daum.net/search?q=%s' % urllib.quote(title.encode('utf8'))
+            url = 'https://search.daum.net/search?q=%s' % py_urllib.quote(title.encode('utf8'))
             data = DaumTV.get_html(url)
             root = lxml.html.fromstring(data)
             home_info = DaumTV.get_show_info_on_home(root)
@@ -245,7 +245,7 @@ class DaumTV:
             logger.debug('get_show_info_on_home title: %s', entity['title'])
             match = re.compile('q\\=(?P<title>.*?)&').search(tags[tag_index].attrib['href'])
             if match:
-                entity['title'] = urllib.unquote(match.group('title'))
+                entity['title'] = py_urllib.unquote(match.group('title'))
             entity['id'] = re.compile('irk\\=(?P<id>\\d+)').search(tags[tag_index].attrib['href']).group('id')
             entity['status'] = 1
             tags = root.xpath('//*[@id="tvpColl"]/div[2]/div/div[1]/span/span')
@@ -337,9 +337,9 @@ class DaumTV:
         try:
             title = title.replace(u'[\uc885\uc601]', '')
             if daum_id is None:
-                url = 'https://search.daum.net/search?q=%s' % urllib.quote(title.encode('utf8'))
+                url = 'https://search.daum.net/search?q=%s' % py_urllib.quote(title.encode('utf8'))
             else:
-                url = 'https://search.daum.net/search?q=%s&irk=%s&irt=tv-program&DA=TVP' % (urllib.quote(title.encode('utf8')), daum_id)
+                url = 'https://search.daum.net/search?q=%s&irk=%s&irt=tv-program&DA=TVP' % (py_urllib.quote(title.encode('utf8')), daum_id)
             return DaumTV.get_lxml_by_url(url)
         except Exception as e:
             logger.error('Exception:%s', e)

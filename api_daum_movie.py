@@ -5,7 +5,7 @@ import sys
 import re
 import traceback
 import logging
-import urllib
+from framework import py_urllib
 import lxml
 import requests
 from framework import logger
@@ -188,7 +188,7 @@ class MovieSearch(object):
     @staticmethod
     def search_movie_web(movie_list, movie_name, movie_year):
         try:
-            url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (urllib.quote(movie_name.encode('utf8')))
+            url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (py_urllib.quote(movie_name.encode('utf8')))
             #from . import headers, cookies
             #res = Logic.session.get(url, headers=headers, cookies=cookies)
             from framework.common.daum import headers, session
@@ -221,7 +221,7 @@ class MovieSearch(object):
             logger.error(traceback.format_exc())
 
         try:
-            url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', urllib.quote(movie_name.encode('utf8')))
+            url = 'https://search.daum.net/search?nil_suggest=btn&w=tot&DA=SBC&q=%s%s' % ('%EC%98%81%ED%99%94+', py_urllib.quote(movie_name.encode('utf8')))
             ret = MovieSearch.get_movie_info_from_home(url)
             if ret is not None:
                 if ret['year'] == movie_year:
@@ -312,14 +312,14 @@ class MovieSearch(object):
                     logger.debug('smw - more search....ing')
                     info = meta_data['data']
                     if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = unicode(info['prodYear'])
+                        movie_list[0]['year'] = py_unicode(info['prodYear'])
                     elif int(movie_year) == int(info['prodYear']):
-                        movie_list[0]['year'] = unicode(info['prodYear'])
+                        movie_list[0]['year'] = py_unicode(info['prodYear'])
                         movie_list[0]['score'] = movie_list[0]['score'] + 5
                     movie_list[0]['title'] = info['titleKo']
                     logger.debug('smw - eng title:%s', info['titleEn'])
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    movie_list[0]['more']['during'] = unicode(info['showtime'])
+                    movie_list[0]['more']['during'] = py_unicode(info['showtime'])
                     if info['admissionDesc']:
                         movie_list[0]['more']['rate'] = info['admissionDesc']
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
