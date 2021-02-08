@@ -100,7 +100,7 @@ class Logic(object):
     def scheduler_start():
         try:
             logger.debug('%s scheduler_start' % package_name)
-            interval = ModelSetting.query.filter_by(key='interval').first().value
+            interval = ModelSetting.query.filter_by(key='schedulerInterval').first().value
             job = Job(package_name, package_name, interval, Logic.scheduler_function, u"파일정리", False)
             scheduler.add_job_instance(job)
         except Exception as e:
