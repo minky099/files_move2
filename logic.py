@@ -57,8 +57,7 @@ class Logic(object):
         'extraFilesMove' : 'False',
         'auto_start' : 'False',
         'folder_rule': '%TITLE%',
-        'telegram' : '',
-        'use_smi_to_srt' : ''
+        'telegram' : ''
     }
     #session = requests.Session()
 
@@ -124,17 +123,6 @@ class Logic(object):
         try:
             #Test
             ##LogicNormal.scheduler_function()
-            source_path=Logic.get_setting_value('source_base_path')
-            source_paths=[x.strip()for x in source_path.split(',')]
-            if not source_paths:
-                return
-            if Logic.get_setting_value('use_smi_to_srt')=='True':
-                import smi2srt
-                if app.config['config']['use_celery']:
-                    result=smi2srt.Logic.start_by_path.apply_async((source_path,))
-                    result.get()
-                else:
-                    smi2srt.Logic.start_by_path(work_path=source_path)
             from framework import app
             if app.config['config']['use_celery']:
                 result = LogicNormal.scheduler_function.apply_async()

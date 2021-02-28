@@ -9,7 +9,6 @@
   <form id='setting' name='setting'>
   {{ macros.setting_input_text('schedulerInterval', '스케쥴링 실행 주기', value=arg['schedulerInterval'], col='3', desc=['Inverval(minute 단위)이나 Cron 설정']) }}
   {{ macros.setting_checkbox('auto_start', '시작시 자동실행', value=arg['auto_start'], desc='On : 시작시 자동으로 사용 설정합니다.') }}
-  {{ macros.setting_checkbox('use_smi_to_srt', 'SMI to SRT 실행 후 파일처리', value=arg['use_smi_to_srt'], desc='') }}
   {{ macros.setting_input_text('source_base_path', '소스 경로', value=arg['source_base_path'], desc=['소스 경로. 구분자 ,', '영화, 한국 드라마/쇼 등이 들어있는 폴더']) }}
   {{ macros.setting_input_text('movie_base_path', '영화가 이동할 경로', value=arg['movie_base_path'], desc=['영화가 이동할 경로']) }}
   {{ macros.setting_input_text('movie_sort', '영화 폴더 순서', value=arg['movie_sort'], desc=['국가, 연도, 장르, 등급, 해상도 우선순위 정의, 안쓰는것은 제거']) }}
