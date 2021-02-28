@@ -15,7 +15,6 @@ from framework import app, db, scheduler, path_data, socketio, check_api
 from framework.util import Util
 from system.model import ModelSetting as SystemModelSetting
 from system.logic import SystemLogic
-from framework.common.torrent.process import TorrentProcess
 
 # 패키지
 # 로그
