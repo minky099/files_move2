@@ -185,7 +185,7 @@ class ModelItem(db.Model):
             ret['list'] = [item.as_dict() for item in lists]
             ret['paging'] = Util.get_paging_info(count, page, page_size)
             return ret
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -223,7 +223,7 @@ class ModelItem(db.Model):
         try:
             entity = db.session.query(ModelItem).filter_by(id=id).with_for_update().first()
             return entity
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -233,7 +233,7 @@ class ModelItem(db.Model):
             logger.debug( "delete")
             db.session.query(ModelItem).filter_by(id=id).delete()
             db.session.commit()
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -242,7 +242,7 @@ class ModelItem(db.Model):
         try:
             entity = db.session.query(ModelItem).filter_by(name=name).first()
             return entity
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -251,7 +251,7 @@ class ModelItem(db.Model):
         try:
             entity = db.session.query(ModelItem).filter_by(dirName=dirName).first()
             return entity
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -260,7 +260,7 @@ class ModelItem(db.Model):
         try:
             entity = db.session.query(ModelItem).filter_by(targetPath=targetPath).first()
             return entity
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 
@@ -270,7 +270,7 @@ class ModelItem(db.Model):
             query = db.session.query(ModelItem)
             items = query.all()
             return items
-        except Exception, e:
+        except Exception as e:
             logger.error('Exception:%s', e)
             logger.error(traceback.format_exc())
 

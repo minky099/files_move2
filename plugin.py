@@ -34,9 +34,9 @@ from .logic_normal import LogicNormal
 blueprint = Blueprint(package_name, package_name, url_prefix='/%s' %  package_name, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
 menu = {
-    'main' : [package_name, '파일정리'],
+    'main' : [package_name, u'파일정리'],
     'sub' : [
-        ['setting', '설정'], ['list', '목록'], ['log', '로그']
+        ['setting', u'설정'], ['list', u'목록'], ['log', u'로그']
     ],
     'category' : 'fileprocess'
 }
@@ -46,7 +46,7 @@ plugin_info = {
     'name' : 'files_move',
     'category_name' : 'fileprocess',
     'developer' : 'arkx82',
-    'description' : '파일 정리',
+    'description' : u'파일 정리',
     'home' : 'https://github.com/arkx82/files_move',
     'more' : '',
 }
