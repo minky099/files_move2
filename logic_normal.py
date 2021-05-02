@@ -820,7 +820,7 @@ class LogicNormal(object):
                             condition += 1
                         for word in info['more']['genre']:
                             if u'애니메이션' in word:
-	    	                    condition += 1
+                                condition += 1
                 if condition == 0:
                     if 'genre' in info:
                         logger.debug('ca - genre:%s', info['genre'])
