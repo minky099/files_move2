@@ -141,7 +141,7 @@ class LogicNormal(object):
         error_path = ModelSetting.get('error_path')
         try:
             logger.debug('efm - path:%s', base_path)
-            lists = os.listdir(base_path.strip())
+            lists = os.listdir(base_path)
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
@@ -172,7 +172,7 @@ class LogicNormal(object):
         error_path = ModelSetting.get('error_path')
         try:
             logger.debug('em - path:%s', base_path)
-            lists = os.listdir(base_path.strip())
+            lists = os.listdir(base_path)
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
@@ -182,7 +182,7 @@ class LogicNormal(object):
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p, base_path)
                         if check and dest != error_path:
-                            sub_list = os.listdir(p.strip())
+                            sub_list = os.listdir(p)
                             for sub_f in sub_list:
                                 if LogicNormal.isHangul(str(sub_f)) > 0:
                                     sub_f = sub_f.encode('utf-8')
@@ -204,7 +204,7 @@ class LogicNormal(object):
         interval = ModelSetting.get('interval')
         try:
             #logger.debug('path:%s', source_path)
-            lists = os.listdir(source_path.strip())
+            lists = os.listdir(source_path)
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
