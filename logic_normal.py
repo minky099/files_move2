@@ -245,7 +245,7 @@ class LogicNormal(object):
             logger.debug('cml - weight:%s', weight_con)
             #TV Show
             if 'episode' in item['guessit'] and item['guessit']['type'] == 'episode' and weight_con > 0:
-                from api_daum_tv import DaumTV
+                from .api_daum_tv import DaumTV
                 #from framework.common.daum import DaumTV
                 logger.debug('cml - drama %s, %s, %s', item['name'], item['search_name'], item['guessit']['title'])
                 tmp_title_0 = item['guessit']['title']
@@ -290,7 +290,7 @@ class LogicNormal(object):
                     LogicNormal.move_except(item, error_target_path)
             #Movie
             else:
-                from api_daum_movie import MovieSearch
+                from .api_daum_movie import MovieSearch
                 #from framework.common.daum import MovieSearch
                 logger.debug('cml - movie %s', item['name'])
                 if 'year' not in item['guessit']:
