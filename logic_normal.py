@@ -141,11 +141,12 @@ class LogicNormal(object):
         error_path = ModelSetting.get('error_path')
         try:
             logger.debug('efm - path:%s', base_path)
-            lists = os.listdir(base_path)
+            lists = os.listdir(base_path.strip())
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
+                    f = LogicNormal.to_str(f)
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
@@ -172,20 +173,22 @@ class LogicNormal(object):
         error_path = ModelSetting.get('error_path')
         try:
             logger.debug('em - path:%s', base_path)
-            lists = os.listdir(base_path)
+            lists = os.listdir(base_path.strip())
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
+                    f = LogicNormal.to_str(f)
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p, base_path)
                         if check and dest != error_path:
-                            sub_list = os.listdir(p)
+                            sub_list = os.listdir(p.strip())
                             for sub_f in sub_list:
                                 if LogicNormal.isHangul(str(sub_f)) > 0:
                                     sub_f = sub_f.encode('utf-8')
+                                sub_f = LogicNormal.to_str(sub_f)
                                 sub_p = os.path.join(p.strip(), sub_f)
                                 if os.path.isdir(sub_p):
                                     shutil.move(sub_p, dest)
@@ -204,12 +207,13 @@ class LogicNormal(object):
         interval = ModelSetting.get('interval')
         try:
             #logger.debug('path:%s', source_path)
-            lists = os.listdir(source_path)
+            lists = os.listdir(source_path.strip())
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
                         f = f.encode('utf-8')
                     #f = str(f).strip()
+                    f = LogicNormal.to_str(f)
                     p = os.path.join(source_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
@@ -403,7 +407,8 @@ class LogicNormal(object):
             if data['uhd'] > 0 and uhd_ktv_drama_flag == 1:
                 LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
                 return
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            title = LogicNormal.to_str(title)
+            dest_folder_path = os.path.join(base_path.strip(), title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -421,7 +426,8 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            title = LogicNormal.to_str(title)
+            dest_folder_path = os.path.join(base_path.strip(), title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -439,7 +445,8 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            title = LogicNormal.to_str(title)
+            dest_folder_path = os.path.join(base_path.strip(), title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -466,12 +473,15 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), set_genre.encode('utf-8'), title.encode('utf-8'))
+            set_genre = LogicNormal.to_str(set_genre)
+            title = LogicNormal.to_str(title)
+            dest_folder_path = os.path.join(base_path.strip(), set_genre, title)
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                fullPath = LogicNormal.to_str(fullPath)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -596,15 +606,30 @@ class LogicNormal(object):
                 dest_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
                 if arg1 and arg2 and arg3 and arg4 and arg5:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
+                    arg1 = LogicNormal.to_str(arg1)
+                    arg2 = LogicNormal.to_str(arg2)
+                    arg3 = LogicNormal.to_str(arg3)
+                    arg4 = LogicNormal.to_str(arg4)
+                    arg5 = LogicNormal.to_str(arg5)
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, arg4, arg5, data['dest_folder_name'])
                 elif arg1 and arg2 and arg3 and arg4:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
+                    arg1 = LogicNormal.to_str(arg1)
+                    arg2 = LogicNormal.to_str(arg2)
+                    arg3 = LogicNormal.to_str(arg3)
+                    arg4 = LogicNormal.to_str(arg4)
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, arg4, data['dest_folder_name'])
                 elif arg1 and arg2 and arg3:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
+                    arg1 = LogicNormal.to_str(arg1)
+                    arg2 = LogicNormal.to_str(arg2)
+                    arg3 = LogicNormal.to_str(arg3)
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, arg3, data['dest_folder_name'])
                 elif arg1 and arg2:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
+                    arg1 = LogicNormal.to_str(arg1)
+                    arg2 = LogicNormal.to_str(arg2)
+                    dest_path = os.path.join(base_path.strip(), arg1, arg2, data['dest_folder_name'])
                 elif arg1:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
+                    arg1 = LogicNormal.to_str(arg1)
+                    dest_path = os.path.join(base_path.strip(), arg1, data['dest_folder_name'])
             logger.debug('mm - dest_path:%s', dest_path)
             if not os.path.exists(dest_path):
                 os.makedirs(dest_path)
@@ -976,6 +1001,29 @@ class LogicNormal(object):
 
         hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
         return hanCount > 0
+
+    @staticmethod
+    def to_str(bytes_or_str):
+        if sys.version_info >= (3, 0):
+            if isinstance(bytes_or_str, bytes):
+                value = bytes_or_str.decode('utf-8')
+            else:
+                value = bytes_or_str
+            return value # str 인스턴스
+        else:
+            if isinstance(unicode_or_str, unicode):
+                value = unicode_or_str.encode('utf-8')
+            else:
+                value = unicode_or_str
+            return value # str 인스턴스
+
+    @staticmethod
+    def to_bytes(bytes_or_str):
+        if isinstance(bytes_or_str, str):
+            value = bytes_or_str.encode('utf-8')
+        else:
+            value = bytes_or_str
+        return value # bytes 인스턴스
 
     @staticmethod
     def strip_all(x):
