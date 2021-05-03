@@ -413,7 +413,8 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                fullPath = LogicNormal.to_str(fullPath)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -432,7 +433,8 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                fullPath = LogicNormal.to_str(fullPath)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -451,7 +453,8 @@ class LogicNormal(object):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
             if not os.path.isfile(fileCheck):
-                shutil.move(fullPath.encode('utf-8'), dest_folder_path)
+                fullPath = LogicNormal.to_str(fullPath)
+                shutil.move(fullPath, dest_folder_path)
                 LogicNormal.db_save(data, dest_folder_path, u'일치', True)
         except Exception as e:
             logger.error('Exxception:%s', e)
@@ -1011,10 +1014,10 @@ class LogicNormal(object):
                 value = bytes_or_str
             return value # str 인스턴스
         else:
-            if isinstance(unicode_or_str, unicode):
-                value = unicode_or_str.encode('utf-8')
+            if isinstance(bytes_or_str, unicode):
+                value = bytes_or_str.encode('utf-8')
             else:
-                value = unicode_or_str
+                value = bytes_or_str
             return value # str 인스턴스
 
     @staticmethod
