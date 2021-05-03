@@ -145,7 +145,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
+                        if sys.version_info >= (3, 0):
+                            f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
@@ -176,7 +177,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
+                        if sys.version_info >= (3, 0):
+                            f = f.encode('utf-8')
                     p = os.path.join(base_path.strip(), f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
@@ -185,7 +187,8 @@ class LogicNormal(object):
                             sub_list = os.listdir(p.strip())
                             for sub_f in sub_list:
                                 if LogicNormal.isHangul(str(sub_f)) > 0:
-                                    sub_f = sub_f.encode('utf-8')
+                                    if sys.version_info >= (3, 0):
+                                        sub_f = sub_f.encode('utf-8')
                                 sub_p = os.path.join(p.strip(), sub_f)
                                 if os.path.isdir(sub_p):
                                     shutil.move(sub_p, dest)
@@ -208,7 +211,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        f = f.encode('utf-8')
+                        if sys.version_info >= (3, 0):
+                            f = f.encode('utf-8')
                     #f = str(f).strip()
                     p = os.path.join(source_path.strip(), f)
                     #logger.debug('p:%s', p)
