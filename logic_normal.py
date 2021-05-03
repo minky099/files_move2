@@ -145,9 +145,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        if sys.version_info >= (3, 0):
-                            f = f.encode('utf-8')
-                    p = os.path.join(base_path.strip(), f)
+                        f = f.encode('utf-8')
+                    p = os.path.join(base_path, f)
                     #logger.debug('efm - f:%s p:%s', f, p)
                     #logger.debug('p:%s', p)
                     if os.path.isfile(p):
@@ -177,9 +176,8 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        if sys.version_info >= (3, 0):
-                            f = f.encode('utf-8')
-                    p = os.path.join(base_path.strip(), f)
+                        f = f.encode('utf-8')
+                    p = os.path.join(base_path, f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         (check, dest) = LogicNormal.check_from_db(p, base_path)
@@ -187,9 +185,8 @@ class LogicNormal(object):
                             sub_list = os.listdir(p.strip())
                             for sub_f in sub_list:
                                 if LogicNormal.isHangul(str(sub_f)) > 0:
-                                    if sys.version_info >= (3, 0):
-                                        sub_f = sub_f.encode('utf-8')
-                                sub_p = os.path.join(p.strip(), sub_f)
+                                    sub_f = sub_f.encode('utf-8')
+                                sub_p = os.path.join(p, sub_f)
                                 if os.path.isdir(sub_p):
                                     shutil.move(sub_p, dest)
                             logger.debug('[extra move] %s => %s', p, dest)
@@ -211,10 +208,9 @@ class LogicNormal(object):
             for f in lists:
                 try:
                     if LogicNormal.isHangul(str(f)) > 0:
-                        if sys.version_info >= (3, 0):
-                            f = f.encode('utf-8')
+                        f = f.encode('utf-8')
                     #f = str(f).strip()
-                    p = os.path.join(source_path.strip(), f)
+                    p = os.path.join(source_path, f)
                     #logger.debug('p:%s', p)
                     if os.path.isdir(p):
                         LogicNormal.make_list(p, ktv_drama_path, ktv_show_path, movie_path, err_path)
@@ -407,7 +403,7 @@ class LogicNormal(object):
             if data['uhd'] > 0 and uhd_ktv_drama_flag == 1:
                 LogicNormal.move_ktv_drama_uhd(data, info, uhd_ktv_drama_base_path)
                 return
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            dest_folder_path = os.path.join(base_path, title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -425,7 +421,7 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            dest_folder_path = os.path.join(base_path, title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -443,7 +439,7 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), title.encode('utf-8'))
+            dest_folder_path = os.path.join(base_path, title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -470,7 +466,7 @@ class LogicNormal(object):
             title = data['dest_folder_name']
             fullPath = data['fullPath']
 
-            dest_folder_path = os.path.join(base_path.strip(), set_genre.encode('utf-8'), title.encode('utf-8'))
+            dest_folder_path = os.path.join(base_path, set_genre.encode('utf-8'), title.encode('utf-8'))
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
             fileCheck = os.path.join(dest_folder_path, data['name'])
@@ -484,7 +480,7 @@ class LogicNormal(object):
     @staticmethod
     def move_except(data, base_path):
         try:
-            dest_folder_path = os.path.join(base_path.strip())
+            dest_folder_path = os.path.join(base_path)
             logger.debug('me - move exception %s' , data['search_name'])
             if not os.path.isdir(dest_folder_path):
                 os.makedirs(dest_folder_path)
@@ -600,15 +596,15 @@ class LogicNormal(object):
                 dest_path = os.path.join(ani_base_path, data['dest_folder_name'])
             else:
                 if arg1 and arg2 and arg3 and arg4 and arg5:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path, arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), arg5.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2 and arg3 and arg4:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path, arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), arg4.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2 and arg3:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path, arg1.encode('utf-8'), arg2.encode('utf-8'), arg3.encode('utf-8'), data['dest_folder_name'])
                 elif arg1 and arg2:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path, arg1.encode('utf-8'), arg2.encode('utf-8'), data['dest_folder_name'])
                 elif arg1:
-                    dest_path = os.path.join(base_path.strip(), arg1.encode('utf-8'), data['dest_folder_name'])
+                    dest_path = os.path.join(base_path, arg1.encode('utf-8'), data['dest_folder_name'])
             logger.debug('mm - dest_path:%s', dest_path)
             if not os.path.exists(dest_path):
                 os.makedirs(dest_path)
@@ -626,9 +622,9 @@ class LogicNormal(object):
         try:
             if eng_title_flag == 1:
                 dest_folder_name = '%s' % (re.sub('[\\/:*?"<>|]', '', info['more']['eng_title']).replace('  ', ' '))
-                dest_folder_path = os.path.join(base_path.strip(), dest_folder_name)
+                dest_folder_path = os.path.join(base_path, dest_folder_name)
             else:
-                dest_folder_path = os.path.join(base_path.strip(), data['dest_folder_name'])
+                dest_folder_path = os.path.join(base_path, data['dest_folder_name'])
 
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
