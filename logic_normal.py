@@ -20,14 +20,7 @@ import rclone
 # third-party
 from sqlalchemy import desc
 from sqlalchemy import or_, and_, func, not_
-try:
-    from guessit import guessit
-except:
-    try:
-        os.system("{} install guessit".format(app.config['config']['pip']))
-        from guessit import guessit
-    except:
-        pass
+from guessit import guessit
 
 # sjva 공용
 from framework import app, db, scheduler, path_app_root, celery, py_unicode
