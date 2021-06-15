@@ -1003,7 +1003,7 @@ class LogicNormal(object):
                 encText = text
 
         hanCount = len(re.findall(u'[\u3130-\u318F\uAC00-\uD7A3]+', encText))
-        return hanCount > 0
+        return hanCount
 
     @staticmethod
     def to_str(bytes_or_str):
