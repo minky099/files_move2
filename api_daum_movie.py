@@ -323,6 +323,8 @@ class MovieSearch(object):
                 #meta_data = res.json()
                 logger.debug('smw - more search')
                 code = 'md' + movie_list[0]['id']
+                ret = {}
+                meta_data = []
                 SiteDaumMovie.info_basic(code, meta_data)
                 ret['data'] = meta_data.as_dict()
                 if ret['data'] is not None:
