@@ -10,10 +10,9 @@ import lxml
 import requests
 
 from framework import py_urllib, app
+from framework.logger import get_logger
 from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
 
-from .plugin import P
-logger = P.logger
 class MovieSearch(object):
     @staticmethod
     def search_movie(movie_name, movie_year):
