@@ -342,9 +342,9 @@ class MovieSearch(object):
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                     movie_list[0]['more']['eng_title'] = info['originaltitle']
                     movie_list[0]['country'] = info['country']
-                    #for item in info['genre']:
-                    movie_list[0]['more']['genre'] = info['genre']
-                        #logger.debug('%s', item)
+                    for item in info['genre']:
+                        movie_list[0]['more']['genre'].append(item)
+                        logger.debug('%s', item)
 
             except Exception as exception:
                 pass
