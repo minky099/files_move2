@@ -327,26 +327,25 @@ class MovieSearch(object):
                 meta_data = []
                 SiteDaumMovie.info_basic(code, meta_data)
                 ret['data'] = meta_data.as_dict()
-                if ret['data'] is not None:
-                    logger.debug('smw - more search....ing')
-                    info = ret['data']
-                    if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = py_unicode(info['year'])
-                    elif int(movie_year) == int(info['year']):
-                        movie_list[0]['year'] = py_unicode(info['year'])
-                        movie_list[0]['score'] = movie_list[0]['score'] + 5
-                    movie_list[0]['title'] = info['title']
-                    logger.debug('smw - eng title:%s', info['originaltitle'])
-                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    movie_list[0]['more']['during'] = py_unicode(info['runtime'])
-                    if info['mpaa']:
-                        movie_list[0]['more']['rate'] = info['mpaa']
-                        logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                    movie_list[0]['more']['eng_title'] = info['originaltitle']
-                    movie_list[0]['country'] = info['country']
-                    for item in info['genre']:
-                        movie_list[0]['more']['genre'].append(item)
-                        logger.debug('%s', item)
+                logger.debug('smw - more search....ing')
+                info = ret['data']
+                if int(movie_list[0]['year']) == 0:
+                    movie_list[0]['year'] = py_unicode(info['year'])
+                elif int(movie_year) == int(info['year']):
+                    movie_list[0]['year'] = py_unicode(info['year'])
+                    movie_list[0]['score'] = movie_list[0]['score'] + 5
+                movie_list[0]['title'] = info['title']
+                logger.debug('smw - eng title:%s', info['originaltitle'])
+                movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
+                movie_list[0]['more']['during'] = py_unicode(info['runtime'])
+                if info['mpaa']:
+                    movie_list[0]['more']['rate'] = info['mpaa']
+                    logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
+                movie_list[0]['more']['eng_title'] = info['originaltitle']
+                movie_list[0]['country'] = info['country']
+                for item in info['genre']:
+                    movie_list[0]['more']['genre'].append(item)
+                    logger.debug('%s', item)
 
             except Exception as exception:
                 pass
