@@ -231,7 +231,7 @@ class MovieSearch(object):
             data = res.json()
             movie_cmp = re.sub('[\\/:*?"<>|]', '', movie_name)
             for index, item in enumerate(data['items']['movie']):
-                tmps = item.split('|')
+                tmps = item[index].split('|')
                 score = 85
                 tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
                 if tmps[0] == movie_cmp and int(tmps[3]) == int(movie_year):
