@@ -342,7 +342,7 @@ class MovieSearch(object):
                     movie_list[0]['more']['eng_title'] = info['originaltitle']
                     movie_list[0]['country'] = info['country']
                     for item in info['genre']:
-                        movie_list[0]['more']['genre'].append(item)
+                        movie_list[0]['more']['genre'].extend(item)
                         logger.debug('%s', item)
 
             except Exception as exception:
