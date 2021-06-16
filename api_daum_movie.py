@@ -231,10 +231,9 @@ class MovieSearch(object):
             data = res.json()
             movie_cmp = re.sub('[\\/:*?"<>|]', '', movie_name)
             #for index, item in enumerate(data['items']['movie']):
-            for index in range((data['items']['movie'])
-                index += 1
-                item = data['items']['movie']
-                tmps = item.split('|')
+            for index in range(len(data['items']['movie']))
+                item[index] = data['items']['movie']
+                tmps = item[index].split('|')
                 score = 85
                 tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
                 if tmps[0] == movie_cmp and int(tmps[3]) == int(movie_year):
@@ -249,6 +248,7 @@ class MovieSearch(object):
                 if score < 10:
                     score = 10
                 MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[3], 'score':score})
+                index += 1
         except Exception as exception:
             logger.error('Exception:%s', exception)
             logger.error(traceback.format_exc())
