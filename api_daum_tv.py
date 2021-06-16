@@ -16,7 +16,7 @@ import lxml.html
 from enum import Enum
 
 from framework import py_urllib
-from framework.logger import get_logger
+from framework import logger
 
 _REGEX_FILENAME = r'^(?P<name>.*?)\.E(?P<no>\d+)(\-E\d{1,4})?\.?(END\.)?(?P<date>\d{6})\.(?P<etc>.*?)(?P<quality>\d+)[p|P](\-?(?P<release>.*?))?(\.(.*?))?$'
 _REGEX_FILENAME_NO_EPISODE_NUMBER = r'^(?P<name>.*?)\.(E(?P<no>\d+)\.?)?(END\.)?(?P<date>\d{6})\.(?P<etc>.*?)(?P<quality>\d+)[p|P](\-?(?P<release>.*?))?(\.(.*?))?$'
