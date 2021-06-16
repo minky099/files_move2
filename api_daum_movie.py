@@ -13,6 +13,7 @@ from framework import py_urllib, app
 from framework import logger
 from .plugin import logger, package_name
 from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
+from .entity_base import EntityMovie, EntityThumb, EntityActor, EntityRatings, EntityExtra, EntitySearchItemMovie, EntityMovie2, EntityExtra2
 
 class MovieSearch(object):
     @staticmethod
@@ -327,23 +328,22 @@ class MovieSearch(object):
                 logger.debug('smw - code : %s', code)
                 SiteDaumMovie.info_basic(code, meta_data)
                 if meta_data is not None:
-                    logger.debug('smw - more search....ing')
-                    info = meta_data['data']
+                    logger.debug('smw - more search....ing')                    
                     if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = py_unicode(info['year'])
-                    elif int(movie_year) == int(info['year']):
-                        movie_list[0]['year'] = py_unicode(info['year'])
+                        movie_list[0]['year'] = py_unicode(meta_data.year)
+                    elif int(movie_year) == int(meta_data.year):
+                        movie_list[0]['year'] = py_unicode(meta_data.year)
                         movie_list[0]['score'] = movie_list[0]['score'] + 5
-                    movie_list[0]['title'] = info['title']
-                    logger.debug('smw - eng title:%s', info['originaltitle'])
+                    movie_list[0]['title'] = meta_data.title
+                    logger.debug('smw - eng title:%s', meta_data.originaltitle)
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    movie_list[0]['more']['during'] = py_unicode(info['runtime'])
-                    if info['mpaa']:
-                        movie_list[0]['more']['rate'] = info['mpaa']
+                    movie_list[0]['more']['during'] = py_unicode(meta_data.runtime)
+                    if meta_data.mpaa:
+                        movie_list[0]['more']['rate'] = meta_data.mpaa
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                    movie_list[0]['more']['eng_title'] = info['originaltitle']
-                    movie_list[0]['country'] = info['country']
-                    for item in info['genre']:
+                    movie_list[0]['more']['eng_title'] = meta_data.originaltitle
+                    movie_list[0]['country'] = meta_data.country
+                    for item in meta_data.genre:
                         movie_list[0]['more']['genre'].append(item)
                         logger.debug('%s', item)
 
