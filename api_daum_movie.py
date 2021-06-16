@@ -13,7 +13,6 @@ from framework import py_urllib, app
 from framework import logger
 from .plugin import logger, package_name
 from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
-from .entity_base import EntityMovie, EntityThumb, EntityActor, EntityRatings, EntityExtra, EntitySearchItemMovie, EntityMovie2, EntityExtra2
 
 class MovieSearch(object):
     @staticmethod
