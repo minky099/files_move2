@@ -324,6 +324,7 @@ class MovieSearch(object):
                 meta_data = []
                 logger.debug('smw - more search')
                 code = 'md' + movie_list[0]['id']
+                logger.debug('smw - code : %s', code)
                 SiteDaumMovie.info_basic(code, meta_data)
                 if meta_data is not None:
                     logger.debug('smw - more search....ing')
