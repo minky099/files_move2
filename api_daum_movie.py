@@ -321,6 +321,7 @@ class MovieSearch(object):
                 #from system.logic_site import SystemLogicSite
                 #res = session.get(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 #meta_data = res.json()
+                meta_data = []
                 logger.debug('smw - more search')
                 code = 'md' + movie_list[0]['id']
                 SiteDaumMovie.info_basic(code, meta_data)
