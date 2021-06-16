@@ -11,6 +11,7 @@ import requests
 
 from framework import py_urllib, app
 from framework import logger
+from .plugin import logger, package_name
 from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
 
 class MovieSearch(object):
