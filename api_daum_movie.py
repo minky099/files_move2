@@ -241,7 +241,7 @@ class MovieSearch(object):
                 elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
                     score = score + 6
                 else:
-                    score -= int(index) * 5
+                    score -= index * 5
 
                 if score < 10:
                     score = 10
@@ -321,28 +321,28 @@ class MovieSearch(object):
                 #from system.logic_site import SystemLogicSite
                 #res = session.get(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 #meta_data = res.json()
-                meta_data = []
                 logger.debug('smw - more search')
                 code = 'md' + movie_list[0]['id']
-                logger.debug('smw - code : %s', code)
                 SiteDaumMovie.info_basic(code, meta_data)
-                if meta_data is not None:
-                    logger.debug('smw - more search....ing')                    
+                ret['data'] = meta_data.as_dict()
+                if ret['data'] is not None:
+                    logger.debug('smw - more search....ing')
+                    info = ret['data']
                     if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = py_unicode(meta_data.year)
-                    elif int(movie_year) == int(meta_data.year):
-                        movie_list[0]['year'] = py_unicode(meta_data.year)
+                        movie_list[0]['year'] = py_unicode(info['year'])
+                    elif int(movie_year) == int(info['year']):
+                        movie_list[0]['year'] = py_unicode(info['year'])
                         movie_list[0]['score'] = movie_list[0]['score'] + 5
-                    movie_list[0]['title'] = meta_data.title
-                    logger.debug('smw - eng title:%s', meta_data.originaltitle)
+                    movie_list[0]['title'] = info['title']
+                    logger.debug('smw - eng title:%s', info['originaltitle'])
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    movie_list[0]['more']['during'] = py_unicode(meta_data.runtime)
-                    if meta_data.mpaa:
-                        movie_list[0]['more']['rate'] = meta_data.mpaa
+                    movie_list[0]['more']['during'] = py_unicode(info['runtime'])
+                    if info['mpaa']:
+                        movie_list[0]['more']['rate'] = info['mpaa']
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                    movie_list[0]['more']['eng_title'] = meta_data.originaltitle
-                    movie_list[0]['country'] = meta_data.country
-                    for item in meta_data.genre:
+                    movie_list[0]['more']['eng_title'] = info['originaltitle']
+                    movie_list[0]['country'] = info['country']
+                    for item in info['genre']:
                         movie_list[0]['more']['genre'].append(item)
                         logger.debug('%s', item)
 
