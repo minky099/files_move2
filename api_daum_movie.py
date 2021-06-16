@@ -231,7 +231,7 @@ class MovieSearch(object):
             data = res.json()
             movie_cmp = re.sub('[\\/:*?"<>|]', '', movie_name)
             #for index, item in enumerate(data['items']['movie']):
-            for index in range(len(data['items']['movie']))
+            for index in range(len(data['items']['movie'])):
                 item[index] = data['items']['movie']
                 tmps = item[index].split('|')
                 score = 85
