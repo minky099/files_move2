@@ -326,6 +326,7 @@ class MovieSearch(object):
                 meta_data = requests.get(id_url).json()
                 if meta_data is not None:
                     logger.debug('smw - more search....ing')
+                    logger.debug('smw - entity:%s', entity)
                     entity.title = meta_data['movieCommon']['titleKorean']
                     entity.originaltitle = meta_data['movieCommon']['titleEnglish']
                     entity.year = meta_data['movieCommon']['productionYear']
@@ -336,7 +337,7 @@ class MovieSearch(object):
                             if country['country']['id'] == 'KR':
                                 entity.mpaa = country['admissionCode']
                                 entity.runtime = country['duration']
-                    logger.debug('smw - entity:%s', entity)
+
                     #logger.debug('smw - meta_data %s', meta_data)
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = py_unicode(entity.year)
