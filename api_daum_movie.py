@@ -326,6 +326,7 @@ class MovieSearch(object):
                 meta_data = requests.get(id_url).json()
                 if meta_data is not None:
                     logger.debug('smw - more search....ing')
+                    logger.debug('smw - meta_data %s', meta_data)
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
                     elif int(movie_year) == int(meta_data['movieCommon']['prodYear']):
