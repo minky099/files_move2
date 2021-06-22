@@ -326,25 +326,24 @@ class MovieSearch(object):
                 meta_data = requests.get(id_url).json()
                 if meta_data is not None:
                     logger.debug('smw - more search....ing')
-                    info = meta_data['movieCommon']
                     if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = py_unicode(info['productionYear'])
-                    elif int(movie_year) == int(info['prodYear']):
-                        movie_list[0]['year'] = py_unicode(info['productionYear'])
+                        movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
+                    elif int(movie_year) == int(meta_data['movieCommon']['prodYear']):
+                        movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
                         movie_list[0]['score'] = movie_list[0]['score'] + 5
-                    movie_list[0]['title'] = info['titleKorean']
-                    logger.debug('smw - eng title:%s', info['titleEnglish'])
+                    movie_list[0]['title'] = meta_data['movieCommon']['titleKorean']
+                    logger.debug('smw - eng title:%s', meta_data['movieCommon']['titleEnglish'])
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    if len(info['countryMovieInformation']) > 0:
+                    if len(meta_data['movieCommon']['countryMovieInformation']) > 0:
                         for country in info['countryMovieInformation']:
                             if country['country']['id'] == 'KR':
                                 movie_list[0]['more']['rate'] = country['admissionCode']
                                 logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                                 movie_list[0]['more']['during'] = py_unicode(country['duration'])
 
-                    movie_list[0]['more']['eng_title'] = info['titleEnglish']
-                    movie_list[0]['country'] = info['productionCountries']
-                    for item in info['genres']:
+                    movie_list[0]['more']['eng_title'] = meta_data['movieCommon']['titleEnglish']
+                    movie_list[0]['country'] = meta_data['movieCommon']['productionCountries']
+                    for item in meta_data['movieCommon']['genres']:
                         movie_list[0]['more']['genre'].append(item)
                         logger.debug('%s', item)
 
