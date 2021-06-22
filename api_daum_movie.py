@@ -318,12 +318,12 @@ class MovieSearch(object):
                 id_url = "https://movie.daum.net/api/movie/%s/main" % movie_list[0]['id']
                 #from . import headers, cookies
                 #res = Logic.session.get(id_url, headers=headers, cookies=cookies)
-                from framework.common.daum import headers, session
-                from system.logic_site import SystemLogicSite
-                root = session.get_tree(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
+                #from framework.common.daum import headers, session
+                #from system.logic_site import SystemLogicSite
+                #root = session.get_tree(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 #meta_data = res.json()
-                meta_data = requests.get(id_url).json()
                 logger.debug('smw - more search')
+                meta_data = requests.get(id_url).json()
                 if meta_data is not None:
                     logger.debug('smw - more search....ing')
                     info = meta_data['movieCommon']
