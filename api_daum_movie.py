@@ -325,22 +325,20 @@ class MovieSearch(object):
                 #root = session.get_tree(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 #meta_data = res.json()
                 logger.debug('smw - more search')
-                meta_data = requests.get(id_url).json()
-                entity = {}
+                meta_data = requests.get(id_url).json()                
                 if meta_data is not None:
-                    logger.debug('smw - more search....ing')
-                    logger.debug('smw - entity:%s', entity)
-                    entity.title = meta_data['movieCommon']['titleKorean']
-                    entity.originaltitle = meta_data['movieCommon']['titleEnglish']
-                    entity.year = meta_data['movieCommon']['productionYear']
-                    entity.country = data['movieCommon']['productionCountries']
-                    entity.genre = data['movieCommon']['genres']
+                    logger.debug('smw - more search....ing')                    
+                    logger.debug('smw - title:%s', meta_data['movieCommon']['titleKorean'])
+                    logger.debug('smw - originaltitle:%s', meta_data['movieCommon']['titleEnglish'])
+                    logger.debug('smw - year:%s', meta_data['movieCommon']['productionYear'])
+                    logger.debug('smw - country:%s', meta_data['movieCommon']['productionCountries'])
+                    logger.debug('smw - genre:%s', meta_data['movieCommon']['genres'])                   
                     if len(meta_data['movieCommon']['countryMovieInformation']) > 0:
                         for country in meta_data['movieCommon']['countryMovieInformation']:
                             if country['country']['id'] == 'KR':
-                                entity.mpaa = country['admissionCode']
-                                entity.runtime = country['duration']
-                    logger.debug('smw - entity:%s', entity)
+                                logger.debug('smw - admissionCode:%s', meta_data['movieCommon']['admissionCode'])
+                                logger.debug('smw - duration:%s', meta_data['movieCommon']['duration'])
+
                     #logger.debug('smw - meta_data %s', meta_data)
                     if int(movie_list[0]['year']) == 0:
                         movie_list[0]['year'] = py_unicode(entity.year)
