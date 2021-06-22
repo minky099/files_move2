@@ -12,7 +12,7 @@ import requests
 from framework import py_urllib, app
 from framework import logger
 from .plugin import logger, package_name
-from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
+#from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
 
 class MovieSearch(object):
     @staticmethod
@@ -315,37 +315,37 @@ class MovieSearch(object):
                 movie_list = list(reversed(sorted(movie_list, key=lambda k: k['score'])))
                 logger.debug('smw - id: %s, score:%s, myear:%s, year:%s', movie_list[0]['id'], movie_list[0]['score'], movie_year, movie_list[0]['year'])
                 #id_url = 'http://movie.daum.net/data/movie/movie_info/detail.json?movieId=%s' % movie_list[0]['id']
+                id_url = "https://movie.daum.net/api/movie/%s/main" % movie_list[0]['id']
                 #from . import headers, cookies
                 #res = Logic.session.get(id_url, headers=headers, cookies=cookies)
-                #from framework.common.daum import headers, session
-                #from system.logic_site import SystemLogicSite
-                #res = session.get(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
-                #meta_data = res.json()
+                from framework.common.daum import headers, session
+                from system.logic_site import SystemLogicSite
+                res = session.get(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
+                meta_data = res.json()
                 logger.debug('smw - more search')
-                code = 'md' + movie_list[0]['id']
-                ret = {}
-                meta_data = []
-                SiteDaumMovie.info_basic(code, meta_data)
-                ret['data'] = meta_data.as_dict()
-                logger.debug('smw - more search....ing')
-                info = ret['data']
-                if int(movie_list[0]['year']) == 0:
-                    movie_list[0]['year'] = py_unicode(info['year'])
-                elif int(movie_year) == int(info['year']):
-                    movie_list[0]['year'] = py_unicode(info['year'])
-                    movie_list[0]['score'] = movie_list[0]['score'] + 5
-                movie_list[0]['title'] = info['title']
-                logger.debug('smw - eng title:%s', info['originaltitle'])
-                movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                movie_list[0]['more']['during'] = py_unicode(info['runtime'])
-                if info['mpaa']:
-                    movie_list[0]['more']['rate'] = info['mpaa']
-                    logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                movie_list[0]['more']['eng_title'] = info['originaltitle']
-                movie_list[0]['country'] = info['country']
-                for item in info['genre']:
-                    movie_list[0]['more']['genre'].append(item)
-                    logger.debug('%s', item)
+                if meta_data is not None:
+                    logger.debug('smw - more search....ing')
+                    info = meta_data['movieCommon']
+                    if int(movie_list[0]['year']) == 0:
+                        movie_list[0]['year'] = py_unicode(info['productionYear'])
+                    elif int(movie_year) == int(info['prodYear']):
+                        movie_list[0]['year'] = py_unicode(info['productionYear'])
+                        movie_list[0]['score'] = movie_list[0]['score'] + 5
+                    movie_list[0]['title'] = info['titleKorean']
+                    logger.debug('smw - eng title:%s', info['titleEnglish'])
+                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
+                    if len(info['countryMovieInformation']) > 0:
+                        for country in info['countryMovieInformation']:
+                            if country['country']['id'] == 'KR':
+                                movie_list[0]['more']['rate'] = country['admissionCode']
+                                logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
+                                movie_list[0]['more']['during'] = py_unicode(country['duration'])
+
+                    movie_list[0]['more']['eng_title'] = info['titleEnglish']
+                    movie_list[0]['country'] = info['productionCountries']
+                    for item in info['genres']:
+                        movie_list[0]['more']['genre'].append(item)
+                        logger.debug('%s', item)
 
             except Exception as exception:
                 pass
