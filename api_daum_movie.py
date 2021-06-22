@@ -5,6 +5,7 @@ import sys
 import requests, re, json, time
 import traceback, unicodedata
 from datetime import datetime
+import lxml
 from lxml import html
 from framework import SystemModelSetting, py_urllib, app
 from framework.util import Util
