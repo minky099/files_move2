@@ -326,25 +326,32 @@ class MovieSearch(object):
                 meta_data = requests.get(id_url).json()
                 if meta_data is not None:
                     logger.debug('smw - more search....ing')
-                    logger.debug('smw - meta_data %s', meta_data)
-                    if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
-                    elif int(movie_year) == int(meta_data['movieCommon']['prodYear']):
-                        movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
-                        movie_list[0]['score'] = movie_list[0]['score'] + 5
-                    movie_list[0]['title'] = meta_data['movieCommon']['titleKorean']
-                    logger.debug('smw - eng title:%s', meta_data['movieCommon']['titleEnglish'])
-                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
+                    entity.title = meta_data['movieCommon']['titleKorean']
+                    entity.originaltitle = meta_data['movieCommon']['titleEnglish']
+                    entity.year = meta_data['movieCommon']['productionYear']
+                    entity.country = data['movieCommon']['productionCountries']
+                    entity.genre = data['movieCommon']['genres']
                     if len(meta_data['movieCommon']['countryMovieInformation']) > 0:
-                        for country in info['countryMovieInformation']:
+                        for country in meta_data['movieCommon']['countryMovieInformation']:
                             if country['country']['id'] == 'KR':
-                                movie_list[0]['more']['rate'] = country['admissionCode']
-                                logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                                movie_list[0]['more']['during'] = py_unicode(country['duration'])
-
-                    movie_list[0]['more']['eng_title'] = meta_data['movieCommon']['titleEnglish']
-                    movie_list[0]['country'] = meta_data['movieCommon']['productionCountries']
-                    for item in meta_data['movieCommon']['genres']:
+                                entity.mpaa = country['admissionCode']
+                                entity.runtime = country['duration']
+                    logger.debug('smw - entity:%s', entity)
+                    #logger.debug('smw - meta_data %s', meta_data)
+                    if int(movie_list[0]['year']) == 0:
+                        movie_list[0]['year'] = py_unicode(entity.year)
+                    elif int(movie_year) == int(entity.year):
+                        movie_list[0]['year'] = py_unicode(entity.year)
+                        movie_list[0]['score'] = movie_list[0]['score'] + 5
+                    movie_list[0]['title'] = entity.title
+                    logger.debug('smw - eng title:%s', entity.originaltitle)
+                    movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
+                    movie_list[0]['more']['rate'] = entity.mpaa
+                    logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
+                    movie_list[0]['more']['during'] = py_unicode(entity.runtime)
+                    movie_list[0]['more']['eng_title'] = entity.originaltitle
+                    movie_list[0]['country'] = entity.country
+                    for item in entity.genre:
                         movie_list[0]['more']['genre'].append(item)
                         logger.debug('%s', item)
 
