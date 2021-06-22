@@ -2,14 +2,15 @@
 # SJVA, Plex SJ Daum Agent, shell 공용
 import os
 import sys
-import re
-import traceback
-import logging
-import urllib
-import lxml
-import requests
+import requests, re, json, time
+import traceback, unicodedata
+from datetime import datetime
+from lxml import html
+from framework import SystemModelSetting, py_urllib
+from framework.util import Util
+from system import SystemLogicTrans
+from system.logic_site import SystemLogicSite
 
-from framework import py_urllib, app
 from framework import logger
 from .plugin import logger, package_name
 #from lib_metadata import SiteNaverMovie, SiteTmdbMovie, SiteWatchaMovie, SiteUtil, SiteDaumMovie, SiteTvingMovie, SiteWavveMovie
