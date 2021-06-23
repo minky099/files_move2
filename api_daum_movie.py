@@ -357,7 +357,7 @@ class MovieSearch(object):
                     movie_list[0]['more']['eng_title'] = meta_data['movieCommon']['titleEnglish']
                     movie_list[0]['country'] = meta_data['movieCommon']['productionCountries']
                     movie_list[0]['more']['genre'] = meta_data['movieCommon']['genres']
-                    logger.debug('%s', movie_list[0]['more']['genre']
+                    logger.debug('%s', movie_list[0]['more']['genre'])
             except Exception as exception:
                 pass
                 #logger.error('Exception:%s', e)
