@@ -7,7 +7,7 @@ import traceback, unicodedata
 from datetime import datetime
 import lxml
 from lxml import html
-from framework import SystemModelSetting, py_urllib, app
+from framework import SystemModelSetting, py_urllib, app, py_unicode
 from framework.util import Util
 from system import SystemLogicTrans
 from system.logic_site import SystemLogicSite
@@ -351,7 +351,7 @@ class MovieSearch(object):
                     movie_list[0]['title'] = meta_data['movieCommon']['titleKorean']
                     logger.debug('smw - eng title:%s', meta_data['movieCommon']['titleEnglish'])
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    movie_list[0]['more']['rate'] = meta_data['movieCommon']['admissionCode']
+                    movie_list[0]['more']['rate'] = mpaa
                     logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                     movie_list[0]['more']['during'] = py_unicode(runtime)
                     movie_list[0]['more']['eng_title'] = meta_data['movieCommon']['titleEnglish']
