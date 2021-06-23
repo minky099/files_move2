@@ -232,7 +232,7 @@ class MovieSearch(object):
             res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
             data = res.json()
             movie_cmp = re.sub('[\\/:*?"<>|]', '', movie_name)
-            for index, item in enumerate(data['items']['movie']):
+            for idx, item in enumerate(data['items']['movie']):
                 tmps = item.split('|')
                 score = 85
                 tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
@@ -243,7 +243,7 @@ class MovieSearch(object):
                 elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
                     score = score + 6
                 else:
-                    score -= index * 5
+                    score -= idx * 5
 
                 if score < 10:
                     score = 10
