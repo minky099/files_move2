@@ -224,30 +224,40 @@ class MovieSearch(object):
     def search_movie_web(movie_list, movie_name, movie_year):
         try:
             #movie_list = []
-            url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (py_urllib.quote(movie_name.encode('utf8')))
+            #url = 'https://suggest-bar.daum.net/suggest?id=movie&cate=movie&multiple=1&mod=json&code=utf_in_out&q=%s' % (py_urllib.quote(movie_name.encode('utf8')))
+            url = f"https://movie.daum.net/api/search?q={py_urllib.quote(movie_name.encode('utf8'))}&t=movie&page=1&size=20"
             #from . import headers, cookies
             #res = Logic.session.get(url, headers=headers, cookies=cookies)
-            from framework.common.daum import headers, session
-            from system.logic_site import SystemLogicSite
-            res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
-            data = res.json()
-            movie_cmp = re.sub('[\\/:*?"<>|]', '', movie_name)
-            for idx, item in enumerate(data['items']['movie']):
-                tmps = item.split('|')
-                score = 85
-                tmps[0] = re.sub('[\\/:*?"<>|]', '', tmps[0])
-                if tmps[0] == movie_cmp and int(tmps[3]) == int(movie_year):
-                    score = 95
-                ##elif tmps[0].find(movie_cmp) != -1 and int(tmps[3]) == int(movie_year):
-                    ##score = 95
-                elif tmps[3] == movie_year or abs(int(tmps[3]) - int(movie_year)) <= 1:
-                    score = score + 6
-                else:
-                    score -= idx * 5
+            # from framework.common.daum import headers, session
+            # from system.logic_site import SystemLogicSite
+            # res = session.get(url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
+            # data = res.json()
+            data = requests.get(url).json()
+            for idx, item in enumerate(data['result']['search_result']['documents']):
+                item = item['documents']
+                if idx > 50:
+                    break
+                title = item['titleKoreanHanl']
+                movieId = item['movieId']
+                year = item['productionYear']
+                title_en = item['titleEnglishHanl']
 
-                if score < 10:
-                    score = 10
-                MovieSearch.movie_append(movie_list, {'id':tmps[1], 'title':tmps[0], 'year':tmps[3], 'score':score})
+            score = 85
+            movie_cmp = re.sub('[\\/:*?"<>|]', '', movie_name)
+            title = re.sub('[\\/:*?"<>|]', '', title)
+            logger.debug('smw - first title:%s', title)
+            if title == movie_cmp and int(year) == int(movie_year):
+                score = 95
+            ##elif tmps[0].find(movie_cmp) != -1 and int(tmps[3]) == int(movie_year):
+                ##score = 95
+            elif int(year) == int(movie_year) or abs(int(year) - int(movie_year)) <= 1:
+                score = score + 6
+            else:
+                score -= idx * 5
+
+            if score < 10:
+                score = 10
+            MovieSearch.movie_append(movie_list, {'id':movieId, 'title':title, 'year':year, 'score':score})
         except Exception as exception:
             logger.error('Exception:%s', exception)
             logger.error(traceback.format_exc())
