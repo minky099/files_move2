@@ -234,7 +234,7 @@ class MovieSearch(object):
             # data = res.json()
             data = requests.get(url).json()
             for idx, item in enumerate(data['result']['search_result']['documents']):
-                item = item['documents']
+                item = item['document']
                 if idx > 50:
                     break
                 title = item['titleKoreanHanl']
