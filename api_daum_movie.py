@@ -325,37 +325,39 @@ class MovieSearch(object):
                 #root = session.get_tree(id_url, headers=headers, cookies=SystemLogicSite.get_daum_cookies())
                 #meta_data = res.json()
                 logger.debug('smw - more search')
-                meta_data = requests.get(id_url).json()                
+                meta_data = requests.get(id_url).json()
                 if meta_data is not None:
-                    logger.debug('smw - more search....ing')                    
+                    logger.debug('smw - more search....ing')
                     logger.debug('smw - title:%s', meta_data['movieCommon']['titleKorean'])
                     logger.debug('smw - originaltitle:%s', meta_data['movieCommon']['titleEnglish'])
                     logger.debug('smw - year:%s', meta_data['movieCommon']['productionYear'])
                     logger.debug('smw - country:%s', meta_data['movieCommon']['productionCountries'])
-                    logger.debug('smw - genre:%s', meta_data['movieCommon']['genres'])                   
+                    logger.debug('smw - genre:%s', meta_data['movieCommon']['genres'])
                     if len(meta_data['movieCommon']['countryMovieInformation']) > 0:
                         for country in meta_data['movieCommon']['countryMovieInformation']:
                             if country['country']['id'] == 'KR':
-                                logger.debug('smw - admissionCode:%s', meta_data['movieCommon']['admissionCode'])
-                                logger.debug('smw - duration:%s', meta_data['movieCommon']['duration'])
+                                mpaa = country['admissionCode']
+                                runtime = country['duration']
+                                logger.debug('smw - admissionCode:%s', country['admissionCode'])
+                                logger.debug('smw - duration:%s', country['duration'])
 
                     #logger.debug('smw - meta_data %s', meta_data)
                     if int(movie_list[0]['year']) == 0:
-                        movie_list[0]['year'] = py_unicode(entity.year)
-                    elif int(movie_year) == int(entity.year):
-                        movie_list[0]['year'] = py_unicode(entity.year)
+                        movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
+                    elif int(movie_year) == int(meta_data['movieCommon']['productionYear']):
+                        movie_list[0]['year'] = py_unicode(meta_data['movieCommon']['productionYear'])
                         movie_list[0]['score'] = movie_list[0]['score'] + 5
-                    movie_list[0]['title'] = entity.title
-                    logger.debug('smw - eng title:%s', entity.originaltitle)
+
+                    movie_list[0]['title'] = meta_data['movieCommon']['titleKorean']
+                    logger.debug('smw - eng title:%s', meta_data['movieCommon']['titleEnglish'])
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    movie_list[0]['more']['rate'] = entity.mpaa
+                    movie_list[0]['more']['rate'] = meta_data['movieCommon']['admissionCode']
                     logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                    movie_list[0]['more']['during'] = py_unicode(entity.runtime)
-                    movie_list[0]['more']['eng_title'] = entity.originaltitle
-                    movie_list[0]['country'] = entity.country
-                    for item in entity.genre:
-                        movie_list[0]['more']['genre'].append(item)
-                        logger.debug('%s', item)
+                    movie_list[0]['more']['during'] = py_unicode(runtime)
+                    movie_list[0]['more']['eng_title'] = meta_data['movieCommon']['titleEnglish']
+                    movie_list[0]['country'] = meta_data['movieCommon']['productionCountries']
+                    movie_list[0]['more']['genre'] = meta_data['movieCommon']['genres']
+                    logger.debug('%s', movie_list[0]['more']['genre']
 
             except Exception as exception:
                 pass
