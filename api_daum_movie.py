@@ -370,7 +370,9 @@ class MovieSearch(object):
                         movie_list[0]['more']['during'] = py_unicode(runtime)
                     
                     movie_list[0]['more']['eng_title'] = py_unicode(meta_data['movieCommon']['titleEnglish'])
+                    logger.debug('smw - eng_title:%s', movie_list[0]['more']['eng_title'])
                     movie_list[0]['country'] = py_unicode(meta_data['movieCommon']['productionCountries'])
+                    logger.debug('smw - country:%s', movie_list[0]['more']['country'])
                     movie_list[0]['more']['genre'].append(meta_data['movieCommon']['genres'])
                     logger.debug('smw - genre:%s', movie_list[0]['more']['genre'])
             except Exception as exception:
