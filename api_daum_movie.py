@@ -364,7 +364,7 @@ class MovieSearch(object):
                     movie_list[0]['more']['rate'] = mpaa
                     logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                     movie_list[0]['more']['during'] = py_unicode(runtime)
-                    movie_list[0]['more']['eng_title'] = meta_data['movieCommon']['titleEnglish']
+                    movie_list[0]['more']['eng_title'] = py_unicode(meta_data['movieCommon']['titleEnglish'])
                     movie_list[0]['country'] = py_unicode(meta_data['movieCommon']['productionCountries'])
                     movie_list[0]['more']['genre'] = meta_data['movieCommon']['genres']
                     logger.debug('%s', movie_list[0]['more']['genre'])
