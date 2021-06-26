@@ -346,12 +346,12 @@ class MovieSearch(object):
                     logger.debug('smw - country:%s', meta_data['movieCommon']['productionCountries'])
                     logger.debug('smw - genre:%s', meta_data['movieCommon']['genres'])
                     if len(meta_data['movieCommon']['countryMovieInformation']) > 0:
-                        for country in meta_data['movieCommon']['countryMovieInformation']:
-                            if country['country']['id'] == 'KR':
-                                mpaa = country['admissionCode']
-                                runtime = country['duration']
-                                logger.debug('smw - admissionCode:%s', country['admissionCode'])
-                                logger.debug('smw - duration:%s', country['duration'])
+                        for item in meta_data['movieCommon']['countryMovieInformation']:
+                            if item['country']['id'] == 'KR':
+                                mpaa = item['admissionCode']
+                                runtime = item['duration']
+                                logger.debug('smw - admissionCode:%s', item['admissionCode'])
+                                logger.debug('smw - duration:%s', item['duration'])
 
                     #logger.debug('smw - meta_data %s', meta_data)
                     if int(movie_list[0]['year']) == 0:
