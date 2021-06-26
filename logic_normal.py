@@ -378,6 +378,7 @@ class LogicNormal(object):
                 if 'genre' in movie['more']:
                     genre_list = movie['more']['genre']
                     logger.debug('sm - genre_list:%s', genre_list)
+                    logger.debug('sm - genre:%s', movie['more']['genre'])
                     if isinstance(genre_list, list):
                         genre = genre_list[0]
                     else:
