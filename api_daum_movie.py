@@ -360,15 +360,15 @@ class MovieSearch(object):
 
                     movie_list[0]['title'] = meta_data['movieCommon']['titleKorean']
                     logger.debug('smw - eng title:%s', meta_data['movieCommon']['titleEnglish'])
-
+                    logger.debug('smw - 363')
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
-                    
+                    logger.debug('smw - 365')
                     if mpaa:
                         movie_list[0]['more']['rate'] = mpaa
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                     if runtime:
                         movie_list[0]['more']['during'] = py_unicode(runtime)
-                    
+                    logger.debug('smw - 371')
                     movie_list[0]['more']['eng_title'] = py_unicode(meta_data['movieCommon']['titleEnglish'])
                     logger.debug('smw - eng_title:%s', movie_list[0]['more']['eng_title'])
                     movie_list[0]['country'] = py_unicode(meta_data['movieCommon']['productionCountries'])
