@@ -363,7 +363,7 @@ class MovieSearch(object):
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
                     if mpaa:
                         movie_list[0]['more']['rate'] = mpaa
-                    logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
+                        logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
                     if runtime:
                         movie_list[0]['more']['during'] = py_unicode(runtime)
                     movie_list[0]['more']['eng_title'] = py_unicode(meta_data['movieCommon']['titleEnglish'])
