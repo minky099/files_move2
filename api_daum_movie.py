@@ -344,7 +344,7 @@ class MovieSearch(object):
                     logger.debug('smw - originaltitle:%s', meta_data['movieCommon']['titleEnglish'])
                     logger.debug('smw - year:%s', meta_data['movieCommon']['productionYear'])
                     logger.debug('smw - country:%s', meta_data['movieCommon']['productionCountries'])
-                    #nara = meta_data['movieCommon']['productionCountries']
+                    nara = meta_data['movieCommon']['productionCountries']
                     logger.debug('smw - genre:%s', meta_data['movieCommon']['genres'])
                     if len(meta_data['movieCommon']['countryMovieInformation']) > 0:
                         for item in meta_data['movieCommon']['countryMovieInformation']:
@@ -366,17 +366,17 @@ class MovieSearch(object):
 
                     movie_list[0].update({'more':{'eng_title':"", 'rate':"", 'during':"", 'genre':[]}})
 
-                    if mpaa is not None:
+                    if mpaa != '':
                         movie_list[0]['more']['rate'] = mpaa
                         logger.debug('smw - rate:%s', movie_list[0]['more']['rate'])
-                    if runtime is not None:
+                    if runtime != 0:
                         movie_list[0]['more']['during'] = py_unicode(runtime)
 
                     movie_list[0]['more']['eng_title'] = py_unicode(meta_data['movieCommon']['titleEnglish'])
                     logger.debug('smw - eng_title:%s', movie_list[0]['more']['eng_title'])
                     movie_list[0]['more']['genre'].append(meta_data['movieCommon']['genres'])
                     logger.debug('smw - genre:%s', movie_list[0]['more']['genre'])
-                    movie_list[0]['country'] = meta_data['movieCommon']['productionCountries']
+                    movie_list[0]['country'].append(py_unicode(nara))
                     logger.debug('smw - country:%s', movie_list[0]['more']['country'])
             except Exception as exception:
                 pass
