@@ -378,9 +378,9 @@ class MovieSearch(object):
                     movie_list[0]['more']['genre'].append(meta_data['movieCommon']['genres'])
                     logger.debug('smw - genre:%s', movie_list[0]['more']['genre'])
             except Exception as exception:
-                #pass
-                logger.error('Exception:%s', e)
-                logger.error(traceback.format_exc())
+                pass
+                #logger.error('Exception:%s', e)
+                #logger.error(traceback.format_exc())
         except Exception as e:
             logger.error('Exception:%s', exception)
             logger.error(traceback.format_exc())
