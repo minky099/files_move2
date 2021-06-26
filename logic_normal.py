@@ -383,7 +383,7 @@ class LogicNormal(object):
                         genre = genre_list[0]
                     else:
                         genre = genre_list
-                    tmp = tmp.replace('%GENRE%', genre)
+                    tmp = tmp.replace('%GENRE%', genre[0])
 
             tmp = re.sub('%ENG_TITLE%', '', tmp)
             tmp = re.sub('%COUNTRY%', '', tmp)
