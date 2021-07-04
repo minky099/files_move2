@@ -43,11 +43,11 @@ menu = {
 
 plugin_info = {
     'version' : '0.1.0.0',
-    'name' : 'file_move2',
+    'name' : 'files_move2',
     'category_name' : 'fileprocess',
     'developer' : 'arkx82',
     'description' : u'파일 정리2',
-    'home' : 'https://github.com/minky099/file_move2',
+    'home' : 'https://github.com/minky099/files_move2',
     'more' : '',
 }
 
